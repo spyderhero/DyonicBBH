@@ -1,0 +1,10 @@
+# Schedule definitions
+
+if (CCTK_Equals(initial_data, "Proca_simpleID"))
+{
+  SCHEDULE Proca IN ADMBase_InitialData
+  {
+    LANG: C
+    OPTIONS: Local
+  } "simple analytic initial data when using Proca fields"
+}

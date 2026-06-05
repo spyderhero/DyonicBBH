@@ -1,0 +1,36 @@
+# ==================================
+# Numerical Relativity Metadata file
+# ==================================
+#
+# This file contains information about the simulation provided by the
+# TwoPunctures thorn.  The format is described in the NR Data Format Document
+# http://arxiv.org/abs/0709.0093 [draft SVN r707].
+
+[metadata]
+initial-ADM-energy            = 1.000701556368760459
+initial-ADM-angular-momentumx = -0.9000000000000000222
+initial-ADM-angular-momentumy = 0
+initial-ADM-angular-momentumz = 0
+initial-separation            = 2
+initial-data-type             = Kerr plus Proca in quasi-isotropic coordinates
+initial-data-bibtex-keys      = Bowen:1980yu Brandt:1997tf Ansorg:2004ds Liu:2009al Okawa:2014nda Zilhao:2015tya Notes:WitekZilhao
+initial-bh-position1x         = 1
+initial-bh-position1y         = 0
+initial-bh-position1z         = -1
+initial-bh-position2x         = -1
+initial-bh-position2y         = 0
+initial-bh-position2z         = -1
+initial-bh-momentum1x         = 0
+initial-bh-momentum1y         = 0
+initial-bh-momentum1z         = 0
+initial-bh-momentum2x         = 0
+initial-bh-momentum2y         = 0
+initial-bh-momentum2z         = 0
+initial-bh-spin1x             = -0.9000000000000000222
+initial-bh-spin1y             = 0
+initial-bh-spin1z             = 0
+initial-bh-spin2x             = 0
+initial-bh-spin2y             = 0
+initial-bh-spin2z             = 0
+initial-bh-puncture-adm-mass1 = 1.001009507936650333
+initial-bh-puncture-adm-mass2 = 0

@@ -1,0 +1,48 @@
+# Schedule definitions for ProcaBase in the Einstein-Maxwell direct-field setup.
+
+STORAGE: Ei[3] Bi[3] Psi[3] Phi[3]
+
+schedule einsteinmaxwellbase_symmetries at BASEGRID
+{
+  LANG: Fortran
+  OPTIONS: Global
+} "Register symmetries of the Einstein-Maxwell base grid functions"
+
+schedule group ProcaBase_Initial at CCTK_INITIAL    \
+    after (ADMBase_InitialData ADMBase_InitialGauge \
+           IOUtil_RecoverIDFromDatafiles)           \
+    before (ADMBase_PostInitial SetTmunu)
+{
+} "ProcaBase/Einstein-Maxwell base initial data group"
+
+if (CCTK_EQUALS(initial_EM, "zero"))
+{
+  schedule ProcaBase_Zero in ProcaBase_Initial
+  {
+    LANG: C
+    WRITES: ProcaBase::Ex(everywhere), Ex_p, Ex_p_p
+    WRITES: ProcaBase::Ey(everywhere), Ey_p, Ey_p_p
+    WRITES: ProcaBase::Ez(everywhere), Ez_p, Ez_p_p
+    WRITES: ProcaBase::Bx(everywhere), Bx_p, Bx_p_p
+    WRITES: ProcaBase::By(everywhere), By_p, By_p_p
+    WRITES: ProcaBase::Bz(everywhere), Bz_p, Bz_p_p
+    WRITES: ProcaBase::Psi(everywhere), Psi_p, Psi_p_p
+    WRITES: ProcaBase::Phi(everywhere), Phi_p, Phi_p_p
+  } "Set up zero Einstein-Maxwell initial data"
+}
+
+if (CCTK_EQUALS(initial_Proca, "zero"))
+{
+  schedule ProcaBase_Zero in ProcaBase_Initial
+  {
+    LANG: C
+    WRITES: ProcaBase::Ex(everywhere), Ex_p, Ex_p_p
+    WRITES: ProcaBase::Ey(everywhere), Ey_p, Ey_p_p
+    WRITES: ProcaBase::Ez(everywhere), Ez_p, Ez_p_p
+    WRITES: ProcaBase::Bx(everywhere), Bx_p, Bx_p_p
+    WRITES: ProcaBase::By(everywhere), By_p, By_p_p
+    WRITES: ProcaBase::Bz(everywhere), Bz_p, Bz_p_p
+    WRITES: ProcaBase::Psi(everywhere), Psi_p, Psi_p_p
+    WRITES: ProcaBase::Phi(everywhere), Phi_p, Phi_p_p
+  } "Set up zero Einstein-Maxwell initial data through deprecated initial_Proca alias"
+}

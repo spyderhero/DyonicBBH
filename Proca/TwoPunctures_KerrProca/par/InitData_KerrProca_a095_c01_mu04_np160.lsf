@@ -1,0 +1,35 @@
+#!/bin/bash
+
+### ============ Setup ==============================
+
+#BSUB -W 04:00
+#BSUB -J InitData_KerrProca_a095_c01_mu04_np160
+#BSUB -q class_a
+#BSUB -eo output_%J.err
+#BSUB -oo output_%J.out
+#BSUB -n 64
+
+### ================================================
+
+### ========= shell commands =======================
+date
+
+### ================================================
+
+### ========= Execution ============================
+
+CACTUS=/home/qmul61/qmul61027/Code/ET_Lean/Cactus/exe/cactus_KerrProca
+RUNNAME=InitData_KerrProca_a095_c01_mu04_np160
+RUNPATH=/gpfs/scratch/qmul61/qmul61027/Proca/Initial_Data/spin095
+
+cd $RUNPATH
+###NP=$PBS_NP
+
+###module load openmpi
+
+mpirun $CACTUS $RUNNAME.par >& $RUNNAME.log
+
+
+echo Done.
+
+### ================================================

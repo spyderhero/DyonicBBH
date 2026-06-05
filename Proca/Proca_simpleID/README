@@ -1,0 +1,30 @@
+Cactus Code Thorn Proca_simpleID
+Author(s)    : Helvi Witek
+               Miguel Zilhão
+Maintainer(s): Helvi Witek
+               Miguel Zilhão
+Licence      : LGPLv2+
+--------------------------------------------------------------------------
+
+1. Purpose
+
+Create initial data for a black hole surrounded by a Proca field with mass
+mu. This is the "Simple Initial Data" construction from paper
+"Nonlinear interactions between black holes and Proca fields",
+Miguel Zilhão, Helvi Witek, Vitor Cardoso,
+Class.Quant.Grav. 32 (2015) 234003,
+arXiv:1505.00797 [gr-qc].
+
+This is a spherically symmetric configuration, but due to how the initial data
+is constructed the parameter par_b cannot be exactly zero. Choosing a very small
+value for it (like the default choice) typically works very well at producing
+spherically symmetric data.
+
+
+In addition, when the mass of the Proca field is zero, this thorn can also
+accommodate for initial data describing two black holes with the same
+charge-to-mass ratio momentarily at rest, used in paper
+"Collisions of charged black holes",
+Miguel Zilhao, Vitor Cardoso, Carlos Herdeiro, Luis Lehner, Ulrich Sperhake
+Phys.Rev. D85 (2012) 124062
+arXiv:1205.1063 [gr-qc].

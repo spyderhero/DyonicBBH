@@ -1,0 +1,16 @@
+# Main make.code.defn file for thorn ProcaEvolve
+#
+# Einstein-Maxwell direct E^i/B^i formulation with electric and magnetic
+# charges.  No vector potential, Proca mass, dilaton, Aphi or Zeta fields
+# are compiled here.
+
+SRCS = Proca_RegisterVars.c     \
+       Proca_calc_rhs.F90       \
+       Proca_Boundaries.F90     \
+       Proca_calc_Tmunu.F90     \
+       Proca_InitSymBound.F90   \
+       Proca_adm_vs_bssn.F90    \
+       Proca_utils.F90          \
+       Proca_zero_rhs.F90
+
+SUBDIRS =

@@ -1,0 +1,17 @@
+Cactus Code Thorn TwoPunctures_KerrProca
+Author(s)    : Marcus Ansorg
+               Erik Schnetter
+               Frank Löffler
+               Helvi Witek
+               Miguel Zilhão
+Maintainer(s): Helvi Witek
+               Miguel Zilhão
+Licence      : LGPLv2+
+--------------------------------------------------------------------------
+
+1. Purpose
+
+We modify the TwoPunctures thorn to construct initial data for a single rotating
+black hole coupled to a massive vector field. The description for this
+construction can be found in Zilhao et al [arXiv:1505.00797 [gr-qc]]. See also
+the notes in the ./doc folder.

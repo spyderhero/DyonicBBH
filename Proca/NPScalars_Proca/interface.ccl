@@ -1,0 +1,62 @@
+# Interface definition for thorn NPScalars_Proca
+
+implements: NPScalars_Proca
+
+inherits: ADMBase ProcaBase
+
+## From thorn cactusbase/Boundary:
+CCTK_INT FUNCTION                        \
+    Boundary_SelectGroupForBC            \
+        (CCTK_POINTER_TO_CONST IN GH,    \
+         CCTK_INT IN faces,              \
+         CCTK_INT IN boundary_width,     \
+         CCTK_INT IN table_handle,       \
+         CCTK_STRING IN group_name,      \
+         CCTK_STRING IN bc_name)
+USES FUNCTION Boundary_SelectGroupForBC
+
+private:
+
+CCTK_REAL NPPsiR_group type=GF timelevels=3 tags='tensortypealias="Scalar" tensorweight=0 tensorparity=1'
+{
+  psi4re psi0re
+}
+
+CCTK_REAL NPPsiI_group type=GF timelevels=3 tags='tensortypealias="Scalar" tensorweight=0 tensorparity=-1'
+{
+  psi4im psi0im
+}
+
+
+# setting the tensor type to ManualCartesian since these guys behave strangely
+# under reflections
+
+CCTK_REAL NPPhi0R_group type=GF timelevels=3 tags='tensortypealias="ManualCartesian" cartesianreflectionparities="++-" tensorweight=0'
+{
+  phi0re
+}
+
+CCTK_REAL NPPhi0I_group type=GF timelevels=3 tags='tensortypealias="ManualCartesian" cartesianreflectionparities="--+" tensorweight=0'
+{
+  phi0im
+}
+
+CCTK_REAL NPPhi1R_group type=GF timelevels=3 tags='tensortypealias="ManualCartesian" cartesianreflectionparities="+++" tensorweight=0'
+{
+  phi1re
+}
+
+CCTK_REAL NPPhi1I_group type=GF timelevels=3 tags='tensortypealias="ManualCartesian" cartesianreflectionparities="---" tensorweight=0'
+{
+  phi1im
+}
+
+CCTK_REAL NPPhi2R_group type=GF timelevels=3 tags='tensortypealias="ManualCartesian" cartesianreflectionparities="++-" tensorweight=0'
+{
+  phi2re
+}
+
+CCTK_REAL NPPhi2I_group type=GF timelevels=3 tags='tensortypealias="ManualCartesian" cartesianreflectionparities="--+" tensorweight=0'
+{
+  phi2im
+}

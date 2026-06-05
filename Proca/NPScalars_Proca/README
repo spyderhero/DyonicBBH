@@ -1,0 +1,14 @@
+Cactus Code Thorn NPScalars_Proca
+Thorn Author(s)     : Helvi Witek
+                      Miguel Zilhão
+Thorn Maintainer(s) : Helvi Witek
+                      Miguel Zilhão
+--------------------------------------------------------------------------
+
+Purpose of the thorn:
+Implementation of the Newman-Penrose scalars 
+$\Psi_{0}$, $\Psi_{4}$ (in- and outgoing gravitational radiation)
+and
+$\Phi_{0}$, $\Phi_{1}$, $\Phi_{2}$ (electromagnetic radiation)
+to extract radiation emitted in BH-Proca spacetimes.
+

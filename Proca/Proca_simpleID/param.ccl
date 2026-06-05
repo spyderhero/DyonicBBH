@@ -1,0 +1,53 @@
+# Parameter definitions
+
+SHARES: ADMBase
+
+USES KEYWORD metric_type
+
+EXTENDS KEYWORD initial_data
+{
+  "Proca_simpleID" :: "Initial data for Proca fields"
+}
+
+EXTENDS KEYWORD initial_lapse
+{
+  "psi^n"   :: "psi^n initial lapse profile"
+}
+
+
+RESTRICTED:
+
+
+REAL par_b "x coordinate of the puncture" STEERABLE=always
+{
+  (0.0:*) :: ""
+} 1.e-5
+
+REAL par_m_plus "mass of the m+ puncture" STEERABLE = ALWAYS
+{
+  0.0:*) :: ""
+} 1.0
+
+REAL par_m_minus "mass of the m- puncture" STEERABLE = ALWAYS
+{
+  0.0:*) :: ""
+} 0.0
+
+REAL par_q_plus "charge of the m+ puncture" STEERABLE = ALWAYS
+{
+  (*:*) :: ""
+} 0.0
+
+REAL par_q_minus "charge of the m- puncture" STEERABLE = ALWAYS
+{
+  (*:*) :: ""
+} 0.0
+
+REAL initial_lapse_psi_exponent "Exponent n for psi^-n initial lapse profile"
+{
+  (*:*) :: "Should be negative"
+} -2.0
+
+BOOLEAN swap_xz "Swap x and z coordinates when interpolating, so that the black holes are separated in the z direction"
+{
+} "no"

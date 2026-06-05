@@ -1,0 +1,33 @@
+# Parameter definitions for thorn ProcaBase
+#
+# This is an Einstein-Maxwell version of the original Proca/EMD base thorn.
+# It defines the base variables E^i, B^i, Psi and Phi.  Vector-potential
+# variables A_i, Aphi and Zeta are intentionally absent.
+
+SHARES: InitBase
+USES KEYWORD initial_data_setup_method
+
+shares: IO
+USES KEYWORD recover
+
+restricted:
+
+KEYWORD evolution_method "Einstein-Maxwell field evolution method"
+{
+  "none"             :: "Einstein-Maxwell variables are not evolved"
+  "EinsteinMaxwell"  :: "Einstein-Maxwell variables are evolved by an external evolution thorn"
+} "none"
+
+KEYWORD initial_EM "initial data for the Einstein-Maxwell fields"
+{
+  "zero" :: "E^i, B^i, Psi and Phi are set to zero"
+  "none" :: "Einstein-Maxwell variables are not initialized by ProcaBase"
+} "none"
+
+# Backward-compatible alias for old parameter files.  New parameter files
+# should use initial_EM instead.
+KEYWORD initial_Proca "deprecated alias for initial_EM"
+{
+  "zero" :: "E^i, B^i, Psi and Phi are set to zero"
+  "none" :: "Einstein-Maxwell variables are not initialized by ProcaBase"
+} "none"

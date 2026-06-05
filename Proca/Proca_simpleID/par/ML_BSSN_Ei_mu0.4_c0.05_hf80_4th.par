@@ -1,0 +1,507 @@
+
+#------------------------------------------------------------------------------
+ActiveThorns = "
+  ADMBase
+  ADMCoupling
+  ADMMacros
+  AEILocalInterp
+  AHFinderDirect
+  Boundary
+  Carpet
+  CarpetInterp
+  CarpetIOASCII
+  CarpetIOBasic
+  CarpetIOHDF5
+  CarpetIOScalar
+  CarpetLib
+  CarpetMask
+  CarpetReduce
+  CarpetRegrid2
+  CarpetSlab
+  CarpetTracker
+  CartGrid3D
+  CoordBase
+  CoordGauge
+  Dissipation
+  # Formaline
+  Fortran
+  GenericFD
+  GSL
+  HDF5
+  InitBase
+  IOUtil
+ # LeanBSSNMoL
+  LocalInterp
+  LoopControl
+  ML_ADMConstraints
+  ML_BSSN
+  ML_BSSN_Helper
+  MoL
+  Multipole
+  NaNChecker
+  NewRad
+  NPScalars_Proca
+  ProcaBase
+  Proca_simpleID
+  ProcaEvolve
+ # PunctureTracker
+  QuasiLocalMeasures
+  ReflectionSymmetry
+ # RotatingSymmetry180
+  Slab
+  SpaceMask
+  SphericalSurface
+  StaticConformal
+  SummationByParts
+  SymBase
+  SystemStatistics
+  TerminationTrigger
+  Time
+  TimerReport
+  TmunuBase
+  Vectors
+"
+#------------------------------------------------------------------------------
+
+
+# Grid setup
+#------------------------------------------------------------------------------
+
+CartGrid3D::type                     = "coordbase"
+Carpet::domain_from_coordbase        = yes
+CoordBase::domainsize                = "minmax"
+
+# make sure all (xmax - xmin)/dx are integers!
+CoordBase::xmin                      =    0.00
+CoordBase::ymin                      =    0.00
+CoordBase::zmin                      =    0.00
+CoordBase::xmax                      = +256.00
+CoordBase::ymax                      = +256.00
+CoordBase::zmax                      = +256.00
+CoordBase::dx                        =    3.20
+CoordBase::dy                        =    3.20
+CoordBase::dz                        =    3.20
+
+driver::ghost_size                   = 3
+
+CoordBase::boundary_size_x_lower     = 3
+CoordBase::boundary_size_y_lower     = 3
+CoordBase::boundary_size_z_lower     = 3
+CoordBase::boundary_size_x_upper     = 3
+CoordBase::boundary_size_y_upper     = 3
+CoordBase::boundary_size_z_upper     = 3
+
+CoordBase::boundary_shiftout_x_lower = 1
+CoordBase::boundary_shiftout_y_lower = 1
+CoordBase::boundary_shiftout_z_lower = 1
+
+CarpetRegrid2::symmetry_rotating180  = no
+
+ReflectionSymmetry::reflection_x     = yes
+ReflectionSymmetry::reflection_y     = yes
+ReflectionSymmetry::reflection_z     = yes
+ReflectionSymmetry::avoid_origin_x   = no
+ReflectionSymmetry::avoid_origin_y   = no
+ReflectionSymmetry::avoid_origin_z   = no
+
+
+# Mesh refinement
+#------------------------------------------------------------------------------
+
+Carpet::max_refinement_levels           = 9
+
+CarpetRegrid2::num_centres              = 1
+
+CarpetRegrid2::num_levels_1             = 9
+CarpetRegrid2::radius_1[1]              = 96.0
+CarpetRegrid2::radius_1[2]              = 48.0
+CarpetRegrid2::radius_1[3]              = 24.0
+CarpetRegrid2::radius_1[4]              = 12.0
+CarpetRegrid2::radius_1[5]              =  6.0
+CarpetRegrid2::radius_1[6]              =  3.0
+CarpetRegrid2::radius_1[7]              =  1.5
+CarpetRegrid2::radius_1[8]              =  0.75
+
+
+Carpet::use_buffer_zones                = yes
+Carpet::prolongation_order_space        = 5
+Carpet::prolongation_order_time         = 2
+
+CarpetRegrid2::freeze_unaligned_levels  = yes
+CarpetRegrid2::regrid_every             = 0
+
+CarpetRegrid2::verbose                  = yes
+
+Carpet::grid_structure_filename         = "carpet-grid-structure"
+Carpet::grid_coordinates_filename       = "carpet-grid-coordinates"
+
+Carpet::time_refinement_factors         = "[1, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512]"
+
+Time::dtfac                             = 0.25
+
+
+# Initial Data
+#------------------------------------------------------------------------------
+
+ProcaBase::mu                         = 0.4
+
+ADMBase::initial_data                 = "Proca_simpleID"
+ADMBase::initial_lapse                = "psi^n"
+ADMBase::initial_shift                = "zero"
+ADMBase::initial_dtlapse              = "zero"
+ADMBase::initial_dtshift              = "zero"
+
+ADMBase::lapse_timelevels             = 3
+ADMBase::shift_timelevels             = 3
+ADMBase::metric_timelevels            = 3
+
+Proca_simpleID::initial_lapse_psi_exponent  = -2.0
+Proca_simpleID::swap_xz               = "no"
+
+Proca_simpleID::par_m_plus            = 1.0
+Proca_simpleID::par_q_plus            = 0.05
+
+InitBase::initial_data_setup_method   = "init_some_levels"
+Carpet::init_fill_timelevels          = yes
+Carpet::init_3_timelevels             = no
+
+
+# Evolution
+#------------------------------------------------------------------------------
+
+TmunuBase::stress_energy_storage  = yes
+TmunuBase::stress_energy_at_RHS   = yes
+TmunuBase::timelevels             = 1
+TmunuBase::prolongation_type      = "none"
+
+ProcaBase::evolution_method       = "ProcaEvolve"
+
+ADMBase::evolution_method         = "ML_BSSN"
+ADMBase::lapse_evolution_method   = "ML_BSSN"
+ADMBase::shift_evolution_method   = "ML_BSSN"
+ADMBase::dtlapse_evolution_method = "ML_BSSN"
+ADMBase::dtshift_evolution_method = "ML_BSSN"
+
+ML_BSSN::harmonicN           = 1      # 1+log
+ML_BSSN::harmonicF           = 2.0    # 1+log
+ML_BSSN::ShiftGammaCoeff     = 0.75
+ML_BSSN::BetaDriver          = 1.0
+ML_BSSN::advectLapse         = 1
+ML_BSSN::advectShift         = 1
+
+ML_BSSN::MinimumLapse        = 1.0e-8
+ML_BSSN::conformalMethod     = 1 # 1 for W
+
+
+# Boundary conditions
+#------------------------------------------------------------------------------
+
+ML_BSSN::initial_boundary_condition = "extrapolate-gammas"
+ML_BSSN::rhs_boundary_condition     = "NewRad"
+Boundary::radpower                  = 2
+
+ML_BSSN::ML_log_confac_bound = "none"
+ML_BSSN::ML_metric_bound     = "none"
+ML_BSSN::ML_Gamma_bound      = "none"
+ML_BSSN::ML_trace_curv_bound = "none"
+ML_BSSN::ML_curv_bound       = "none"
+ML_BSSN::ML_lapse_bound      = "none"
+ML_BSSN::ML_dtlapse_bound    = "none"
+ML_BSSN::ML_shift_bound      = "none"
+ML_BSSN::ML_dtshift_bound    = "none"
+
+# Spatial finite differencing
+#------------------------------------------------------------------------------
+
+SummationByParts::order = 4
+ML_BSSN::fdOrder        = 4
+
+Dissipation::epsdis = 0.2
+Dissipation::order  = 5
+Dissipation::vars   = "
+  ML_BSSN::ML_log_confac
+  ML_BSSN::ML_metric
+  ML_BSSN::ML_trace_curv
+  ML_BSSN::ML_curv
+  ML_BSSN::ML_Gamma
+  ML_BSSN::ML_lapse
+  ML_BSSN::ML_shift
+  ML_BSSN::ML_dtlapse
+  ML_BSSN::ML_dtshift
+  ProcaBase::Ei
+  ProcaBase::Ai
+  ProcaBase::Aphi
+  ProcaBase::Zeta
+"
+
+
+# Integration method
+#------------------------------------------------------------------------------
+
+MoL::ODE_Method                 = "RK4"
+MoL::MoL_Intermediate_Steps     = 4
+MoL::MoL_Num_Scratch_Levels     = 1
+
+Carpet::num_integrator_substeps = 4
+
+
+# Spherical surfaces
+#------------------------------------------------------------------------------
+
+SphericalSurface::nsurfaces = 1
+SphericalSurface::maxntheta = 66
+SphericalSurface::maxnphi   = 124
+SphericalSurface::verbose   = no
+
+# Horizon 1
+SphericalSurface::ntheta            [0] = 41
+SphericalSurface::nphi              [0] = 80
+SphericalSurface::nghoststheta      [0] = 2
+SphericalSurface::nghostsphi        [0] = 2
+CarpetMask::excluded_surface        [0] = 0
+CarpetMask::excluded_surface_factor [0] = 1.0
+
+CarpetMask::verbose = no
+
+
+# # Puncture tracking
+# #------------------------------------------------------------------------------
+
+# CarpetTracker::surface[0]                       = 0
+# CarpetTracker::surface[1]                       = 1
+
+# PunctureTracker::track                      [0] = yes
+# PunctureTracker::initial_x                  [0] = 3
+# PunctureTracker::which_surface_to_store_info[0] = 0
+# PunctureTracker::track                      [1] = yes
+# PunctureTracker::initial_x                  [1] = -3
+# PunctureTracker::which_surface_to_store_info[1] = 1
+
+# PunctureTracker::verbose                        = no
+
+
+# Wave extraction
+#------------------------------------------------------------------------------
+
+NPScalars_Proca::NP_order     = 4
+
+Multipole::nradii       = 5
+Multipole::radius[0]    = 30
+Multipole::radius[1]    = 80
+Multipole::radius[2]    = 100
+Multipole::radius[3]    = 140
+Multipole::radius[4]    = 160
+Multipole::ntheta       = 120
+Multipole::nphi         = 240
+Multipole::variables    = "
+  NPScalars_Proca::psi4re{sw=-2 cmplx='NPScalars_Proca::psi4im' name='Psi4'}
+  NPScalars_Proca::phi1re{sw=0  cmplx='NPScalars_Proca::phi1im' name='Phi1'}
+  NPScalars_Proca::phi2re{sw=-1 cmplx='NPScalars_Proca::phi2im' name='Phi2'}
+"
+Multipole::integration_method = "Simpson"
+
+Multipole::out_every    = 128
+Multipole::l_max        = 4
+Multipole::output_hdf5  = no
+Multipole::output_ascii = yes
+
+
+# Horizons
+#------------------------------------------------------------------------------
+
+# AHFinderDirect::verbose_level                           = "algorithm highlights"
+AHFinderDirect::verbose_level                            = "physics details"
+AHFinderDirect::output_BH_diagnostics                    = "true"
+AHFinderDirect::run_at_CCTK_POST_RECOVER_VARIABLES       = no
+
+AHFinderDirect::N_horizons                               = 1
+AHFinderDirect::find_every                               = 128
+
+AHFinderDirect::output_h_every                           = 0
+AHFinderDirect::max_Newton_iterations__initial           = 50
+AHFinderDirect::max_Newton_iterations__subsequent        = 50
+AHFinderDirect::max_allowable_Theta_growth_iterations    = 10
+AHFinderDirect::max_allowable_Theta_nonshrink_iterations = 10
+AHFinderDirect::geometry_interpolator_name               = "Lagrange polynomial interpolation"
+AHFinderDirect::geometry_interpolator_pars               = "order=4"
+AHFinderDirect::surface_interpolator_name                = "Lagrange polynomial interpolation"
+AHFinderDirect::surface_interpolator_pars                = "order=4"
+
+AHFinderDirect::move_origins                             = no
+
+AHFinderDirect::origin_x                             [1] = 0
+AHFinderDirect::initial_guess__coord_sphere__x_center[1] = 0
+AHFinderDirect::initial_guess__coord_sphere__radius  [1] = 0.5
+AHFinderDirect::which_surface_to_store_info          [1] = 0
+AHFinderDirect::set_mask_for_individual_horizon      [1] = no
+AHFinderDirect::reset_horizon_after_not_finding      [1] = no
+AHFinderDirect::max_allowable_horizon_radius         [1] = 5
+#AHFinderDirect::dont_find_after_individual_time      [1] = 30.0
+
+
+# Isolated Horizons
+#-------------------------------------------------------------------------------
+
+QuasiLocalMeasures::verbose                = yes
+QuasiLocalMeasures::veryverbose            = no
+QuasiLocalMeasures::interpolator           = "Lagrange polynomial interpolation"
+QuasiLocalMeasures::interpolator_options   = "order=4"
+QuasiLocalMeasures::spatial_order          = 4
+QuasiLocalMeasures::num_surfaces           = 1
+QuasiLocalMeasures::surface_index      [0] = 0
+
+
+# Check for NaNs
+#-------------------------------------------------------------------------------
+
+Carpet::poison_new_timelevels = no
+CarpetLib::poison_new_memory  = no
+Carpet::check_for_poison      = no
+
+NaNChecker::check_every     = 512
+NanChecker::check_after     = 0
+NaNChecker::report_max      = 10
+# NaNChecker::verbose         = "all"
+NaNChecker::action_if_found = "terminate"
+NaNChecker::out_NaNmask     = yes
+NaNChecker::check_vars      = "
+  ML_BSSN::ML_log_confac
+"
+
+
+# Timers
+#-------------------------------------------------------------------------------
+
+Cactus::cctk_timer_output               = "full"
+TimerReport::out_every                  = 5120
+TimerReport::n_top_timers               = 40
+TimerReport::output_all_timers_together = yes
+TimerReport::output_all_timers_readable = yes
+TimerReport::output_schedule_timers     = no
+
+
+# I/O thorns
+#-------------------------------------------------------------------------------
+
+Cactus::cctk_run_title       = $parfile
+IO::out_dir                  = $parfile
+
+IOScalar::one_file_per_group = yes
+IOASCII::one_file_per_group  = yes
+
+IOHDF5::use_checksums        = no
+IOHDF5::one_file_per_group   = no
+
+IOBasic::outInfo_every       = 4
+IOBasic::outInfo_reductions  = "minimum maximum"
+IOBasic::outInfo_vars        = "
+  Carpet::physical_time_per_hour
+  ML_BSSN::ML_log_confac
+  SystemStatistics::maxrss_mb
+"
+
+# # for scalar reductions of 3D grid functions
+# IOScalar::outScalar_every               = 128
+# IOScalar::outScalar_reductions          = "minimum maximum average"
+# IOScalar::outScalar_vars                = "SystemStatistics::process_memory_mb"
+
+
+# output just at one point (0D)
+IOASCII::out0D_every = 32
+IOASCII::out0D_vars  = "
+  Carpet::timing
+  QuasiLocalMeasures::qlm_scalars{out_every = 128}
+"
+
+IOASCII::output_symmetry_points = no
+IOASCII::out3D_ghosts           = no
+
+# 1D text output
+IOASCII::out1D_every            = 256
+IOASCII::out1D_d                = no
+IOASCII::out1D_x                = yes
+IOASCII::out1D_y                = no
+IOASCII::out1D_z                = yes
+IOASCII::out1D_vars             = "
+  ADMBase::lapse
+  ML_BSSN::ML_log_confac
+  ProcaBase::Ei
+  ProcaBase::Ai
+  ProcaBase::Aphi
+  ProcaBase::Zeta
+  ML_ADMConstraints::ML_Ham
+  ML_ADMConstraints::ML_mom
+"
+
+# 1D HDF5 output
+#IOHDF5::out1D_every            = 256
+#IOHDF5::out1D_d                = no
+#IOHDF5::out1D_x                = yes
+#IOHDF5::out1D_y                = no
+#IOHDF5::out1D_z                = no
+#IOHDF5::out1D_vars             = "
+#  ADMBase::lapse
+#"
+
+# 2D HDF5 output
+IOHDF5::out2D_every             = 256
+IOHDF5::out2D_xy                = yes
+IOHDF5::out2D_xz                = no
+IOHDF5::out2D_yz                = no
+IOHDF5::out2D_vars              = "
+  ADMBase::lapse
+  ML_BSSN::ML_log_confac
+  ProcaBase::Aphi
+  NPScalars_Proca::psi4re
+  NPScalars_Proca::psi0re
+  NPScalars_Proca::phi0re
+  NPScalars_Proca::phi2re
+"
+
+# # 3D HDF5 output
+# IOHDF5::out_every                      = 8192
+# IOHDF5::out_vars                       = "
+#   ADMBase::lapse
+# "
+
+Carpet::verbose                    = no
+Carpet::veryverbose                = no
+Carpet::schedule_barriers          = no
+Carpet::storage_verbose            = no
+CarpetLib::output_bboxes           = no
+
+Cactus::cctk_full_warnings         = yes
+Cactus::highlight_warning_messages = no
+
+
+# Checkpointing and recovery
+#-------------------------------------------------------------------------------
+
+CarpetIOHDF5::checkpoint             = yes
+IO::checkpoint_dir                   = "../checkpoints"
+IO::checkpoint_ID                    = no
+IO::checkpoint_every_walltime_hours  = 23
+IO::checkpoint_on_terminate          = yes
+IO::out_proc_every                   = 2
+IO::checkpoint_keep                  = 1
+
+IO::recover                          = "autoprobe"
+IO::recover_dir                      = "../checkpoints"
+
+IO::abort_on_io_errors                      = yes
+CarpetIOHDF5::open_one_input_file_at_a_time = yes
+CarpetIOHDF5::compression_level             = 9
+
+
+# Run termination
+#-------------------------------------------------------------------------------
+
+TerminationTrigger::max_walltime                 = 72 # hours
+TerminationTrigger::on_remaining_walltime        = 60 # minutes
+TerminationTrigger::output_remtime_every_minutes = 60
+TerminationTrigger::termination_from_file        = yes
+TerminationTrigger::termination_file             = "terminate.txt"
+TerminationTrigger::create_termination_file      = yes
+
+Cactus::terminate       = "time"
+Cactus::cctk_final_time = 500.0
