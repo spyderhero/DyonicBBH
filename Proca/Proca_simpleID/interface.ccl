@@ -1,5 +1,0 @@
-# Interface definition
-
-IMPLEMENTS: Proca_simpleID
-
-INHERITS: ADMBase grid ProcaBase
