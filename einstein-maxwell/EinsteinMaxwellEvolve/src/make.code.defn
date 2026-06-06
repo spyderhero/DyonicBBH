@@ -1,0 +1,14 @@
+# Main make.code.defn file for thorn EisnteinMaxwellEvolve
+
+# Source files in this directory
+SRCS = EisnteinMaxwell_RegisterVars.c     \
+       EisnteinMaxwell_calc_rhs.F90       \
+       EisnteinMaxwell_Boundaries.F90     \
+       EisnteinMaxwell_calc_Tmunu.F90     \
+       EisnteinMaxwell_InitSymBound.F90   \
+       EisnteinMaxwell_adm_vs_bssn.F90    \
+       EisnteinMaxwell_zero_rhs.F90       \
+       EisnteinMaxwell_utils.F90          \
+
+# Subdirectories containing source files
+SUBDIRS =

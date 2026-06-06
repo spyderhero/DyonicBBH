@@ -1,0 +1,131 @@
+# Interface definition for thorn GibbonsMaedaEvolve
+#
+# Einstein-Maxwell, direct E^i/B^i formulation based on arXiv:1205.1063.
+# This interface is consistent with the EM-direct corrected source files:
+#   - GibbonsMaeda_calc_rhs_EM_direct_corrected.F90
+#   - GibbonsMaeda_calc_Tmunu_EM_direct_corrected.F90
+#   - EinsteinMaxwell_RegisterVars_EM_direct_corrected.c
+#   - EinsteinMaxwell_Boundaries_EM_direct_corrected.F90
+#   - EinsteinMaxwell_InitSymBound_EM_direct_corrected.F90
+#
+# The evolved Maxwell variables themselves are assumed to be provided by
+# ProcaBase as:
+#   ProcaBase::Ei  = Ex Ey Ez
+#   ProcaBase::Bi  = Bx By Bz
+#   ProcaBase::Psi = Psi
+#   ProcaBase::Phi = Phi
+# This thorn provides the corresponding RHS grid functions and diagnostics.
+
+implements: GibbonsMaedaEvolve
+inherits: ADMBase Tmunubase ProcaBase Boundary
+
+
+CCTK_INT FUNCTION                        \
+    Boundary_SelectVarForBC              \
+        (CCTK_POINTER_TO_CONST IN GH,    \
+         CCTK_INT IN faces,              \
+         CCTK_INT IN boundary_width,     \
+         CCTK_INT IN table_handle,       \
+         CCTK_STRING IN var_name,        \
+         CCTK_STRING IN bc_name)
+REQUIRES FUNCTION Boundary_SelectVarForBC
+
+CCTK_INT FUNCTION                        \
+    Boundary_SelectGroupForBC            \
+        (CCTK_POINTER_TO_CONST IN GH,    \
+         CCTK_INT IN faces,              \
+         CCTK_INT IN boundary_width,     \
+         CCTK_INT IN table_handle,       \
+         CCTK_STRING IN group_name,      \
+         CCTK_STRING IN bc_name)
+REQUIRES FUNCTION Boundary_SelectGroupForBC
+
+CCTK_INT FUNCTION                         \
+    MultiPatch_GetMap                     \
+        (CCTK_POINTER_TO_CONST IN cctkGH)
+USES FUNCTION MultiPatch_GetMap
+
+CCTK_INT FUNCTION                         \
+    NewRad_Apply                          \
+        (CCTK_POINTER_TO_CONST IN cctkGH, \
+         CCTK_REAL ARRAY IN var,          \
+         CCTK_REAL ARRAY INOUT rhs,       \
+         CCTK_REAL IN var0,               \
+         CCTK_REAL IN v0,                 \
+         CCTK_INT IN radpower)
+REQUIRES FUNCTION NewRad_Apply
+
+####################################################
+###  Functions provided by MoL for registration  ###
+####################################################
+
+CCTK_INT FUNCTION MoLRegisterEvolved(CCTK_INT IN EvolvedIndex, \
+                                     CCTK_INT IN RHSIndex)
+CCTK_INT FUNCTION MoLRegisterEvolvedGroup(CCTK_INT IN EvolvedIndex, \
+                                          CCTK_INT IN RHSIndex)
+CCTK_INT FUNCTION MoLRegisterSaveAndRestoreGroup(CCTK_INT IN SandRIndex)
+CCTK_INT FUNCTION MoLRegisterConstrainedGroup(CCTK_INT IN ConstrainedIndex)
+
+USES FUNCTION MoLRegisterEvolved
+USES FUNCTION MoLRegisterEvolvedGroup
+USES FUNCTION MoLRegisterSaveAndRestoreGroup
+USES FUNCTION MoLRegisterConstrainedGroup
+
+public:
+
+
+# Right-hand sides for the Maxwell sector
+#----------------------------------------
+# E^i and B^i are evolved as contravariant spatial vectors.
+CCTK_REAL rhs_Ei type=gf tags='tensortypealias="U" tensorweight=0 prolongation="none" Checkpoint="no"'
+{
+  rhs_Ex rhs_Ey rhs_Ez
+} "right hand sides for E^i evolution equations"
+
+CCTK_REAL rhs_Bi type=gf tags='tensortypealias="U" tensorweight=0 prolongation="none" Checkpoint="no"'
+{
+  rhs_Bx rhs_By rhs_Bz
+} "right hand sides for B^i evolution equations"
+
+CCTK_REAL rhs_Psi type=gf tags='tensortypealias="Scalar" tensorweight=0 prolongation="none" Checkpoint="no"'
+{
+  rhs_Psi
+} "right hand side for the electric Gauss-constraint damping field Psi"
+
+CCTK_REAL rhs_Phi type=gf tags='tensortypealias="Scalar" tensorweight=0 prolongation="none" Checkpoint="no"'
+{
+  rhs_Phi
+} "right hand side for the magnetic Gauss-constraint damping field Phi"
+
+
+# BSSN-like auxiliary geometry variables
+#---------------------------------------
+# These are computed from ADMBase variables by GibbonsMaeda_adm2bssn and used
+# locally by the Maxwell RHS routine. They are not MoL-evolved variables.
+CCTK_REAL hmetric type=gf tags='tensortypealias="DD_sym" tensorweight=-0.66666666666666666667 prolongation="none" Checkpoint="no"'
+{
+  hxx hxy hxz hyy hyz hzz
+} "conformal spatial metric gamma_tilde_ij"
+
+CCTK_REAL conf_fac_chi type=gf tags='tensortypealias="Scalar" tensorweight=-0.66666666666666666667 prolongation="none" Checkpoint="no"'
+{
+  chi
+} "BSSN conformal factor chi"
+
+CCTK_REAL trk type=gf tags='tensortypealias="Scalar" tensorweight=0 prolongation="none" Checkpoint="no"'
+{
+  tracek
+} "trace of the extrinsic curvature K"
+
+
+# Diagnostics from the electromagnetic stress-energy tensor
+#----------------------------------------------------------
+CCTK_REAL EM_jr_F_gfs type=gf timelevels=3 tags='tensortypealias="Scalar" tensorweight=0 Checkpoint="no"'
+{
+  jrF_gf
+} "radial component of the electromagnetic momentum density"
+
+CCTK_REAL EM_Sir_F_gfs type=gf timelevels=3 tags='tensortypealias="D" tensorweight=0 Checkpoint="no"'
+{
+  SxrF_gf SyrF_gf SzrF_gf
+} "mixed radial electromagnetic stress diagnostics S_ir"

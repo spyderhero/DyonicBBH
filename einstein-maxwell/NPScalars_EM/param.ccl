@@ -1,0 +1,13 @@
+# Parameter definitions for thorn NPScalars_EM
+private:
+
+CCTK_INT NP_order "Second or fourth order accuracy?" STEERABLE=recover
+{
+  2    :: "Second order"
+  4    :: "Fourth order"
+  6    :: "Sixth  order"
+} 4
+
+BOOLEAN calc_phi "calculate Phi0, Phi1 and Phi2?" STEERABLE=recover
+{
+} "yes"

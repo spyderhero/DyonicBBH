@@ -1,0 +1,55 @@
+# Schedule definitions for thorn EinsteinMaxwell_TwoPunctures
+
+if (CCTK_Equals(initial_data, "EinsteinMaxwell_twopunctures"))
+{
+  STORAGE: energy, angular_momentum, puncture_adm_mass, bare_mass
+
+  if (keep_u_around) {
+    STORAGE: puncture_u
+  }
+
+  SCHEDULE EinsteinMaxwell_TwoPunctures_ParamCheck AT PARAMCHECK
+  {
+    LANG: C
+  } "Check Einstein-Maxwell TwoPunctures parameters and thorn requirements"
+
+  if (schedule_in_ADMBase_InitialData)
+  {
+      SCHEDULE GROUP EinsteinMaxwell_TwoPunctures_Group IN ADMBase_InitialData
+      {
+      } "Einstein-Maxwell TwoPunctures initial data group"
+  }
+  else
+  {
+      SCHEDULE GROUP EinsteinMaxwell_TwoPunctures_Group AT Initial AFTER ADMBase_InitialData BEFORE ADMBase_PostInitial AFTER HydroBase_Initial BEFORE SetTmunu BEFORE HydroBase_Prim2ConInitial
+      {
+      } "Einstein-Maxwell TwoPunctures initial data group"
+  }
+
+  SCHEDULE EinsteinMaxwell_TwoPunctures IN EinsteinMaxwell_TwoPunctures_Group
+  {
+    LANG: C
+    STORAGE: puncture_u
+    READS: Grid::coordinates(Everywhere)
+    WRITES: EinsteinMaxwell_TwoPunctures::mp(Everywhere), EinsteinMaxwell_TwoPunctures::mm(Everywhere),
+            EinsteinMaxwell_TwoPunctures::mp_adm(Everywhere), EinsteinMaxwell_TwoPunctures::mm_adm(Everywhere),
+            EinsteinMaxwell_TwoPunctures::E(Everywhere), EinsteinMaxwell_TwoPunctures::J1(Everywhere),
+            EinsteinMaxwell_TwoPunctures::J2(Everywhere), EinsteinMaxwell_TwoPunctures::J3(Everywhere),
+            EinsteinMaxwell_TwoPunctures::puncture_u(Everywhere)
+    WRITES: StaticConformal::conformal_state(Everywhere),
+            StaticConformal::confac_2derivs(Everywhere),
+            StaticConformal::confac_1derivs(Everywhere),
+            StaticConformal::confac(Everywhere)
+    WRITES: ADMBase::alp(Everywhere), ADMBase::metric(Everywhere), ADMBase::curv(Everywhere)
+    WRITES: ProcaBase::Ei(Everywhere), ProcaBase::Bi(Everywhere),
+            ProcaBase::Psi(Everywhere), ProcaBase::Phi(Everywhere)
+    SYNC: ADMBase::metric ADMBase::curv ADMBase::lapse
+    SYNC: ProcaBase::Ei ProcaBase::Bi ProcaBase::Psi ProcaBase::Phi
+  } "Create electric/magnetic charged puncture black hole initial data"
+
+  SCHEDULE EinsteinMaxwell_TwoPunctures_Metadata IN EinsteinMaxwell_TwoPunctures_Group AFTER EinsteinMaxwell_TwoPunctures
+  {
+    LANG: C
+    OPTIONS: global
+  } "Output Einstein-Maxwell TwoPunctures metadata"
+}

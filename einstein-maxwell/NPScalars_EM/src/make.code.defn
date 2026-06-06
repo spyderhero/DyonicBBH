@@ -1,0 +1,10 @@
+# Main make.code.defn file for thorn NPScalars_EM
+
+# Source files in this directory
+SRCS = Basegrid.F90        \
+       NP_boundaries.F90   \
+       NP_calc_phi_gfs.F90
+
+
+# Subdirectories containing source files
+SUBDIRS = 

@@ -1,0 +1,48 @@
+# Schedule definitions for thorn QuasiLocalMeasuresEM
+
+STORAGE: qlm_em_state qlm_em_scalars
+STORAGE: qlm_em_state_p qlm_em_scalars_p
+STORAGE: qlm_em_grid_int qlm_em_grid_real qlm_em_grid_real_p
+STORAGE: qlm_em_shapes qlm_em_tetrad_l qlm_em_tetrad_n qlm_em_tetrad_m
+STORAGE: qlm_em_shapes_p
+STORAGE: qlm_em_killing_vector
+
+
+
+# These variables need storage so that they can be output
+STORAGE: qlm_em_coordinates qlm_em_coordinates_p
+STORAGE: qlm_em_newman_penrose qlm_em_weyl_scalars
+STORAGE: qlm_em_ricci_scalars qlm_em_twometric qlm_em_killed_twometric
+STORAGE: qlm_em_invariant_coordinates qlm_em_multipole_moments qlm_em_3determinant
+
+
+
+SCHEDULE qlm_em_paramcheck AT paramcheck
+{
+  OPTIONS: global
+  LANG: Fortran
+} "Check quasi-local parameter settings"
+
+SCHEDULE qlm_em_init AT initial
+{
+  OPTIONS: global
+  LANG: Fortran
+} "Initialise quasi-local calculations"
+
+SCHEDULE qlm_em_calculate AT analysis AFTER (SphericalSurface_HasBeenSet SetTmunu)
+{
+  OPTIONS: global
+  LANG: Fortran
+  STORAGE: qlm_em_coordinates qlm_em_coordinates_p
+  STORAGE: qlm_em_newman_penrose qlm_em_weyl_scalars
+  STORAGE: qlm_em_ricci_scalars qlm_em_twometric qlm_em_killed_twometric 
+  STORAGE: qlm_em_invariant_coordinates qlm_em_multipole_moments qlm_em_3determinant
+  TRIGGERS: qlm_em_state
+  TRIGGERS: qlm_em_grid_int qlm_em_grid_real
+  TRIGGERS: qlm_em_shapes qlm_em_tetrad_l qlm_em_tetrad_n qlm_em_tetrad_m
+  TRIGGERS: qlm_em_coordinates
+  TRIGGERS: qlm_em_newman_penrose qlm_em_weyl_scalars
+  TRIGGERS: qlm_em_ricci_scalars qlm_em_twometric qlm_em_killing_vector qlm_em_killed_twometric
+  TRIGGERS: qlm_em_invariant_coordinates qlm_em_multipole_moments qlm_em_3determinant
+  TRIGGERS: qlm_em_scalars
+} "Calculate quasi-local quantities"

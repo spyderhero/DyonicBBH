@@ -1,0 +1,10 @@
+Cactus Code Thorn NPScalars_EM
+Thorn Author(s)     : 
+Thorn Maintainer(s) : 
+--------------------------------------------------------------------------
+
+Purpose of the thorn:
+Implementation of the Newman-Penrose scalars 
+$\Phi_{0}$, $\Phi_{1}$, $\Phi_{2}$ (electromagnetic radiation)
+to extract radiation emitted in BH-EM spacetimes.
+

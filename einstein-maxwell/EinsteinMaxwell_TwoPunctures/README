@@ -1,0 +1,22 @@
+Cactus Code Thorn EinsteinMaxwell_TwoPunctures
+Author(s)    : based on GibbonsMaeda_TwoPunctures / TwoPunctures
+Maintainer(s):
+Licence      : LGPLv2+
+--------------------------------------------------------------------------
+
+1. Purpose
+
+This thorn constructs binary black hole puncture initial data for vacuum
+Einstein-Maxwell evolutions that use E^i, B^i, Psi and Phi directly, rather
+than a vector potential.  It is intended to feed the EinsteinMaxwell evolution
+thorn based on the Zilhao et al. Maxwell-cleaning formulation.
+
+The initial electric and magnetic fields are initialized as Coulomb/Dirac
+monopole-type conformal fields associated with the punctures and stored as
+ProcaBase::Ei and ProcaBase::Bi.  The cleaning fields ProcaBase::Psi and
+ProcaBase::Phi are initialized to zero.
+
+Important limitation: for generic mixed electric/magnetic charge assignments,
+E x B is nonzero and therefore the electromagnetic momentum density is nonzero.
+This thorn retains the original Hamiltonian-solve TwoPunctures workflow and does
+not solve a coupled momentum constraint with that electromagnetic source.
