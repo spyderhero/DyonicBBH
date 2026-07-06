@@ -36,7 +36,6 @@ subroutine qlm_em_analyse (CCTK_ARGUMENTS, hn)
   CCTK_REAL    :: qq(2,2), dtq
   CCTK_REAL    :: adm_energy, adm_mom(3), adm_amom(3)
   CCTK_REAL    :: w_energy, w_mom(3), w_amom(3,3)
-  CCTK_REAL    :: phi1_ave, phi2_ave
   CCTK_COMPLEX :: ev
   CCTK_REAL    :: spin
   CCTK_REAL    :: npspin
@@ -465,8 +464,6 @@ subroutine qlm_em_analyse (CCTK_ARGUMENTS, hn)
              & + w_amom(1,2) / (-16*pi) &
              &   * sqrt(dtq) * weights(i)
         
-        phi1_ave = phi1_ave + qlm_em_phi1(i,j)
-        phi2_ave = phi2_ave + qlm_em_phi2(i,j)
      end do
   end do
   
@@ -474,10 +471,6 @@ subroutine qlm_em_analyse (CCTK_ARGUMENTS, hn)
   
   qlm_em_polar_circumference_0(hn) = qlm_em_polar_circumference_0(hn) * 2
   qlm_em_polar_circumference_pi_2(hn) = qlm_em_polar_circumference_pi_2(hn) * 2
-  phi1_ave = phi1_ave / (qlm_em_nphi(hn) - 2*qlm_em_nghostsphi(hn)) &
-            & / (qlm_em_ntheta(hn) - 2*qlm_em_nghoststheta(hn))
-  phi2_ave = phi2_ave / (qlm_em_nphi(hn) - 2*qlm_em_nghostsphi(hn)) &
-            & / (qlm_em_ntheta(hn) - 2*qlm_em_nghoststheta(hn))
   
   ! A = 4 pi R^2
   ! R = 2 M
@@ -486,8 +479,8 @@ subroutine qlm_em_analyse (CCTK_ARGUMENTS, hn)
   
   qlm_em_spin(hn) = qlm_em_spin(hn) / (8*pi)
   qlm_em_mass(hn) = 1/(2*qlm_em_radius(hn)) * sqrt((qlm_em_radius(hn)**2 + (1 - coupling_constant**2) &
-                   & * (qlm_em_electric_charge(hn)**2 * EXP(2*coupling_constant*phi1_ave) &
-                   & + qlm_em_magnetic_charge(hn)**2 * EXP(-2*coupling_constant*phi1_ave)))**2 &
+                   & * (qlm_em_electric_charge(hn)**2 &
+                   & + qlm_em_magnetic_charge(hn)**2 ))**2 &
                    & + 4*qlm_em_spin(hn)**2)
   qlm_em_cvspin(hn) = qlm_em_cvspin(hn) / (8*pi)
   qlm_em_npspin(hn) = qlm_em_npspin(hn) / (-8*pi)
@@ -515,17 +508,13 @@ subroutine qlm_em_analyse (CCTK_ARGUMENTS, hn)
      call CCTK_INFO (msg)
      write (msg, '("   Areal radius R = sqrt(A/4pi): ",g16.6)') qlm_em_radius(hn)
      call CCTK_INFO (msg)
-     
      write (msg, '("Coordinate-dependent quantities for surface ",i4,":")') hn-1
      call CCTK_INFO (msg)
-     write (msg, '("   Equatorial circumference:        ",g16.6)') &
-          qlm_em_equatorial_circumference(hn)
+     write (msg, '("   Equatorial circumference:        ",g16.6)') qlm_em_equatorial_circumference(hn)
      call CCTK_INFO (msg)
-     write (msg, '("   Polar circumference at phi=0:    ",g16.6)') &
-          qlm_em_polar_circumference_0(hn)
+     write (msg, '("   Polar circumference at phi=0:    ",g16.6)') qlm_em_polar_circumference_0(hn)
      call CCTK_INFO (msg)
-     write (msg, '("   Polar circumference at phi=pi/2: ",g16.6)') &
-          qlm_em_polar_circumference_pi_2(hn)
+     write (msg, '("   Polar circumference at phi=pi/2: ",g16.6)') qlm_em_polar_circumference_pi_2(hn)
      call CCTK_INFO (msg)
      if (qlm_em_spin_guess(hn) >= 0) then
         write (msg, '("   Spin guess J from distortion:    ",g16.6)') &

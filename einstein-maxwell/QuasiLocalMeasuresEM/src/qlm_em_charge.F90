@@ -24,8 +24,8 @@ subroutine qlm_em_compute_charge (CCTK_ARGUMENTS, hn)
 
   character :: msg*1000
 
-  charge_electric_local = 0.0
-  charge_magnetic_local = 0.0
+  charge_electric_local = 0.0d0
+  charge_magnetic_local = 0.0d0
 
   do j = 1, qlm_em_nphi(hn)-1
     do i = 1, qlm_em_ntheta(hn)-1
