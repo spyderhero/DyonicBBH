@@ -202,3 +202,7 @@ BOOLEAN schedule_in_ADMBase_InitialData "Schedule in ADMBase_InitialData instead
 BOOLEAN solve_momentum_constraint "Solve for momentum constraint?  This thorn currently keeps the original TwoPunctures Hamiltonian-solve workflow."
 {
 } "no"
+
+BOOLEAN output_duality_diagnostics "Print delta, C, D and |E cross B| diagnostics"
+{
+} "yes"
