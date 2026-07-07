@@ -18,7 +18,7 @@ void EinsteinMaxwell_TwoPunctures_Metadata (CCTK_ARGUMENTS)
   if (CCTK_MyProc(cctkGH) == 0)
   {
     ofstream o;
-    o.open(string(string(out_dir) + "/EinsteinMaxwell_TwoPunctures.bbh").c_str());
+    o.open(string(string(out_dir) + "/TwoPunctures.bbh").c_str());
 
     o << setprecision(19);
 
@@ -28,7 +28,7 @@ void EinsteinMaxwell_TwoPunctures_Metadata (CCTK_ARGUMENTS)
 # ==================================\n\
 #\n\
 # This file contains information about the simulation provided by the\n\
-# EinsteinMaxwell_TwoPunctures thorn.  The format is described in the NR Data Format Document\n\
+# TwoPunctures thorn.  The format is described in the NR Data Format Document\n\
 # http://arxiv.org/abs/0709.0093 [draft SVN r707].\n\
 " << endl;
 
@@ -58,10 +58,10 @@ void EinsteinMaxwell_TwoPunctures_Metadata (CCTK_ARGUMENTS)
     o << "initial-bh-spin2x             = " << par_S_minus[0] << endl;
     o << "initial-bh-spin2y             = " << par_S_minus[1] << endl;
     o << "initial-bh-spin2z             = " << par_S_minus[2] << endl;
-    o << "initial-bh-electric-charge1   = " << par_q_plus << endl;
-    o << "initial-bh-electric-charge2   = " << par_q_minus << endl;
-    o << "initial-bh-magnetic-charge1   = " << par_p_plus << endl;
-    o << "initial-bh-magnetic-charge2   = " << par_p_minus << endl;
+    o << "initial-bh-electric-charge1   = " << par_Qp << endl;
+    o << "initial-bh-electric-charge2   = " << par_Qm << endl;
+    o << "initial-bh-magnetic-charge1   = " << par_Pp << endl;
+    o << "initial-bh-magnetic-charge2   = " << par_Pm << endl;
     o << "initial-bh-puncture-adm-mass1 = " << *mp_adm << endl;
     o << "initial-bh-puncture-adm-mass2 = " << *mm_adm << endl;
     o << "initial-bh-puncture-bare-mass1 = " << *mp << endl;

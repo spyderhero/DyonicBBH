@@ -366,9 +366,9 @@ EinsteinMaxwell_TwoPunctures (CCTK_ARGUMENTS)
         "\"" -> ""]];
      */
 
-    *J1 = -(center_offset[2]*par_P_minus[1]) + center_offset[1]*par_P_minus[2] - center_offset[2]*par_P_plus[1] + center_offset[1]*par_P_plus[2] + par_S_minus[0] + par_S_plus[0];
-    *J2 = center_offset[2]*par_P_minus[0] - center_offset[0]*par_P_minus[2] + par_b*par_P_minus[2] + center_offset[2]*par_P_plus[0] - center_offset[0]*par_P_plus[2] - par_b*par_P_plus[2] + par_S_minus[1] + par_S_plus[1];
-    *J3 = -(center_offset[1]*par_P_minus[0]) + center_offset[0]*par_P_minus[1] - par_b*par_P_minus[1] - center_offset[1]*par_P_plus[0] + center_offset[0]*par_P_plus[1] + par_b*par_P_plus[1] + par_S_minus[2] + par_S_plus[2];
+    *J1 = -(center_offset[2]*par_Pm[1]) + center_offset[1]*par_Pm[2] - center_offset[2]*par_Pp[1] + center_offset[1]*par_Pp[2] + par_S_minus[0] + par_S_plus[0];
+    *J2 = center_offset[2]*par_Pm[0] - center_offset[0]*par_Pm[2] + par_b*par_Pm[2] + center_offset[2]*par_Pp[0] - center_offset[0]*par_Pp[2] - par_b*par_Pp[2] + par_S_minus[1] + par_S_plus[1];
+    *J3 = -(center_offset[1]*par_Pm[0]) + center_offset[0]*par_Pm[1] - par_b*par_Pm[1] - center_offset[1]*par_Pp[0] + center_offset[0]*par_Pp[1] + par_b*par_Pp[1] + par_S_minus[2] + par_S_plus[2];
   }
 
   if (CCTK_EQUALS(grid_setup_method, "Taylor expansion"))
@@ -484,8 +484,8 @@ EinsteinMaxwell_TwoPunctures (CCTK_ARGUMENTS)
             r_plus = TP_Tiny;
         if (r_minus < TP_Tiny)
             r_minus = TP_Tiny;
-        charge_potential_sq = pow( par_q_plus/r_plus + par_q_minus/r_minus, 2)
-                           + pow( par_p_plus/r_plus + par_p_minus/r_minus, 2);
+        charge_potential_sq = pow( par_Qp/r_plus + par_Qm/r_minus, 2)
+                           + pow( par_Pp/r_plus + par_Pm/r_minus, 2);
         CCTK_REAL psi1 = sqrt( pow(1 + 0.5 * *mp / r_plus
               + 0.5 * *mm / r_minus , 2)
               - 0.25 * charge_potential_sq ) + U;
@@ -494,15 +494,15 @@ EinsteinMaxwell_TwoPunctures (CCTK_ARGUMENTS)
                  5./4 * pow(r, 2) / pow(TP_Extend_Radius, 3) + \
                  15./8 / TP_Extend_Radius))
         if (r_plus < TP_Extend_Radius) {
-          charge_potential_sq = pow( par_q_plus/r_plus + par_q_minus/r_minus, 2)
-                              + pow( par_p_plus/r_plus + par_p_minus/r_minus, 2);
+          charge_potential_sq = pow( par_Qp/r_plus + par_Qm/r_minus, 2)
+                              + pow( par_Pp/r_plus + par_Pm/r_minus, 2);
           psi1 = sqrt( pow(1 + 0.5 * EXTEND(*mp, r_plus)
               + 0.5 * par_m_minus/ r_minus , 2)
               - 0.25 * charge_potential_sq ) + U;
         }
         if (r_minus < TP_Extend_Radius) {
-          charge_potential_sq = pow( par_q_plus/r_plus + par_q_minus/r_minus, 2)
-                              + pow( par_p_plus/r_plus + par_p_minus/r_minus, 2);
+          charge_potential_sq = pow( par_Qp/r_plus + par_Qm/r_minus, 2)
+                              + pow( par_Pp/r_plus + par_Pm/r_minus, 2);
           psi1 = sqrt( pow(1 + 0.5 * *mp / r_plus
               + 0.5 * EXTEND(*mm, r_minus) , 2)
               - 0.25 * charge_potential_sq ) + U;
@@ -642,7 +642,7 @@ EinsteinMaxwell_TwoPunctures (CCTK_ARGUMENTS)
           if (r_minus < TP_Extend_Radius) {
             alp[ind] =
               ((1.0 -0.5*EXTEND(*mm, r_minus) -0.5* *mp/r_plus)
-              /(1.0 +0.5*EXTEND(*mm, r_minus) +0.5* *mp/r_plus));
+              /(1.0 +0.5*EXTEND(*mp, r_minus) +0.5* *mp/r_plus));
           }
           
           if (averaged_lapse) {
