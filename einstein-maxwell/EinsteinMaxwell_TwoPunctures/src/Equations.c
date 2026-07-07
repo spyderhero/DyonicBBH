@@ -20,12 +20,26 @@
 /* U.d23[ivar]  = U[ivar]_yz;*/
 /* U.d33[ivar]  = U[ivar]_zz;*/
 
+
+void
+EinsteinMaxwell_Charge_Diagnostics(CCTK_REAL *par_Qp, CCTK_REAL *theta,
+                                   CCTK_REAL *C, CCTK_REAL *D)
+{
+  CCTK_REAL par_Qp, par_Qm, par_Pp, par_Pm;
+  EinsteinMaxwell_Get_Effective_Charges(&par_Qp, &par_Qm, &par_Pp, &par_Pm);
+
+  *par_Qp = sqrt(par_Qm*par_Qm + par_Pm*par_Pm);
+  *theta = acos(par_Qm / *par_Qp);
+  *C = par_Qp*par_Qm + par_Pp*par_Pm;
+  *D = par_Qp*par_Pm - par_Pp*par_Qm;
+}
+
 CCTK_REAL
 EinsteinMaxwell_BY_KKofxyz (CCTK_REAL x, CCTK_REAL y, CCTK_REAL z)
 {
   DECLARE_CCTK_PARAMETERS;
   int i, j;
-  CCTK_REAL r_plus, r2_plus, r3_plus, r_minus, r2_minus, r3_minus, np_Pp, nm_Pm,
+  CCTK_REAL r_plus, r2_plus, r3_plus, r_minus, r2_minus, r3_minus, np_par_Pp, nm_par_Pm,
     Aij, AijAij, n_plus[3], n_minus[3], np_Sp[3], nm_Sm[3];
 
   r2_plus = (x - par_b) * (x - par_b) + y * y + z * z;
@@ -42,13 +56,13 @@ EinsteinMaxwell_BY_KKofxyz (CCTK_REAL x, CCTK_REAL y, CCTK_REAL z)
   n_plus[2] = z / r_plus;
   n_minus[2] = z / r_minus;
 
-  /* dot product: np_Pp = (n_+).(P_+); nm_Pm = (n_-).(P_-) */
-  np_Pp = 0;
-  nm_Pm = 0;
+  /* dot product: np_par_Pp = (n_+).(P_+); nm_par_Pm = (n_-).(P_-) */
+  np_par_Pp = 0;
+  nm_par_Pm = 0;
   for (i = 0; i < 3; i++)
   {
-    np_Pp += n_plus[i] * par_P_plus[i];
-    nm_Pm += n_minus[i] * par_P_minus[i];
+    np_par_Pp += n_plus[i] * par_P_plus[i];
+    nm_par_Pm += n_minus[i] * par_P_minus[i];
   }
   /* cross product: np_Sp[i] = [(n_+) x (S_+)]_i; nm_Sm[i] = [(n_-) x (S_-)]_i*/
   np_Sp[0] = n_plus[1] * par_S_plus[2] - n_plus[2] * par_S_plus[1];
@@ -64,13 +78,13 @@ EinsteinMaxwell_BY_KKofxyz (CCTK_REAL x, CCTK_REAL y, CCTK_REAL z)
     {				/* Bowen-York-Curvature :*/
       Aij =
 	+ 1.5 * (par_P_plus[i] * n_plus[j] + par_P_plus[j] * n_plus[i]
-                 + np_Pp * n_plus[i] * n_plus[j]) / r2_plus
+                 + np_par_Pp * n_plus[i] * n_plus[j]) / r2_plus
 	+ 1.5 * (par_P_minus[i] * n_minus[j] + par_P_minus[j] * n_minus[i]
-		 + nm_Pm * n_minus[i] * n_minus[j]) / r2_minus
+		 + nm_par_Pm * n_minus[i] * n_minus[j]) / r2_minus
 	- 3.0 * (np_Sp[i] * n_plus[j] + np_Sp[j] * n_plus[i]) / r3_plus
 	- 3.0 * (nm_Sm[i] * n_minus[j] + nm_Sm[j] * n_minus[i]) / r3_minus;
       if (i == j)
-	Aij -= +1.5 * (np_Pp / r2_plus + nm_Pm / r2_minus);
+	Aij -= +1.5 * (np_par_Pp / r2_plus + nm_par_Pm / r2_minus);
       AijAij += Aij * Aij;
     }
   }
@@ -83,7 +97,7 @@ EinsteinMaxwell_BY_Aijofxyz (CCTK_REAL x, CCTK_REAL y, CCTK_REAL z, CCTK_REAL Ai
 {
   DECLARE_CCTK_PARAMETERS;
   int i, j;
-  CCTK_REAL r_plus, r2_plus, r3_plus, r_minus, r2_minus, r3_minus, np_Pp, nm_Pm,
+  CCTK_REAL r_plus, r2_plus, r3_plus, r_minus, r2_minus, r3_minus, np_par_Pp, nm_par_Pm,
     n_plus[3], n_minus[3], np_Sp[3], nm_Sm[3];
 
   r2_plus = (x - par_b) * (x - par_b) + y * y + z * z;
@@ -106,13 +120,13 @@ EinsteinMaxwell_BY_Aijofxyz (CCTK_REAL x, CCTK_REAL y, CCTK_REAL z, CCTK_REAL Ai
   n_plus[2] = z / r_plus;
   n_minus[2] = z / r_minus;
 
-  /* dot product: np_Pp = (n_+).(P_+); nm_Pm = (n_-).(P_-) */
-  np_Pp = 0;
-  nm_Pm = 0;
+  /* dot product: np_par_Pp = (n_+).(P_+); nm_par_Pm = (n_-).(P_-) */
+  np_par_Pp = 0;
+  nm_par_Pm = 0;
   for (i = 0; i < 3; i++)
   {
-    np_Pp += n_plus[i] * par_P_plus[i];
-    nm_Pm += n_minus[i] * par_P_minus[i];
+    np_par_Pp += n_plus[i] * par_P_plus[i];
+    nm_par_Pm += n_minus[i] * par_P_minus[i];
   }
   /* cross product: np_Sp[i] = [(n_+) x (S_+)]_i; nm_Sm[i] = [(n_-) x (S_-)]_i*/
   np_Sp[0] = n_plus[1] * par_S_plus[2] - n_plus[2] * par_S_plus[1];
@@ -127,13 +141,13 @@ EinsteinMaxwell_BY_Aijofxyz (CCTK_REAL x, CCTK_REAL y, CCTK_REAL z, CCTK_REAL Ai
     {				/* Bowen-York-Curvature :*/
       Aij[i][j] =
         + 1.5 * (par_P_plus[i] * n_plus[j] + par_P_plus[j] * n_plus[i]
-		 + np_Pp * n_plus[i] * n_plus[j]) / r2_plus
+		 + np_par_Pp * n_plus[i] * n_plus[j]) / r2_plus
 	+ 1.5 * (par_P_minus[i] * n_minus[j] + par_P_minus[j] * n_minus[i]
-		 + nm_Pm * n_minus[i] * n_minus[j]) / r2_minus
+		 + nm_par_Pm * n_minus[i] * n_minus[j]) / r2_minus
 	- 3.0 * (np_Sp[i] * n_plus[j] + np_Sp[j] * n_plus[i]) / r3_plus
 	- 3.0 * (nm_Sm[i] * n_minus[j] + nm_Sm[j] * n_minus[i]) / r3_minus;
       if (i == j)
-	Aij[i][j] -= +1.5 * (np_Pp / r2_plus + nm_Pm / r2_minus);
+	Aij[i][j] -= +1.5 * (np_par_Pp / r2_plus + nm_par_Pm / r2_minus);
     }
   }
 }
@@ -149,6 +163,7 @@ EinsteinMaxwell_Calc_EM_Fields(CCTK_REAL x1, CCTK_REAL y1, CCTK_REAL z1,
   CCTK_REAL r_plus, r_minus;
   CCTK_REAL Er_plus, Er_minus;
   CCTK_REAL Br_plus, Br_minus;
+  CCTK_REAL par_Qp, par_Qm, par_Pp, par_Pm;
 
   r_plus = sqrt ((x1 - par_b) * (x1 - par_b) + y1 * y1 + z1 * z1);
   r_minus = sqrt ((x1 + par_b) * (x1 + par_b) + y1 * y1 + z1 * z1);
@@ -159,9 +174,11 @@ EinsteinMaxwell_Calc_EM_Fields(CCTK_REAL x1, CCTK_REAL y1, CCTK_REAL z1,
   if (r_minus < TP_Tiny)
       r_minus = TP_Tiny;
 
-  /* Electric charge parameters par_q_*. */
-  Er_plus  = par_q_plus / (r_plus*r_plus);
-  Er_minus = par_q_minus / (r_minus*r_minus);
+  EinsteinMaxwell_Get_Effective_Charges(&par_Qp, &par_Qm, &par_Pp, &par_Pm);
+
+  /* Effective electric charges. */
+  Er_plus  = par_Qp / (r_plus*r_plus);
+  Er_minus = par_Qm / (r_minus*r_minus);
 
   Ei[0] = Er_plus  * (x1 - par_b) / r_plus + Er_minus * (x1 + par_b) / r_minus;
   Ei[1] = Er_plus  * y1 / r_plus           + Er_minus * y1 / r_minus;
@@ -170,8 +187,8 @@ EinsteinMaxwell_Calc_EM_Fields(CCTK_REAL x1, CCTK_REAL y1, CCTK_REAL z1,
   /* Magnetic charge parameters par_p_*.  These are Dirac-monopole-type
      magnetic charges.  We initialize B^i directly, so no vector potential
      or string-patch construction is used. */
-  Br_plus  = par_p_plus / (r_plus*r_plus);
-  Br_minus = par_p_minus / (r_minus*r_minus);
+  Br_plus  = par_Pp / (r_plus*r_plus);
+  Br_minus = par_Pm / (r_minus*r_minus);
 
   Bi[0] = Br_plus  * (x1 - par_b) / r_plus + Br_minus * (x1 + par_b) / r_minus;
   Bi[1] = Br_plus  * y1 / r_plus           + Br_minus * y1 / r_minus;
@@ -201,9 +218,9 @@ EinsteinMaxwell_Calc_B(CCTK_REAL x1, CCTK_REAL y1, CCTK_REAL z1,
   *B2 = Bi[0]*Bi[0] + Bi[1]*Bi[1] + Bi[2]*Bi[2];
 }
 
-/*-----------------------------------------------------------*/
-/********           Nonlinear Equations                ***********/
-/*-----------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------*/
+/********           Nonlinear Equations  (Hamiltonian Constraint)              ***********/
+/*---------------------------------------------------------------------------------------*/
 void
 EinsteinMaxwell_NonLinEquations (CCTK_REAL rho_adm,
      CCTK_REAL A, CCTK_REAL B, CCTK_REAL X, CCTK_REAL R,
@@ -214,6 +231,7 @@ EinsteinMaxwell_NonLinEquations (CCTK_REAL rho_adm,
   CCTK_REAL r_plus, r_minus, psi, psi2, psi4, psi7, psi_ana, psi_ana2;
   CCTK_REAL charge_potential_sq;
   CCTK_REAL Ei[3], Bi[3], F2;
+  CCTK_REAL par_Qp, par_Qm, par_Pp, par_Pm;
 
   r_plus = sqrt ((x - par_b) * (x - par_b) + y * y + z * z);
   r_minus = sqrt ((x + par_b) * (x + par_b) + y * y + z * z);
@@ -224,8 +242,9 @@ EinsteinMaxwell_NonLinEquations (CCTK_REAL rho_adm,
   if (r_minus < TP_Tiny)
       r_minus = TP_Tiny;
 
-  charge_potential_sq = pow( par_q_plus/r_plus + par_q_minus/r_minus, 2)
-                      + pow( par_p_plus/r_plus + par_p_minus/r_minus, 2);
+  EinsteinMaxwell_Get_Effective_Charges(&par_Qp, &par_Qm, &par_Pp, &par_Pm);
+  charge_potential_sq = pow( par_Qp/r_plus + par_Qm/r_minus, 2)
+                      + pow( par_Pp/r_plus + par_Pm/r_minus, 2);
 
   psi = sqrt( pow(1 + 0.5 * par_m_plus / r_plus
               + 0.5 * par_m_minus/ r_minus , 2)
@@ -259,6 +278,7 @@ EinsteinMaxwell_LinEquations (CCTK_REAL A, CCTK_REAL B, CCTK_REAL X, CCTK_REAL R
   CCTK_REAL r_plus, r_minus, psi, psi2, psi4, psi8;
   CCTK_REAL charge_potential_sq;
   CCTK_REAL Ei[3], Bi[3], F2;
+  CCTK_REAL par_Qp, par_Qm, par_Pp, par_Pm;
 
   r_plus = sqrt ((x - par_b) * (x - par_b) + y * y + z * z);
   r_minus = sqrt ((x + par_b) * (x + par_b) + y * y + z * z);
@@ -269,8 +289,9 @@ EinsteinMaxwell_LinEquations (CCTK_REAL A, CCTK_REAL B, CCTK_REAL X, CCTK_REAL R
   if (r_minus < TP_Tiny)
       r_minus = TP_Tiny;
 
-  charge_potential_sq = pow( par_q_plus/r_plus + par_q_minus/r_minus, 2)
-                      + pow( par_p_plus/r_plus + par_p_minus/r_minus, 2);
+  EinsteinMaxwell_Get_Effective_Charges(&par_Qp, &par_Qm, &par_Pp, &par_Pm);
+  charge_potential_sq = pow( par_Qp/r_plus + par_Qm/r_minus, 2)
+                      + pow( par_Pp/r_plus + par_Pm/r_minus, 2);
 
   psi = sqrt( pow(1 + 0.5 * par_m_plus / r_plus
               + 0.5 * par_m_minus/ r_minus , 2)
