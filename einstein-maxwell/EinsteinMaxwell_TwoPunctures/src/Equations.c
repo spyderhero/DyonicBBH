@@ -21,19 +21,6 @@
 /* U.d33[ivar]  = U[ivar]_zz;*/
 
 
-void
-EinsteinMaxwell_Charge_Diagnostics(CCTK_REAL *par_Qp, CCTK_REAL *theta,
-                                   CCTK_REAL *C, CCTK_REAL *D)
-{
-  CCTK_REAL par_Qp, par_Qm, par_Pp, par_Pm;
-  EinsteinMaxwell_Get_Effective_Charges(&par_Qp, &par_Qm, &par_Pp, &par_Pm);
-
-  *par_Qp = sqrt(par_Qm*par_Qm + par_Pm*par_Pm);
-  *theta = acos(par_Qm / *par_Qp);
-  *C = par_Qp*par_Qm + par_Pp*par_Pm;
-  *D = par_Qp*par_Pm - par_Pp*par_Qm;
-}
-
 CCTK_REAL
 EinsteinMaxwell_BY_KKofxyz (CCTK_REAL x, CCTK_REAL y, CCTK_REAL z)
 {
