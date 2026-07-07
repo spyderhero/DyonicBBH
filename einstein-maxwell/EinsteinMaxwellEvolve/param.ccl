@@ -1,4 +1,4 @@
-# Parameter definitions for thorn GibbonsMaedaEvolve
+# Parameter definitions for thorn EinsteinMaxwellEvolve
 #
 # Einstein-Maxwell direct E/B evolution based on arXiv:1205.1063.
 # The evolved electromagnetic variables are
@@ -26,20 +26,20 @@ restricted:
 KEYWORD evolution_method "Evolution method for the Einstein-Maxwell variables"
 {
   "none"               :: "Einstein-Maxwell variables are not evolved by this thorn"
-  "GibbonsMaedaEvolve" :: "Use this thorn to evolve E^i, B^i, Psi and Phi"
+  "EinsteinMaxwellEvolve" :: "Use this thorn to evolve E^i, B^i, Psi and Phi"
 } "none"
 
-CCTK_INT GibbonsMaeda_MaxNumEvolvedVars "Maximum number of evolved variables used by GibbonsMaedaEvolve" ACCUMULATOR-BASE=MethodOfLines::MoL_Num_Evolved_Vars
+CCTK_INT EinsteinMaxwell_MaxNumEvolvedVars "Maximum number of evolved variables used by EinsteinMaxwellEvolve" ACCUMULATOR-BASE=MethodOfLines::MoL_Num_Evolved_Vars
 {
   8:8 :: "E^i, B^i, Psi, Phi"
 } 8
 
-CCTK_INT GibbonsMaedaEvolve_MaxNumConstrainedVars "Maximum number of constrained variables used by GibbonsMaedaEvolve" ACCUMULATOR-BASE=MethodOfLines::MoL_Num_Constrained_Vars
+CCTK_INT EinsteinMaxwellEvolve_MaxNumConstrainedVars "Maximum number of constrained variables used by EinsteinMaxwellEvolve" ACCUMULATOR-BASE=MethodOfLines::MoL_Num_Constrained_Vars
 {
   0:0 :: "none"
 } 0
 
-CCTK_INT GibbonsMaedaEvolve_MaxNumSandRVars "Maximum number of save-and-restore variables used by GibbonsMaedaEvolve" ACCUMULATOR-BASE=MethodOfLines::MoL_Num_SaveAndRestore_Vars
+CCTK_INT EinsteinMaxwellEvolve_MaxNumSandRVars "Maximum number of save-and-restore variables used by EinsteinMaxwellEvolve" ACCUMULATOR-BASE=MethodOfLines::MoL_Num_SaveAndRestore_Vars
 {
   16:16 :: "ADMBase lapse, shift, metric and extrinsic curvature"
 } 16

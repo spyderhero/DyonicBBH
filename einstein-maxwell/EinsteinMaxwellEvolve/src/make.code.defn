@@ -8,7 +8,7 @@ SRCS = EisnteinMaxwell_RegisterVars.c     \
        EisnteinMaxwell_InitSymBound.F90   \
        EisnteinMaxwell_adm_vs_bssn.F90    \
        EisnteinMaxwell_zero_rhs.F90       \
-       EisnteinMaxwell_utils.F90          \
+       EisnteinMaxwell_utils.F90          
 
 # Subdirectories containing source files
 SUBDIRS =

@@ -1,11 +1,11 @@
-# Schedule definitions for thorn GibbonsMaedaEvolve
+# Schedule definitions for thorn EinsteinMaxwellEvolve
 #
 # Einstein-Maxwell, direct E^i/B^i formulation based on arXiv:1205.1063.
 # This schedule is intended to be used together with the EM-direct corrected
 # source files:
-#   - GibbonsMaeda_calc_rhs_EM_direct_corrected.F90
-#   - GibbonsMaeda_calc_Tmunu_EM_direct_corrected.F90
-#   - GibbonsMaeda_adm_vs_bssn_EM_direct_from_EMD_corrected.F90
+#   - EinsteinMaxwell_calc_rhs_EM_direct_corrected.F90
+#   - EinsteinMaxwell_calc_Tmunu_EM_direct_corrected.F90
+#   - EinsteinMaxwell_adm_vs_bssn_EM_direct_from_EMD_corrected.F90
 #   - EinsteinMaxwell_RegisterVars_EM_direct_corrected.c
 #   - EinsteinMaxwell_Boundaries_EM_direct_corrected.F90
 #   - EinsteinMaxwell_InitSymBound_EM_direct_corrected.F90
@@ -19,7 +19,7 @@
 #   ProcaBase::Phi = Phi
 # and their RHS groups are provided by this thorn.
 
-if (CCTK_EQUALS (evolution_method, "GibbonsMaedaEvolve")) {
+if (CCTK_EQUALS (evolution_method, "EinsteinMaxwellEvolve")) {
 
   # RHS grid functions for the EM-direct Maxwell sector
   STORAGE: rhs_Ei rhs_Bi rhs_Psi rhs_Phi
@@ -31,34 +31,34 @@ if (CCTK_EQUALS (evolution_method, "GibbonsMaedaEvolve")) {
   STORAGE: EM_jr_F_gfs[3] EM_Sir_F_gfs[3]
 
 
-  schedule GibbonsMaeda_InitSymBound at BASEGRID
+  schedule EinsteinMaxwell_InitSymBound at BASEGRID
   {
     LANG: Fortran
     OPTIONS: META
-  } "Schedule symmetries for EM-direct GibbonsMaedaEvolve variables"
+  } "Schedule symmetries for EM-direct EinsteinMaxwellEvolve variables"
 
 
-  schedule GibbonsMaeda_RegisterVars in MoL_Register
+  schedule EinsteinMaxwell_RegisterVars in MoL_Register
   {
     LANG: C
     OPTIONS: META
   } "Register EM-direct Maxwell variables for MoL"
 
 
-  schedule GibbonsMaeda_calc_rhs in MoL_CalcRHS as GibbonsMaeda_CalcRHS
+  schedule EinsteinMaxwell_calc_rhs in MoL_CalcRHS as EinsteinMaxwell_CalcRHS
   {
     LANG: Fortran
   } "MoL RHS calculation for EM-direct Maxwell variables"
 
 
-  schedule GibbonsMaeda_calc_rhs_bdry in MoL_CalcRHS \
-           as GibbonsMaeda_CalcRHS_Bdry after GibbonsMaeda_CalcRHS
+  schedule EinsteinMaxwell_calc_rhs_bdry in MoL_CalcRHS \
+           as EinsteinMaxwell_CalcRHS_Bdry after EinsteinMaxwell_CalcRHS
   {
     LANG: Fortran
   } "Radiative RHS boundary calculation for EM-direct Maxwell variables"
 
 
-  schedule GibbonsMaeda_Boundaries in MoL_PostStep
+  schedule EinsteinMaxwell_Boundaries in MoL_PostStep
   {
     LANG: Fortran
     OPTIONS: LEVEL
@@ -66,22 +66,22 @@ if (CCTK_EQUALS (evolution_method, "GibbonsMaedaEvolve")) {
     SYNC: ProcaBase::Bi
     SYNC: ProcaBase::Psi
     SYNC: ProcaBase::Phi
-    SYNC: GibbonsMaedaEvolve::EM_jr_F_gfs
-    SYNC: GibbonsMaedaEvolve::EM_Sir_F_gfs
+    SYNC: EinsteinMaxwellEvolve::EM_jr_F_gfs
+    SYNC: EinsteinMaxwellEvolve::EM_Sir_F_gfs
   } "Boundary enforcement and synchronization for EM-direct Maxwell variables"
 
 
-  schedule GROUP ApplyBCs as GibbonsMaeda_ApplyBCs in MoL_PostStep \
-           after GibbonsMaeda_Boundaries
+  schedule GROUP ApplyBCs as EinsteinMaxwell_ApplyBCs in MoL_PostStep \
+           after EinsteinMaxwell_Boundaries
   {
   } "Apply selected boundary conditions for EM-direct Maxwell variables"
 
 
-  schedule GibbonsMaeda_calc_Tmunu in AddToTmunu as GibbonsMaeda_AddToTmunu
+  schedule EinsteinMaxwell_calc_Tmunu in AddToTmunu as EinsteinMaxwell_AddToTmunu
   {
     LANG: Fortran
-    WRITES: GibbonsMaedaEvolve::EM_jr_F_gfs(everywhere)
-    WRITES: GibbonsMaedaEvolve::EM_Sir_F_gfs(everywhere)
+    WRITES: EinsteinMaxwellEvolve::EM_jr_F_gfs(everywhere)
+    WRITES: EinsteinMaxwellEvolve::EM_Sir_F_gfs(everywhere)
   } "Compute the electromagnetic stress-energy tensor"
 
 }

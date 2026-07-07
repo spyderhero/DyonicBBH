@@ -1,9 +1,9 @@
-# Interface definition for thorn GibbonsMaedaEvolve
+# Interface definition for thorn EinsteinMaxwellEvolve
 #
 # Einstein-Maxwell, direct E^i/B^i formulation based on arXiv:1205.1063.
 # This interface is consistent with the EM-direct corrected source files:
-#   - GibbonsMaeda_calc_rhs_EM_direct_corrected.F90
-#   - GibbonsMaeda_calc_Tmunu_EM_direct_corrected.F90
+#   - EinsteinMaxwell_calc_rhs_EM_direct_corrected.F90
+#   - EinsteinMaxwell_calc_Tmunu_EM_direct_corrected.F90
 #   - EinsteinMaxwell_RegisterVars_EM_direct_corrected.c
 #   - EinsteinMaxwell_Boundaries_EM_direct_corrected.F90
 #   - EinsteinMaxwell_InitSymBound_EM_direct_corrected.F90
@@ -16,7 +16,7 @@
 #   ProcaBase::Phi = Phi
 # This thorn provides the corresponding RHS grid functions and diagnostics.
 
-implements: GibbonsMaedaEvolve
+implements: EinsteinMaxwellEvolve
 inherits: ADMBase Tmunubase ProcaBase Boundary
 
 
@@ -100,7 +100,7 @@ CCTK_REAL rhs_Phi type=gf tags='tensortypealias="Scalar" tensorweight=0 prolonga
 
 # BSSN-like auxiliary geometry variables
 #---------------------------------------
-# These are computed from ADMBase variables by GibbonsMaeda_adm2bssn and used
+# These are computed from ADMBase variables by EinsteinMaxwell_adm2bssn and used
 # locally by the Maxwell RHS routine. They are not MoL-evolved variables.
 CCTK_REAL hmetric type=gf tags='tensortypealias="DD_sym" tensorweight=-0.66666666666666666667 prolongation="none" Checkpoint="no"'
 {
