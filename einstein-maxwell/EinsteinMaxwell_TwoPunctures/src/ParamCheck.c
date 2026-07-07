@@ -28,12 +28,12 @@ EinsteinMaxwell_TwoPunctures_ParamCheck (CCTK_ARGUMENTS)
 
   /*
    * For a purely electric binary, a purely magnetic binary, or a globally
-   * duality-rotated dyonic binary with q_plus/p_plus = q_minus/p_minus,
+   * duality-rotated dyonic binary with q_plus/p_plus = q_minus/Pm,
    * E and B are parallel everywhere in the conformal flat approximation and
    * the electromagnetic momentum density j_i ~ epsilon_ijk E^j B^k vanishes.
    *
    * For the mixed electric/magnetic binaries targeted by the new research
-   * programme, q_plus*p_minus - q_minus*p_plus is generically nonzero.  Then
+   * programme, q_plus*Pm - q_minus*p_plus is generically nonzero.  Then
    * E x B is nonzero and the electromagnetic momentum constraint source is
    * nonzero.  This thorn still follows the original TwoPunctures workflow and
    * solves only the Hamiltonian constraint with the EM energy density source.
@@ -42,11 +42,11 @@ EinsteinMaxwell_TwoPunctures_ParamCheck (CCTK_ARGUMENTS)
    */
   if (! solve_momentum_constraint)
   {
-    const CCTK_REAL duality_mismatch = par_q_plus * par_p_minus - par_q_minus * par_p_plus;
-    const CCTK_REAL Qp = par_q_plus;
-    const CCTK_REAL Qm = par_q_minus;
-    const CCTK_REAL Pp = par_p_plus;
-    const CCTK_REAL Pm = par_p_minus;
+    const CCTK_REAL duality_mismatch = par_Qp * par_Pm - par_Qm * par_Pp;
+    const CCTK_REAL Qp = par_Qp;
+    const CCTK_REAL Qm = par_Qm;
+    const CCTK_REAL Pp = par_Pp;
+    const CCTK_REAL Pm = par_Pm;
     const CCTK_REAL qp = sqrt(Qp*Qp + Pp*Pp);
     const CCTK_REAL qm = sqrt(Qm*Qm + Pm*Pm);
     const CCTK_REAL theta_p = atan2(Pp, Qp);
