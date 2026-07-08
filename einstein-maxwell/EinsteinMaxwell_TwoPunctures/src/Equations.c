@@ -25,7 +25,7 @@ EinsteinMaxwell_BY_KKofxyz (CCTK_REAL x, CCTK_REAL y, CCTK_REAL z)
 {
   DECLARE_CCTK_PARAMETERS;
   int i, j;
-  CCTK_REAL r_plus, r2_plus, r3_plus, r_minus, r2_minus, r3_minus, np_Pp, nm_Pm,
+  CCTK_REAL r_plus, r2_plus, r3_plus, r_minus, r2_minus, r3_minus, nplus_parPplus, nminus_parPminus,
     Aij, AijAij, n_plus[3], n_minus[3], np_Sp[3], nm_Sm[3];
 
   r2_plus = (x - par_b) * (x - par_b) + y * y + z * z;
@@ -42,13 +42,13 @@ EinsteinMaxwell_BY_KKofxyz (CCTK_REAL x, CCTK_REAL y, CCTK_REAL z)
   n_plus[2] = z / r_plus;
   n_minus[2] = z / r_minus;
 
-  /* dot product: np_Pp = (n_+).(P_+); nm_Pm = (n_-).(P_-) */
-  np_Pp = 0;
-  nm_Pm = 0;
+  /* dot product: nplus_parPplus = (n_+).(P_+); nminus_parPminus = (n_-).(P_-) */
+  nplus_parPplus = 0;
+  nminus_parPminus = 0;
   for (i = 0; i < 3; i++)
   {
-    np_Pp += n_plus[i] * par_P_plus[i];
-    nm_Pm += n_minus[i] * par_P_minus[i];
+    nplus_parPplus += n_plus[i] * par_P_plus[i];
+    nminus_parPminus += n_minus[i] * par_P_minus[i];
   }
   /* cross product: np_Sp[i] = [(n_+) x (S_+)]_i; nm_Sm[i] = [(n_-) x (S_-)]_i*/
   np_Sp[0] = n_plus[1] * par_S_plus[2] - n_plus[2] * par_S_plus[1];
@@ -64,13 +64,13 @@ EinsteinMaxwell_BY_KKofxyz (CCTK_REAL x, CCTK_REAL y, CCTK_REAL z)
     {				/* Bowen-York-Curvature :*/
       Aij =
 	+ 1.5 * (par_P_plus[i] * n_plus[j] + par_P_plus[j] * n_plus[i]
-                 + np_Pp * n_plus[i] * n_plus[j]) / r2_plus
+                 + nplus_parPplus * n_plus[i] * n_plus[j]) / r2_plus
 	+ 1.5 * (par_P_minus[i] * n_minus[j] + par_P_minus[j] * n_minus[i]
-		 + nm_Pm * n_minus[i] * n_minus[j]) / r2_minus
+		 + nminus_parPminus * n_minus[i] * n_minus[j]) / r2_minus
 	- 3.0 * (np_Sp[i] * n_plus[j] + np_Sp[j] * n_plus[i]) / r3_plus
 	- 3.0 * (nm_Sm[i] * n_minus[j] + nm_Sm[j] * n_minus[i]) / r3_minus;
       if (i == j)
-	Aij -= +1.5 * (np_Pp / r2_plus + nm_Pm / r2_minus);
+	Aij -= +1.5 * (nplus_parPplus / r2_plus + nminus_parPminus / r2_minus);
       AijAij += Aij * Aij;
     }
   }
@@ -83,7 +83,7 @@ EinsteinMaxwell_BY_Aijofxyz (CCTK_REAL x, CCTK_REAL y, CCTK_REAL z, CCTK_REAL Ai
 {
   DECLARE_CCTK_PARAMETERS;
   int i, j;
-  CCTK_REAL r_plus, r2_plus, r3_plus, r_minus, r2_minus, r3_minus, np_Pp, nm_Pm,
+  CCTK_REAL r_plus, r2_plus, r3_plus, r_minus, r2_minus, r3_minus, nplus_parPplus, nminus_parPminus,
     n_plus[3], n_minus[3], np_Sp[3], nm_Sm[3];
 
   r2_plus = (x - par_b) * (x - par_b) + y * y + z * z;
@@ -106,13 +106,13 @@ EinsteinMaxwell_BY_Aijofxyz (CCTK_REAL x, CCTK_REAL y, CCTK_REAL z, CCTK_REAL Ai
   n_plus[2] = z / r_plus;
   n_minus[2] = z / r_minus;
 
-  /* dot product: np_Pp = (n_+).(P_+); nm_Pm = (n_-).(P_-) */
-  np_Pp = 0;
-  nm_Pm = 0;
+  /* dot product: nplus_parPplus = (n_+).(P_+); nminus_parPminus = (n_-).(P_-) */
+  nplus_parPplus = 0;
+  nminus_parPminus = 0;
   for (i = 0; i < 3; i++)
   {
-    np_Pp += n_plus[i] * par_P_plus[i];
-    nm_Pm += n_minus[i] * par_P_minus[i];
+    nplus_parPplus += n_plus[i] * par_P_plus[i];
+    nminus_parPminus += n_minus[i] * par_P_minus[i];
   }
   /* cross product: np_Sp[i] = [(n_+) x (S_+)]_i; nm_Sm[i] = [(n_-) x (S_-)]_i*/
   np_Sp[0] = n_plus[1] * par_S_plus[2] - n_plus[2] * par_S_plus[1];
@@ -127,13 +127,13 @@ EinsteinMaxwell_BY_Aijofxyz (CCTK_REAL x, CCTK_REAL y, CCTK_REAL z, CCTK_REAL Ai
     {				/* Bowen-York-Curvature :*/
       Aij[i][j] =
         + 1.5 * (par_P_plus[i] * n_plus[j] + par_P_plus[j] * n_plus[i]
-		 + np_Pp * n_plus[i] * n_plus[j]) / r2_plus
+		 + nplus_parPplus * n_plus[i] * n_plus[j]) / r2_plus
 	+ 1.5 * (par_P_minus[i] * n_minus[j] + par_P_minus[j] * n_minus[i]
-		 + nm_Pm * n_minus[i] * n_minus[j]) / r2_minus
+		 + nminus_parPminus * n_minus[i] * n_minus[j]) / r2_minus
 	- 3.0 * (np_Sp[i] * n_plus[j] + np_Sp[j] * n_plus[i]) / r3_plus
 	- 3.0 * (nm_Sm[i] * n_minus[j] + nm_Sm[j] * n_minus[i]) / r3_minus;
       if (i == j)
-	Aij[i][j] -= +1.5 * (np_Pp / r2_plus + nm_Pm / r2_minus);
+	Aij[i][j] -= +1.5 * (nplus_parPplus / r2_plus + nminus_parPminus / r2_minus);
     }
   }
 }
@@ -166,7 +166,7 @@ EinsteinMaxwell_Calc_EM_Fields(CCTK_REAL x1, CCTK_REAL y1, CCTK_REAL z1,
   Ei[1] = Er_plus * y1 / r_plus           + Er_minus * y1 / r_minus;
   Ei[2] = Er_plus * z1 / r_plus           + Er_minus * z1 / r_minus;
 
-  Br_plus  = par_Pp / (r_plus*r_plus);
+  Br_plus  = parlus_parPplus / (r_plus*r_plus);
   Br_minus = par_Pm / (r_minus*r_minus);
 
   Bi[0] = Br_plus  * (x1 - par_b) / r_plus + Br_minus * (x1 + par_b) / r_minus;
@@ -221,10 +221,10 @@ EinsteinMaxwell_NonLinEquations (CCTK_REAL rho_adm,
 
   psi = sqrt( pow(1 + 0.5 * par_m_plus / r_plus
               + 0.5 * par_m_minus/ r_minus , 2)
-              - 0.25 * (pow( par_Qp/r_plus + par_Qm/r_minus, 2) + pow( par_Pp/r_plus + par_Pm/r_minus, 2)) ) + U.d0[0];
+              - 0.25 * (pow( par_Qp/r_plus + par_Qm/r_minus, 2) + pow( parlus_parPplus/r_plus + par_Pm/r_minus, 2)) ) + U.d0[0];
   psi_ana = sqrt( pow(1 + 0.5 * par_m_plus / r_plus
               + 0.5 * par_m_minus/ r_minus , 2)
-              - 0.25 * (pow( par_Qp/r_plus + par_Qm/r_minus, 2) + pow( par_Pp/r_plus + par_Pm/r_minus, 2)) );
+              - 0.25 * (pow( par_Qp/r_plus + par_Qm/r_minus, 2) + pow( parlus_parPplus/r_plus + par_Pm/r_minus, 2)) );
   psi2 = psi * psi;
   psi4 = psi2 * psi2;
   psi7 = psi * psi2 * psi4;
@@ -262,7 +262,7 @@ EinsteinMaxwell_LinEquations (CCTK_REAL A, CCTK_REAL B, CCTK_REAL X, CCTK_REAL R
 
   psi = sqrt( pow(1 + 0.5 * par_m_plus / r_plus
               + 0.5 * par_m_minus/ r_minus , 2)
-              - 0.25 * (pow( par_Qp/r_plus + par_Qm/r_minus, 2) + pow( par_Pp/r_plus + par_Pm/r_minus, 2)) ) + U.d0[0];
+              - 0.25 * (pow( par_Qp/r_plus + par_Qm/r_minus, 2) + pow( parlus_parPplus/r_plus + par_Pm/r_minus, 2)) ) + U.d0[0];
   psi2 = psi * psi;
   psi4 = psi2 * psi2;
   psi8 = psi4 * psi4;
