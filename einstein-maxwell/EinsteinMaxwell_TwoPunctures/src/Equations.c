@@ -166,7 +166,7 @@ EinsteinMaxwell_Calc_EM_Fields(CCTK_REAL x1, CCTK_REAL y1, CCTK_REAL z1,
   Ei[1] = Er_plus * y1 / r_plus           + Er_minus * y1 / r_minus;
   Ei[2] = Er_plus * z1 / r_plus           + Er_minus * z1 / r_minus;
 
-  Br_plus  = parlus_parPplus / (r_plus*r_plus);
+  Br_plus  = par_Pp / (r_plus*r_plus);
   Br_minus = par_Pm / (r_minus*r_minus);
 
   Bi[0] = Br_plus  * (x1 - par_b) / r_plus + Br_minus * (x1 + par_b) / r_minus;
@@ -221,10 +221,10 @@ EinsteinMaxwell_NonLinEquations (CCTK_REAL rho_adm,
 
   psi = sqrt( pow(1 + 0.5 * par_m_plus / r_plus
               + 0.5 * par_m_minus/ r_minus , 2)
-              - 0.25 * (pow( par_Qp/r_plus + par_Qm/r_minus, 2) + pow( parlus_parPplus/r_plus + par_Pm/r_minus, 2)) ) + U.d0[0];
+              - 0.25 * (pow( par_Qp/r_plus + par_Qm/r_minus, 2) + pow( par_Pp/r_plus + par_Pm/r_minus, 2)) ) + U.d0[0];
   psi_ana = sqrt( pow(1 + 0.5 * par_m_plus / r_plus
               + 0.5 * par_m_minus/ r_minus , 2)
-              - 0.25 * (pow( par_Qp/r_plus + par_Qm/r_minus, 2) + pow( parlus_parPplus/r_plus + par_Pm/r_minus, 2)) );
+              - 0.25 * (pow( par_Qp/r_plus + par_Qm/r_minus, 2) + pow( par_Pp/r_plus + par_Pm/r_minus, 2)) );
   psi2 = psi * psi;
   psi4 = psi2 * psi2;
   psi7 = psi * psi2 * psi4;

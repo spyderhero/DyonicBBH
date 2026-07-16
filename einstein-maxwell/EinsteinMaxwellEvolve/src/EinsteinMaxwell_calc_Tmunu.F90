@@ -8,10 +8,6 @@ subroutine EisnteinMaxwell_calc_Tmunu( CCTK_ARGUMENTS )
   DECLARE_CCTK_ARGUMENTS
   DECLARE_CCTK_PARAMETERS
 
-  ! This routine implements the Einstein-Maxwell source terms used in
-  ! arXiv:1205.1063, Eq. (2.7), using E^i and B^i directly.
-  ! No vector potential A_i, scalar fields, or EMD coupling terms are used.
-
   ! Fundamental variables
   CCTK_REAL                alph, beta(3)
   CCTK_REAL                gg(3,3), gu(3,3), detgg, sqrt_detgg

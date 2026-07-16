@@ -366,9 +366,9 @@ EinsteinMaxwell_TwoPunctures (CCTK_ARGUMENTS)
         "\"" -> ""]];
      */
 
-    *J1 = -(center_offset[2]*par_Pm[1]) + center_offset[1]*par_Pm[2] - center_offset[2]*par_Pp[1] + center_offset[1]*par_Pp[2] + par_S_minus[0] + par_S_plus[0];
-    *J2 = center_offset[2]*par_Pm[0] - center_offset[0]*par_Pm[2] + par_b*par_Pm[2] + center_offset[2]*par_Pp[0] - center_offset[0]*par_Pp[2] - par_b*par_Pp[2] + par_S_minus[1] + par_S_plus[1];
-    *J3 = -(center_offset[1]*par_Pm[0]) + center_offset[0]*par_Pm[1] - par_b*par_Pm[1] - center_offset[1]*par_Pp[0] + center_offset[0]*par_Pp[1] + par_b*par_Pp[1] + par_S_minus[2] + par_S_plus[2];
+    *J1 = -(center_offset[2]*par_P_minus[1]) + center_offset[1]*par_P_minus[2] - center_offset[2]*par_P_plus[1] + center_offset[1]*par_P_plus[2] + par_S_minus[0] + par_S_plus[0];
+    *J2 = center_offset[2]*par_P_minus[0] - center_offset[0]*par_P_minus[2] + par_b*par_P_minus[2] + center_offset[2]*par_P_plus[0] - center_offset[0]*par_P_plus[2] - par_b*par_P_plus[2] + par_S_minus[1] + par_S_plus[1];
+    *J3 = -(center_offset[1]*par_P_minus[0]) + center_offset[0]*par_P_minus[1] - par_b*par_P_minus[1] - center_offset[1]*par_P_plus[0] + center_offset[0]*par_P_plus[1] + par_b*par_P_plus[1] + par_S_minus[2] + par_S_plus[2];
   }
 
   if (CCTK_EQUALS(grid_setup_method, "Taylor expansion"))

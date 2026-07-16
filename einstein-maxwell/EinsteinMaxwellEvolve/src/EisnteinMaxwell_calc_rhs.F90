@@ -584,8 +584,8 @@ subroutine EisnteinMaxwell_calc_rhs( CCTK_ARGUMENTS )
       rhs_lB(a) = rhs_lB(a) - curlE
     end do
 
-    rhs_lPsi = ad1_lPsi - alph * divE - alph * kappa * lPsi
-    rhs_lPhi = ad1_lPhi - alph * divB - alph * kappa * lPhi
+    rhs_lPsi = ad1_lPsi - alph * divE + alph * kappa * lPsi
+    rhs_lPhi = ad1_lPhi - alph * divB + alph * kappa * lPhi
 
     rhs_Ex(i,j,k) = rhs_lE(1)
     rhs_Ey(i,j,k) = rhs_lE(2)
