@@ -262,7 +262,7 @@ EinsteinMaxwell_LinEquations (CCTK_REAL A, CCTK_REAL B, CCTK_REAL X, CCTK_REAL R
 
   psi = sqrt( pow(1 + 0.5 * par_m_plus / r_plus
               + 0.5 * par_m_minus/ r_minus , 2)
-              - 0.25 * (pow( par_Qp/r_plus + par_Qm/r_minus, 2) + pow( parlus_parPplus/r_plus + par_Pm/r_minus, 2)) ) + U.d0[0];
+              - 0.25 * (pow( par_Qp/r_plus + par_Qm/r_minus, 2) + pow( par_Pp/r_plus + par_Pm/r_minus, 2)) ) + U.d0[0];
   psi2 = psi * psi;
   psi4 = psi2 * psi2;
   psi8 = psi4 * psi4;
