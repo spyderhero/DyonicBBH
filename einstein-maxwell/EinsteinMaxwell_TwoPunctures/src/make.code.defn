@@ -1,0 +1,10 @@
+SRCS = CoordTransf.c \
+       Equations.c \
+       FuncAndJacobian.c \
+       Metadata.cc \
+       Newton.c \
+       ParamCheck.c \
+       TP_utilities.c \
+       TwoPunctures.c
+
+SUBDIRS =

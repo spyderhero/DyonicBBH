@@ -2,7 +2,7 @@
 #include "cctk.h"
 #include "cctk_Parameters.h"
 
-subroutine EisnteinMaxwell_d1_Scalar_apply_jacobian(dvar, jac)
+subroutine EinsteinMaxwell_d1_Scalar_apply_jacobian(dvar, jac)
   implicit none
 
   CCTK_REAL, intent(inout) :: dvar(3)
@@ -19,11 +19,11 @@ subroutine EisnteinMaxwell_d1_Scalar_apply_jacobian(dvar, jac)
 
   dvar = xdvar
 
-end subroutine EisnteinMaxwell_d1_Scalar_apply_jacobian
+end subroutine EinsteinMaxwell_d1_Scalar_apply_jacobian
 !
 !=============================================================================
 !
-subroutine EisnteinMaxwell_d2_Scalar_apply_jacobian(dvar, ddvar, jac, hes)
+subroutine EinsteinMaxwell_d2_Scalar_apply_jacobian(dvar, ddvar, jac, hes)
   implicit none
 
   CCTK_REAL, intent(inout) :: ddvar(3,3), dvar(3)
@@ -74,11 +74,11 @@ subroutine EisnteinMaxwell_d2_Scalar_apply_jacobian(dvar, ddvar, jac, hes)
   dvar  = xdvar
   ddvar = xddvar
 
-end subroutine EisnteinMaxwell_d2_Scalar_apply_jacobian
+end subroutine EinsteinMaxwell_d2_Scalar_apply_jacobian
 !
 !=============================================================================
 !
-subroutine EisnteinMaxwell_d1_Vector_apply_jacobian(dvar, jac)
+subroutine EinsteinMaxwell_d1_Vector_apply_jacobian(dvar, jac)
   implicit none
 
   CCTK_REAL, intent(inout) :: dvar(3,3)
@@ -98,11 +98,11 @@ subroutine EisnteinMaxwell_d1_Vector_apply_jacobian(dvar, jac)
 
   dvar  = xdvar
 
-end subroutine EisnteinMaxwell_d1_Vector_apply_jacobian
+end subroutine EinsteinMaxwell_d1_Vector_apply_jacobian
 !
 !=============================================================================
 !
-subroutine EisnteinMaxwell_d2_Vector_apply_jacobian(dvar, ddvar, jac, hes)
+subroutine EinsteinMaxwell_d2_Vector_apply_jacobian(dvar, ddvar, jac, hes)
   implicit none
 
   CCTK_REAL, intent(inout) :: ddvar(3,3,3), dvar(3,3)
@@ -158,11 +158,11 @@ subroutine EisnteinMaxwell_d2_Vector_apply_jacobian(dvar, ddvar, jac, hes)
   dvar  = xdvar
   ddvar = xddvar
 
-end subroutine EisnteinMaxwell_d2_Vector_apply_jacobian
+end subroutine EinsteinMaxwell_d2_Vector_apply_jacobian
 !
 !=============================================================================
 !
-subroutine EisnteinMaxwell_d1_2nd_Tensor_apply_jacobian(dvar, jac, sym)
+subroutine EinsteinMaxwell_d1_2nd_Tensor_apply_jacobian(dvar, jac, sym)
   implicit none
 
   CCTK_REAL, intent(inout) :: dvar(3,3,3)
@@ -219,4 +219,4 @@ subroutine EisnteinMaxwell_d1_2nd_Tensor_apply_jacobian(dvar, jac, sym)
 
   dvar  = xdvar
 
-end subroutine EisnteinMaxwell_d1_2nd_Tensor_apply_jacobian
+end subroutine EinsteinMaxwell_d1_2nd_Tensor_apply_jacobian

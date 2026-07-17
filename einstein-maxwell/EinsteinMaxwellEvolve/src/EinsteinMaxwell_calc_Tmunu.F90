@@ -2,7 +2,7 @@
 #include "cctk_Arguments.h"
 #include "cctk_Parameters.h"
 
-subroutine EisnteinMaxwell_calc_Tmunu( CCTK_ARGUMENTS )
+subroutine EinsteinMaxwell_calc_Tmunu( CCTK_ARGUMENTS )
 
   implicit none
   DECLARE_CCTK_ARGUMENTS
@@ -222,4 +222,4 @@ subroutine EisnteinMaxwell_calc_Tmunu( CCTK_ARGUMENTS )
   end do
   !$OMP END PARALLEL DO
 
-end subroutine EisnteinMaxwell_calc_Tmunu
+end subroutine EinsteinMaxwell_calc_Tmunu

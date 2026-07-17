@@ -14,13 +14,13 @@
 !   Phi  = magnetic Gauss-constraint damping field.
 !
 ! The actual outgoing radiative boundary update is applied in
-! EisnteinMaxwell_calc_rhs_bdry through NewRad_Apply.  Here we register the
+! EinsteinMaxwell_calc_rhs_bdry through NewRad_Apply.  Here we register the
 ! variables with the Boundary thorn using "none", so that symmetry boundary
 ! conditions are still enforced and no additional physical boundary condition
 ! is imposed on top of NewRad.
 !=============================================================================
 
-subroutine EisnteinMaxwell_Boundaries( CCTK_ARGUMENTS )
+subroutine EinsteinMaxwell_Boundaries( CCTK_ARGUMENTS )
 
   implicit none
   DECLARE_CCTK_ARGUMENTS
@@ -66,13 +66,13 @@ subroutine EisnteinMaxwell_Boundaries( CCTK_ARGUMENTS )
   !--------------------------------------------------------------------------
 
   ierr = Boundary_SelectGroupForBC(cctkGH, CCTK_ALL_FACES, one, -one,       &
-       "EisnteinMaxwellEvolve::EM_jr_F_gfs", "none")
+       "EinsteinMaxwellEvolve::EM_jr_F_gfs", "none")
   if (ierr < 0)                                                             &
-       call CCTK_WARN(0, "Failed to register BC for EisnteinMaxwellEvolve::EM_jr_F_gfs!")
+       call CCTK_WARN(0, "Failed to register BC for EinsteinMaxwellEvolve::EM_jr_F_gfs!")
 
   ierr = Boundary_SelectGroupForBC(cctkGH, CCTK_ALL_FACES, one, -one,       &
-       "EisnteinMaxwellEvolve::EM_Sir_F_gfs", "none")
+       "EinsteinMaxwellEvolve::EM_Sir_F_gfs", "none")
   if (ierr < 0)                                                             &
-       call CCTK_WARN(0, "Failed to register BC for EisnteinMaxwellEvolve::EM_Sir_F_gfs!")
+       call CCTK_WARN(0, "Failed to register BC for EinsteinMaxwellEvolve::EM_Sir_F_gfs!")
 
-end subroutine EisnteinMaxwell_Boundaries
+end subroutine EinsteinMaxwell_Boundaries

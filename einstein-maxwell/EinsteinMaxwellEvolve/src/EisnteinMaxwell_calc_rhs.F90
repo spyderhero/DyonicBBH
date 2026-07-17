@@ -10,7 +10,7 @@
 #define D1Y6(q) ((q(i,j+3,k) - 9.0d0*q(i,j+2,k) + 45.0d0*q(i,j+1,k) - q(i,j-3,k) + 9.0d0*q(i,j-2,k) - 45.0d0*q(i,j-1,k)) * ody60)
 #define D1Z6(q) ((q(i,j,k+3) - 9.0d0*q(i,j,k+2) + 45.0d0*q(i,j,k+1) - q(i,j,k-3) + 9.0d0*q(i,j,k-2) - 45.0d0*q(i,j,k-1)) * odz60)
 
-subroutine EisnteinMaxwell_calc_rhs( CCTK_ARGUMENTS )
+subroutine EinsteinMaxwell_calc_rhs( CCTK_ARGUMENTS )
 
   implicit none
   DECLARE_CCTK_ARGUMENTS
@@ -117,7 +117,7 @@ subroutine EisnteinMaxwell_calc_rhs( CCTK_ARGUMENTS )
   ody60 = 1.0d0 / (60.0d0 * CCTK_DELTA_SPACE(2))
   odz60 = 1.0d0 / (60.0d0 * CCTK_DELTA_SPACE(3))
 
-  call EisnteinMaxwell_adm2bssn(CCTK_PASS_FTOF)
+  call EinsteinMaxwell_adm2bssn(CCTK_PASS_FTOF)
 
   levi_civita = 0.0d0
   levi_civita(1,2,3) =  1.0d0
@@ -478,18 +478,18 @@ subroutine EisnteinMaxwell_calc_rhs( CCTK_ARGUMENTS )
       end if
 
     else
-      call CCTK_WARN(0, "derivs_order not implemented in EisnteinMaxwell_calc_rhs_EM_direct_corrected.F90")
+      call CCTK_WARN(0, "derivs_order not implemented in EinsteinMaxwell_calc_rhs_EM_direct_corrected.F90")
     end if
 
     if (use_jacobian) then
-      call EisnteinMaxwell_d1_Scalar_apply_jacobian(d1_ch, jac)
-      call EisnteinMaxwell_d1_Scalar_apply_jacobian(d1_alph, jac)
-      call EisnteinMaxwell_d1_Scalar_apply_jacobian(d1_lPsi, jac)
-      call EisnteinMaxwell_d1_Scalar_apply_jacobian(d1_lPhi, jac)
-      call EisnteinMaxwell_d1_Vector_apply_jacobian(d1_beta, jac)
-      call EisnteinMaxwell_d1_Vector_apply_jacobian(d1_lE, jac)
-      call EisnteinMaxwell_d1_Vector_apply_jacobian(d1_lB, jac)
-      call EisnteinMaxwell_d1_2nd_Tensor_apply_jacobian(d1_hh, jac, 1)
+      call EinsteinMaxwell_d1_Scalar_apply_jacobian(d1_ch, jac)
+      call EinsteinMaxwell_d1_Scalar_apply_jacobian(d1_alph, jac)
+      call EinsteinMaxwell_d1_Scalar_apply_jacobian(d1_lPsi, jac)
+      call EinsteinMaxwell_d1_Scalar_apply_jacobian(d1_lPhi, jac)
+      call EinsteinMaxwell_d1_Vector_apply_jacobian(d1_beta, jac)
+      call EinsteinMaxwell_d1_Vector_apply_jacobian(d1_lE, jac)
+      call EinsteinMaxwell_d1_Vector_apply_jacobian(d1_lB, jac)
+      call EinsteinMaxwell_d1_2nd_Tensor_apply_jacobian(d1_hh, jac, 1)
     end if
 
     ! Conformal Christoffel symbols of h_ij = tilde gamma_ij.
@@ -601,9 +601,9 @@ subroutine EisnteinMaxwell_calc_rhs( CCTK_ARGUMENTS )
   end do
   !$OMP END PARALLEL DO
 
-end subroutine EisnteinMaxwell_calc_rhs
+end subroutine EinsteinMaxwell_calc_rhs
 
-subroutine EisnteinMaxwell_calc_rhs_bdry( CCTK_ARGUMENTS )
+subroutine EinsteinMaxwell_calc_rhs_bdry( CCTK_ARGUMENTS )
 
   implicit none
   DECLARE_CCTK_ARGUMENTS
@@ -625,7 +625,7 @@ subroutine EisnteinMaxwell_calc_rhs_bdry( CCTK_ARGUMENTS )
   ierr = NewRad_Apply(cctkGH, Psi, rhs_Psi, zero, one, n_Psi)
   ierr = NewRad_Apply(cctkGH, Phi, rhs_Phi, zero, one, n_Phi)
 
-end subroutine EisnteinMaxwell_calc_rhs_bdry
+end subroutine EinsteinMaxwell_calc_rhs_bdry
 
 #undef D1X4
 #undef D1Y4

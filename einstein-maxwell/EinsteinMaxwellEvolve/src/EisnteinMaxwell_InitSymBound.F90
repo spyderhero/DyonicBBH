@@ -6,7 +6,7 @@
 !=============================================================================
 ! Symmetry registration for the Einstein-Maxwell direct E/B evolution system.
 !
-! This file is the direct-E/B analogue of the original EisnteinMaxwell
+! This file is the direct-E/B analogue of the original EinsteinMaxwell
 ! InitSymBound routine.  It is consistent with the corrected RHS and Tmunu
 ! routines that evolve/use
 !
@@ -27,7 +27,7 @@
 !     components in Cartesian coordinates.
 !=============================================================================
 
-subroutine EisnteinMaxwell_InitSymBound( CCTK_ARGUMENTS )
+subroutine EinsteinMaxwell_InitSymBound( CCTK_ARGUMENTS )
 
   implicit none
   DECLARE_CCTK_ARGUMENTS
@@ -39,31 +39,31 @@ subroutine EisnteinMaxwell_InitSymBound( CCTK_ARGUMENTS )
   !--------------------------------------------------------------------------
   ! RHS variables for the direct electromagnetic evolution.
   ! These names must agree with the corrected RHS routine:
-  !   EisnteinMaxwell_calc_rhs_EM_direct_corrected.F90
+  !   EinsteinMaxwell_calc_rhs_EM_direct_corrected.F90
   !--------------------------------------------------------------------------
 
-  call SetCartSymVN( ierr, cctkGH, (/-1, 1, 1/), "EisnteinMaxwellEvolve::rhs_Ex"  )
-  call SetCartSymVN( ierr, cctkGH, (/ 1,-1, 1/), "EisnteinMaxwellEvolve::rhs_Ey"  )
-  call SetCartSymVN( ierr, cctkGH, (/ 1, 1,-1/), "EisnteinMaxwellEvolve::rhs_Ez"  )
+  call SetCartSymVN( ierr, cctkGH, (/-1, 1, 1/), "EinsteinMaxwellEvolve::rhs_Ex"  )
+  call SetCartSymVN( ierr, cctkGH, (/ 1,-1, 1/), "EinsteinMaxwellEvolve::rhs_Ey"  )
+  call SetCartSymVN( ierr, cctkGH, (/ 1, 1,-1/), "EinsteinMaxwellEvolve::rhs_Ez"  )
 
-  call SetCartSymVN( ierr, cctkGH, (/-1,  1,  1/), "EisnteinMaxwellEvolve::rhs_Bx"  )
-  call SetCartSymVN( ierr, cctkGH, (/ 1, -1,  1/), "EisnteinMaxwellEvolve::rhs_By"  )
-  call SetCartSymVN( ierr, cctkGH, (/ 1,  1, -1/), "EisnteinMaxwellEvolve::rhs_Bz"  )
+  call SetCartSymVN( ierr, cctkGH, (/-1,  1,  1/), "EinsteinMaxwellEvolve::rhs_Bx"  )
+  call SetCartSymVN( ierr, cctkGH, (/ 1, -1,  1/), "EinsteinMaxwellEvolve::rhs_By"  )
+  call SetCartSymVN( ierr, cctkGH, (/ 1,  1, -1/), "EinsteinMaxwellEvolve::rhs_Bz"  )
   
-  call SetCartSymVN( ierr, cctkGH, (/ 1,  1,  1/), "EisnteinMaxwellEvolve::rhs_Psi" )
-  call SetCartSymVN( ierr, cctkGH, (/ 1,  1,  1/), "EisnteinMaxwellEvolve::rhs_Phi" )
+  call SetCartSymVN( ierr, cctkGH, (/ 1,  1,  1/), "EinsteinMaxwellEvolve::rhs_Psi" )
+  call SetCartSymVN( ierr, cctkGH, (/ 1,  1,  1/), "EinsteinMaxwellEvolve::rhs_Phi" )
 
   !--------------------------------------------------------------------------
   ! Optional EM diagnostics written by the corrected Tmunu routine:
-  !   EisnteinMaxwell_calc_Tmunu_EM_direct_corrected.F90
+  !   EinsteinMaxwell_calc_Tmunu_EM_direct_corrected.F90
   ! Keep only the electromagnetic F-sector diagnostics.  The old EMD
   ! old scalar-sector diagnostics are intentionally not registered.
   !--------------------------------------------------------------------------
 
-  call SetCartSymVN( ierr, cctkGH, (/ 1,  1,  1/), "EisnteinMaxwellEvolve::jrF_gf"  )
+  call SetCartSymVN( ierr, cctkGH, (/ 1,  1,  1/), "EinsteinMaxwellEvolve::jrF_gf"  )
 
-  call SetCartSymVN( ierr, cctkGH, (/-1,  1,  1/), "EisnteinMaxwellEvolve::SxrF_gf" )
-  call SetCartSymVN( ierr, cctkGH, (/ 1, -1,  1/), "EisnteinMaxwellEvolve::SyrF_gf" )
-  call SetCartSymVN( ierr, cctkGH, (/ 1,  1, -1/), "EisnteinMaxwellEvolve::SzrF_gf" )
+  call SetCartSymVN( ierr, cctkGH, (/-1,  1,  1/), "EinsteinMaxwellEvolve::SxrF_gf" )
+  call SetCartSymVN( ierr, cctkGH, (/ 1, -1,  1/), "EinsteinMaxwellEvolve::SyrF_gf" )
+  call SetCartSymVN( ierr, cctkGH, (/ 1,  1, -1/), "EinsteinMaxwellEvolve::SzrF_gf" )
 
-end subroutine EisnteinMaxwell_InitSymBound
+end subroutine EinsteinMaxwell_InitSymBound

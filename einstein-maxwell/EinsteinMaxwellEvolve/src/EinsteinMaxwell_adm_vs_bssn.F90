@@ -1,4 +1,4 @@
-! EisnteinMaxwell_adm_vs_bssn.F90 : Functions for converting between ADM and BSSN variables
+! EinsteinMaxwell_adm_vs_bssn.F90 : Functions for converting between ADM and BSSN variables
 !
 ! EM-direct version consistent with the Einstein-Maxwell evolution system
 ! based on arXiv:1205.1063.
@@ -18,7 +18,7 @@
 #include "cctk_Parameters.h"
 #include "cctk_Functions.h"
 
-subroutine EisnteinMaxwell_adm2bssn( CCTK_ARGUMENTS )
+subroutine EinsteinMaxwell_adm2bssn( CCTK_ARGUMENTS )
 
   implicit none
   DECLARE_CCTK_ARGUMENTS
@@ -66,7 +66,7 @@ subroutine EisnteinMaxwell_adm2bssn( CCTK_ARGUMENTS )
             -     gg(3,3) * gg(1,2) ** 2
 
     if (detg <= 0.0d0) then
-       call CCTK_WARN(0, "ADM 3-metric determinant is non-positive in EisnteinMaxwell_adm2bssn")
+       call CCTK_WARN(0, "ADM 3-metric determinant is non-positive in EinsteinMaxwell_adm2bssn")
     end if
     !-------------------------------------------
 
@@ -120,4 +120,4 @@ subroutine EisnteinMaxwell_adm2bssn( CCTK_ARGUMENTS )
   end do
   !$OMP END PARALLEL DO
 
-end subroutine EisnteinMaxwell_adm2bssn
+end subroutine EinsteinMaxwell_adm2bssn

@@ -2,7 +2,7 @@
 #include "cctk.h"
 #include "cctk_Arguments.h"
 
-subroutine EisnteinMaxwell_zero_rhs( CCTK_ARGUMENTS )
+subroutine EinsteinMaxwell_zero_rhs( CCTK_ARGUMENTS )
 
   implicit none
   DECLARE_CCTK_ARGUMENTS
@@ -18,4 +18,4 @@ subroutine EisnteinMaxwell_zero_rhs( CCTK_ARGUMENTS )
   rhs_Psi  = 0
   rhs_Phi  = 0
 
-end subroutine EisnteinMaxwell_zero_rhs
+end subroutine EinsteinMaxwell_zero_rhs
