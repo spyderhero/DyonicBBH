@@ -642,7 +642,7 @@ EinsteinMaxwell_TwoPunctures (CCTK_ARGUMENTS)
           if (r_minus < TP_Extend_Radius) {
             alp[ind] =
               ((1.0 -0.5*EXTEND(*mm, r_minus) -0.5* *mp/r_plus)
-              /(1.0 +0.5*EXTEND(*mp, r_minus) +0.5* *mp/r_plus));
+              /(1.0 +0.5*EXTEND(*mm, r_minus) +0.5* *mp/r_plus));
           }
           
           if (averaged_lapse) {
