@@ -1,7 +1,6 @@
 # Parameter definitions for thorn QuasiLocalMeasuresEM
 
-shares: EisnteinMaxwellEvolve
-USES CCTK_REAL coupling_constant
+shares: EinsteinMaxwellEvolve
 
 BOOLEAN verbose "Produce log output while running" STEERABLE=always
 {
