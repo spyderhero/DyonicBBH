@@ -64,11 +64,11 @@ subroutine qlm_em_interpolate (CCTK_ARGUMENTS, hn)
   
   integer      :: coord_type
   CCTK_POINTER :: coords(3)
-  CCTK_INT     :: inputs(34)
-  CCTK_INT     :: output_types(115)
-  CCTK_POINTER :: outputs(115)
-  CCTK_INT     :: operand_indices(115)
-  CCTK_INT     :: operation_codes(115)
+  CCTK_INT     :: inputs(32)
+  CCTK_INT     :: output_types(104)
+  CCTK_POINTER :: outputs(104)
+  CCTK_INT     :: operand_indices(104)
+  CCTK_INT     :: operation_codes(104)
   integer      :: npoints
   
   character    :: msg*1000
@@ -252,11 +252,8 @@ subroutine qlm_em_interpolate (CCTK_ARGUMENTS, hn)
        16, &                     ! T_tt
        17, 18, 19, &             ! T_ti
        20, 21, 22, 23, 24, 25, & ! T_ij
-       26, 27, 28, &             ! E^i
-       29, 30, 31, &             ! A_i
-       29, 30, 31, &             ! A_i,J
-       29, 30, 31, &
-       29, 30, 31 /)          
+       26, 27, 28, & ! E^i
+       29, 30, 31 /) ! B^i        
   
   operation_codes = (/ &
        0, 0, 0, 0, 0, 0, &      ! g_ij
@@ -278,11 +275,8 @@ subroutine qlm_em_interpolate (CCTK_ARGUMENTS, hn)
        0, &                     ! T_tt
        0, 0, 0, &               ! T_ti
        0, 0, 0, 0, 0, 0, &      ! T_ij
-       0, 0, 0, &               ! E^i
-       0, 0, 0, &               ! A_i
-       1, 1, 1, &               ! A_i,j
-       2, 2, 2, &
-       3, 3, 3 /)             
+       0, 0, 0, & ! E^i
+       0, 0, 0 /) ! B^i         
 
   output_types(:) = CCTK_VARIABLE_REAL
   if (hn > 0) then
