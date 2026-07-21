@@ -25,10 +25,7 @@ module qlm_em_variables
        qlm_em_ttt, &
        qlm_em_ttx, qlm_em_tty, qlm_em_ttz, &
        qlm_em_txx, qlm_em_txy, qlm_em_txz, qlm_em_tyy, qlm_em_tyz, qlm_em_tzz, &
-       qlm_em_ex, qlm_em_ey, qlm_em_ez, qlm_em_ax, qlm_em_ay, qlm_em_az, &
-       qlm_em_daxx, qlm_em_daxy, qlm_em_daxz, qlm_em_dayx, qlm_em_dayy, qlm_em_dayz, &
-       qlm_em_dazx, qlm_em_dazy, qlm_em_dazz, &
-       qlm_em_phi1, qlm_em_phi2
+       qlm_em_ex, qlm_em_ey, qlm_em_ez, qlm_em_bx, qlm_em_by, qlm_em_bz
   CCTK_REAL, allocatable, dimension(:,:) :: &
        qlm_em_dqttt, qlm_em_dqtpt, qlm_em_dqppt, qlm_em_dqttp, qlm_em_dqtpp, qlm_em_dqppp
   
@@ -152,20 +149,9 @@ contains
     allocate(qlm_em_ex(ntheta,nphi))
     allocate(qlm_em_ey(ntheta,nphi))
     allocate(qlm_em_ez(ntheta,nphi))
-    allocate(qlm_em_ax(ntheta,nphi))
-    allocate(qlm_em_ay(ntheta,nphi))
-    allocate(qlm_em_az(ntheta,nphi))
-    allocate(qlm_em_daxx(ntheta,nphi))
-    allocate(qlm_em_daxy(ntheta,nphi))
-    allocate(qlm_em_daxz(ntheta,nphi))
-    allocate(qlm_em_dayx(ntheta,nphi))
-    allocate(qlm_em_dayy(ntheta,nphi))
-    allocate(qlm_em_dayz(ntheta,nphi))
-    allocate(qlm_em_dazx(ntheta,nphi))
-    allocate(qlm_em_dazy(ntheta,nphi))
-    allocate(qlm_em_dazz(ntheta,nphi))
-    allocate(qlm_em_phi1(ntheta,nphi))
-    allocate(qlm_em_phi2(ntheta,nphi))
+    allocate(qlm_em_bx(ntheta,nphi))
+    allocate(qlm_em_by(ntheta,nphi))
+    allocate(qlm_em_bz(ntheta,nphi))
     
     allocate(qlm_em_dqttt(ntheta,nphi))
     allocate(qlm_em_dqtpt(ntheta,nphi))
@@ -279,21 +265,9 @@ contains
     qlm_em_ex = TAT_nan()
     qlm_em_ey = TAT_nan()
     qlm_em_ez = TAT_nan()
-    qlm_em_ax = TAT_nan()
-    qlm_em_ay = TAT_nan()
-    qlm_em_az = TAT_nan()
-    qlm_em_daxx = TAT_nan()
-    qlm_em_daxy = TAT_nan()
-    qlm_em_daxz = TAT_nan()
-    qlm_em_dayx = TAT_nan()
-    qlm_em_dayy = TAT_nan()
-    qlm_em_dayz = TAT_nan()
-    qlm_em_dazx = TAT_nan()
-    qlm_em_dazy = TAT_nan()
-    qlm_em_dazz = TAT_nan()
-    qlm_em_phi1 = TAT_nan()
-    qlm_em_phi2 = TAT_nan()
-    
+    qlm_em_bx = TAT_nan()
+    qlm_em_by = TAT_nan()
+    qlm_em_bz = TAT_nan()
     qlm_em_dqttt = TAT_nan()
     qlm_em_dqtpt = TAT_nan()
     qlm_em_dqppt = TAT_nan()
@@ -411,21 +385,9 @@ contains
     deallocate(qlm_em_ex)
     deallocate(qlm_em_ey)
     deallocate(qlm_em_ez)
-    deallocate(qlm_em_ax)
-    deallocate(qlm_em_ay)
-    deallocate(qlm_em_az)
-    deallocate(qlm_em_daxx)
-    deallocate(qlm_em_daxy)
-    deallocate(qlm_em_daxz)
-    deallocate(qlm_em_dayx)
-    deallocate(qlm_em_dayy)
-    deallocate(qlm_em_dayz)
-    deallocate(qlm_em_dazx)
-    deallocate(qlm_em_dazy)
-    deallocate(qlm_em_dazz)
-    deallocate(qlm_em_phi1)
-    deallocate(qlm_em_phi2)
-    
+    deallocate(qlm_em_bx)
+    deallocate(qlm_em_by)
+    deallocate(qlm_em_bz)
     deallocate(qlm_em_dqttt)
     deallocate(qlm_em_dqtpt)
     deallocate(qlm_em_dqppt)

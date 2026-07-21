@@ -2,7 +2,7 @@
 
 IMPLEMENTS: QuasiLocalMeasuresEM
 
-INHERITS: ADMBase SphericalSurface TmunuBase ScalarBase ProcaBase EinsteinMaxwellEvolve
+INHERITS: ADMBase SphericalSurface TmunuBase ProcaBase EinsteinMaxwellEvolve
 
 
 

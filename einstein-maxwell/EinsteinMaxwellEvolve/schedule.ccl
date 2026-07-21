@@ -44,10 +44,16 @@ if (CCTK_EQUALS (evolution_method, "EinsteinMaxwellEvolve")) {
     OPTIONS: META
   } "Register EM-direct Maxwell variables for MoL"
 
+  schedule EinsteinMaxwell_adm_vs_bssn in MoL_CalcRHS
+  {
+    LANG: Fortran
+  } "Construct auxiliary BSSN variables"
+  
 
   schedule EinsteinMaxwell_calc_rhs in MoL_CalcRHS as EinsteinMaxwell_CalcRHS
   {
     LANG: Fortran
+    after EinsteinMaxwell_adm_vs_bssn
   } "MoL RHS calculation for EM-direct Maxwell variables"
 
 

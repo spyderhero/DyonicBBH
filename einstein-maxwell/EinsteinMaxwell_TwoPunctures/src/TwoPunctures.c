@@ -310,10 +310,10 @@ EinsteinMaxwell_TwoPunctures (CCTK_ARGUMENTS)
         
         /* Set the par_m_plus and par_m_minus parameters */
         sprintf (valbuf,"%.17g", (double) *mp);
-        CCTK_ParameterSet ("par_m_plus", "TwoPunctures", valbuf);
+        CCTK_ParameterSet ("par_m_plus", "EinsteinMaxwell_TwoPunctures", valbuf);
         
         sprintf (valbuf,"%.17g", (double) *mm);
-        CCTK_ParameterSet ("par_m_minus", "TwoPunctures", valbuf);
+        CCTK_ParameterSet ("par_m_minus", "EinsteinMaxwell_TwoPunctures", valbuf);
         
       } while ( (mp_adm_err > adm_tol) ||
                 (mm_adm_err > adm_tol) );
@@ -484,8 +484,8 @@ EinsteinMaxwell_TwoPunctures (CCTK_ARGUMENTS)
             r_plus = TP_Tiny;
         if (r_minus < TP_Tiny)
             r_minus = TP_Tiny;
-        charge_potential_sq = pow( par_Qp/r_plus + par_Qm/r_minus, 2)
-                           + pow( par_Pp/r_plus + par_Pm/r_minus, 2);
+        charge_potential_sq = pow( par_electric_charge_plus/r_plus + par_electric_charge_minus/r_minus, 2)
+                           + pow( par_magnetic_charge_plus/r_plus + par_magnetic_charge_minus/r_minus, 2);
         CCTK_REAL psi1 = sqrt( pow(1 + 0.5 * *mp / r_plus
               + 0.5 * *mm / r_minus , 2)
               - 0.25 * charge_potential_sq ) + U;
@@ -494,15 +494,15 @@ EinsteinMaxwell_TwoPunctures (CCTK_ARGUMENTS)
                  5./4 * pow(r, 2) / pow(TP_Extend_Radius, 3) + \
                  15./8 / TP_Extend_Radius))
         if (r_plus < TP_Extend_Radius) {
-          charge_potential_sq = pow( par_Qp/r_plus + par_Qm/r_minus, 2)
-                              + pow( par_Pp/r_plus + par_Pm/r_minus, 2);
+          charge_potential_sq = pow( par_electric_charge_plus/r_plus + par_electric_charge_minus/r_minus, 2)
+                              + pow( par_magnetic_charge_plus/r_plus + par_magnetic_charge_minus/r_minus, 2);
           psi1 = sqrt( pow(1 + 0.5 * EXTEND(*mp, r_plus)
               + 0.5 * par_m_minus/ r_minus , 2)
               - 0.25 * charge_potential_sq ) + U;
         }
         if (r_minus < TP_Extend_Radius) {
-          charge_potential_sq = pow( par_Qp/r_plus + par_Qm/r_minus, 2)
-                              + pow( par_Pp/r_plus + par_Pm/r_minus, 2);
+          charge_potential_sq = pow( par_electric_charge_plus/r_plus + par_electric_charge_minus/r_minus, 2)
+                              + pow( par_magnetic_charge_plus/r_plus + par_magnetic_charge_minus/r_minus, 2);
           psi1 = sqrt( pow(1 + 0.5 * *mp / r_plus
               + 0.5 * EXTEND(*mm, r_minus) , 2)
               - 0.25 * charge_potential_sq ) + U;

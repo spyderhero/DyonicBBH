@@ -42,11 +42,11 @@ EinsteinMaxwell_TwoPunctures_ParamCheck (CCTK_ARGUMENTS)
    */
   if (! solve_momentum_constraint)
   {
-    const CCTK_REAL duality_mismatch = par_Qp * par_Pm - par_Qm * par_Pp;
-    const CCTK_REAL Qp = par_Qp;
-    const CCTK_REAL Qm = par_Qm;
-    const CCTK_REAL Pp = par_Pp;
-    const CCTK_REAL Pm = par_Pm;
+    const CCTK_REAL duality_mismatch = par_electric_charge_plus * par_magnetic_charge_minus - par_electric_charge_minus * par_magnetic_charge_plus;
+    const CCTK_REAL Qp = par_electric_charge_plus;
+    const CCTK_REAL Qm = par_electric_charge_minus;
+    const CCTK_REAL Pp = par_magnetic_charge_plus;
+    const CCTK_REAL Pm = par_magnetic_charge_minus;
     const CCTK_REAL qp = sqrt(Qp*Qp + Pp*Pp);
     const CCTK_REAL qm = sqrt(Qm*Qm + Pm*Pm);
     const CCTK_REAL theta_p = atan2(Pp, Qp);

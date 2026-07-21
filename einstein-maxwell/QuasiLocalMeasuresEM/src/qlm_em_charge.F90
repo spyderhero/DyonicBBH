@@ -16,7 +16,7 @@ subroutine qlm_em_compute_charge (CCTK_ARGUMENTS, hn)
   integer :: hn
   integer :: i, j
   CCTK_REAL :: alpha, gg(3,3)
-  CCTK_REAL :: E_f(3), dA(3,3), B_f(3)
+  CCTK_REAL :: E_f(3), B_f(3)
   CCTK_REAL :: dX_dtheta(3), dX_dphi(3), dS(3)
   CCTK_REAL :: sqrtgamma, gamma_det
 
@@ -71,20 +71,10 @@ subroutine qlm_em_compute_charge (CCTK_ARGUMENTS, hn)
       E_f(2) = qlm_em_ey(i,j)
       E_f(3) = qlm_em_ez(i,j)
 
-      dA(1,1) = qlm_em_daxx(i,j)
-      dA(1,2) = qlm_em_daxy(i,j)
-      dA(1,3) = qlm_em_daxz(i,j)
-      dA(2,1) = qlm_em_dayx(i,j)
-      dA(2,2) = qlm_em_dayy(i,j)
-      dA(2,3) = qlm_em_dayz(i,j)
-      dA(3,1) = qlm_em_dazx(i,j)
-      dA(3,2) = qlm_em_dazy(i,j)
-      dA(3,3) = qlm_em_dazz(i,j)
-
-      ! Compute magnetic field
-      B_f(1) = - alpha * (dA(3,2) - dA(2,3))
-      B_f(2) = - alpha * (dA(1,3) - dA(3,1))
-      B_f(3) = - alpha * (dA(2,1) - dA(1,2))
+      ! Magnetic field at this point
+      B_f(1) = qlm_em_bx(i,j)
+      B_f(2) = qlm_em_by(i,j)
+      B_f(3) = qlm_em_bz(i,j)
 
       ! Flux contribution
       charge_electric_local = charge_electric_local + (E_f(1)*dS(1) + E_f(2)*dS(2) + E_f(3)*dS(3))
@@ -96,7 +86,7 @@ subroutine qlm_em_compute_charge (CCTK_ARGUMENTS, hn)
   
   ! Divide by 4π
   qlm_em_electric_charge(hn) = charge_electric_local / (4.0*pi)
-  qlm_em_magnetic_charge(hn) = - charge_magnetic_local / (4.0*pi)
+  qlm_em_magnetic_charge(hn) = charge_magnetic_local / (4.0*pi)
 
   write (msg, '("   Electric charge Qe:            ",g14.6)') qlm_em_electric_charge(hn)
   call CCTK_INFO (msg)

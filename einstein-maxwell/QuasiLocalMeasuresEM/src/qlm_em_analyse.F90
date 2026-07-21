@@ -478,8 +478,8 @@ subroutine qlm_em_analyse (CCTK_ARGUMENTS, hn)
   qlm_em_irreducible_mass(hn) = qlm_em_radius(hn) / 2
   
   qlm_em_spin(hn) = qlm_em_spin(hn) / (8*pi)
-  qlm_em_mass(hn) = 1/(2*qlm_em_radius(hn)) * sqrt((qlm_em_radius(hn)**2 + (1 - coupling_constant**2) &
-                   & * (qlm_em_electric_charge(hn)**2 &
+  qlm_em_mass(hn) = 1/(2*qlm_em_radius(hn)) * sqrt((qlm_em_radius(hn)**2 &
+                   & + (qlm_em_electric_charge(hn)**2 &
                    & + qlm_em_magnetic_charge(hn)**2 ))**2 &
                    & + 4*qlm_em_spin(hn)**2)
   qlm_em_cvspin(hn) = qlm_em_cvspin(hn) / (8*pi)

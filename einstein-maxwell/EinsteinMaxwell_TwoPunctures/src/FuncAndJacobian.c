@@ -332,10 +332,10 @@ EinsteinMaxwell_F_of_v (CCTK_POINTER_TO_CONST cctkGH,
           r_minus = sqrt ((x + par_b) * (x + par_b) + y * y + z * z);
           psi = sqrt( pow(1 + 0.5 * par_m_plus / r_plus
               + 0.5 * par_m_minus / r_minus , 2)
-              - 0.25 * ( pow( par_Qp/r_plus
-              + par_Qm/r_minus, 2)
-              + pow( par_Pp/r_plus
-              + par_Pm/r_minus, 2) ) ) +
+              - 0.25 * ( pow( par_electric_charge_plus/r_plus
+              + par_electric_charge_minus/r_minus, 2)
+              + pow( par_magnetic_charge_plus/r_plus
+              + par_magnetic_charge_minus/r_minus, 2) ) ) +
                 U.d0[0];
           psi2 = psi * psi;
           psi4 = psi2 * psi2;

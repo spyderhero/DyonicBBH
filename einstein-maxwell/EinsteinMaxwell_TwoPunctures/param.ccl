@@ -103,22 +103,22 @@ REAL par_m_minus "mass of the m- puncture" STEERABLE = ALWAYS
   0.0:* :: ""
 } 1.0
 
-REAL par_Qp "electric charge of the m+ puncture" STEERABLE = ALWAYS
+REAL par_electric_charge_plus "electric charge of the m+ puncture" STEERABLE = ALWAYS
 {
   *:* :: ""
 } 0.0
 
-REAL par_Qm "electric charge of the m- puncture" STEERABLE = ALWAYS
+REAL par_electric_charge_minus "electric charge of the m- puncture" STEERABLE = ALWAYS
 {
   *:* :: ""
 } 0.0
 
-REAL par_Pp "magnetic charge of the m+ puncture" STEERABLE = ALWAYS
+REAL par_magnetic_charge_plus "magnetic charge of the m+ puncture" STEERABLE = ALWAYS
 {
   *:* :: ""
 } 0.0
 
-REAL par_Pm "magnetic charge of the m- puncture" STEERABLE = ALWAYS
+REAL par_magnetic_charge_minus "magnetic charge of the m- puncture" STEERABLE = ALWAYS
 {
   *:* :: ""
 } 0.0
