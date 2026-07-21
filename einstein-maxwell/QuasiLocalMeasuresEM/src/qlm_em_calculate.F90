@@ -106,7 +106,12 @@ subroutine qlm_em_calculate (CCTK_ARGUMENTS)
            call qlm_em_killing_test (CCTK_PASS_FTOF, hn)
            call qlm_em_calc_coordinates (CCTK_PASS_FTOF, hn)
         end if
-        call qlm_em_compute_charge (CCTK_PASS_FTOF, hn)
+        if (calc_charge /= 0) then
+           call qlm_em_compute_charge(CCTK_PASS_FTOF, hn)
+        else
+           qlm_em_electric_charge(hn) = 0.0d0
+           qlm_em_magnetic_charge(hn) = 0.0d0
+        endif
         call qlm_em_calc_3determinant (CCTK_PASS_FTOF, hn)
         call qlm_em_analyse (CCTK_PASS_FTOF, hn)
         if (qlm_em_have_killing_vector(hn) /= 0) then
