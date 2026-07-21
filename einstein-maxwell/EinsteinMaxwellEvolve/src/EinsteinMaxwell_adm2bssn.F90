@@ -1,4 +1,4 @@
-! EinsteinMaxwell_adm_vs_bssn.F90 : Functions for converting between ADM and BSSN variables
+! EinsteinMaxwell_adm2bssn.F90 : Functions for converting between ADM and BSSN variables
 !
 ! EM-direct version consistent with the Einstein-Maxwell evolution system
 ! based on arXiv:1205.1063.

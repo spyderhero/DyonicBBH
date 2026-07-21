@@ -6,7 +6,7 @@ SRCS = EinsteinMaxwell_RegisterVars.c     \
        EinsteinMaxwell_Boundaries.F90     \
        EinsteinMaxwell_calc_Tmunu.F90     \
        EinsteinMaxwell_InitSymBound.F90   \
-       EinsteinMaxwell_adm_vs_bssn.F90    \
+       EinsteinMaxwell_adm2bssn.F90    \
        EinsteinMaxwell_zero_rhs.F90       \
        EinsteinMaxwell_utils.F90          
 

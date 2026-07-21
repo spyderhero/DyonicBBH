@@ -44,25 +44,19 @@ if (CCTK_EQUALS (evolution_method, "EinsteinMaxwellEvolve")) {
     OPTIONS: META
   } "Register EM-direct Maxwell variables for MoL"
 
+
   schedule EinsteinMaxwell_adm2bssn in MoL_CalcRHS \
-    as EinsteinMaxwell_ADMToBSSN
+    as EinsteinMaxwell_ADM2BSSN
   {
     LANG: Fortran
+  } "Convert ADMBase geometry to auxiliary BSSN variables"
 
-    READS: ADMBase::metric(everywhere)
-    READS: ADMBase::curv(everywhere)
-
-    WRITES: EinsteinMaxwellEvolve::hmetric(everywhere)
-    WRITES: EinsteinMaxwellEvolve::conf_fac_chi(everywhere)
-    WRITES: EinsteinMaxwellEvolve::trk(everywhere)
-  } "Construct the auxiliary BSSN-like geometry variables from ADMBase"
-  
 
   schedule EinsteinMaxwell_calc_rhs in MoL_CalcRHS \
-    as EinsteinMaxwell_CalcRHS after EinsteinMaxwell_ADMToBSSN
+    as EinsteinMaxwell_CalcRHS after EinsteinMaxwell_ADM2BSSN
   {
     LANG: Fortran
-  } "MoL RHS calculation for EM-direct Maxwell variables"
+  } "Calculate the Einstein-Maxwell RHS"
 
 
   schedule EinsteinMaxwell_calc_rhs_bdry in MoL_CalcRHS \
