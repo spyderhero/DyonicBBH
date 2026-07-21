@@ -3,14 +3,14 @@
 # Einstein-Maxwell, direct E^i/B^i formulation based on arXiv:1205.1063.
 # This schedule is intended to be used together with the EM-direct corrected
 # source files:
-#   - EinsteinMaxwell_calc_rhs_EM_direct_corrected.F90
-#   - EinsteinMaxwell_calc_Tmunu_EM_direct_corrected.F90
-#   - EinsteinMaxwell_adm_vs_bssn_EM_direct_from_EMD_corrected.F90
-#   - EinsteinMaxwell_RegisterVars_EM_direct_corrected.c
-#   - EinsteinMaxwell_Boundaries_EM_direct_corrected.F90
-#   - EinsteinMaxwell_InitSymBound_EM_direct_corrected.F90
-#   - interface_EM_direct_corrected.ccl
-#   - param_EM_direct_corrected.ccl
+#   - EinsteinMaxwell_calc_rhs.F90
+#   - EinsteinMaxwell_calc_Tmunu.F90
+#   - EinsteinMaxwell_adm2bssn.F90
+#   - EinsteinMaxwell_RegisterVars.c
+#   - EinsteinMaxwell_Boundaries.F90
+#   - EinsteinMaxwell_InitSymBound.F90
+#   - interface.ccl
+#   - param.ccl
 #
 # The evolved Maxwell variables are assumed to be provided by ProcaBase as
 #   ProcaBase::Ei  = Ex Ey Ez
@@ -44,16 +44,24 @@ if (CCTK_EQUALS (evolution_method, "EinsteinMaxwellEvolve")) {
     OPTIONS: META
   } "Register EM-direct Maxwell variables for MoL"
 
-  schedule EinsteinMaxwell_adm_vs_bssn in MoL_CalcRHS
+  schedule EinsteinMaxwell_adm2bssn in MoL_CalcRHS \
+    as EinsteinMaxwell_ADMToBSSN
   {
     LANG: Fortran
-  } "Construct auxiliary BSSN variables"
+
+    READS: ADMBase::metric(everywhere)
+    READS: ADMBase::curv(everywhere)
+
+    WRITES: EinsteinMaxwellEvolve::hmetric(everywhere)
+    WRITES: EinsteinMaxwellEvolve::conf_fac_chi(everywhere)
+    WRITES: EinsteinMaxwellEvolve::trk(everywhere)
+  } "Construct the auxiliary BSSN-like geometry variables from ADMBase"
   
 
-  schedule EinsteinMaxwell_calc_rhs in MoL_CalcRHS as EinsteinMaxwell_CalcRHS
+  schedule EinsteinMaxwell_calc_rhs in MoL_CalcRHS \
+    as EinsteinMaxwell_CalcRHS after EinsteinMaxwell_ADMToBSSN
   {
     LANG: Fortran
-    after EinsteinMaxwell_adm_vs_bssn
   } "MoL RHS calculation for EM-direct Maxwell variables"
 
 
