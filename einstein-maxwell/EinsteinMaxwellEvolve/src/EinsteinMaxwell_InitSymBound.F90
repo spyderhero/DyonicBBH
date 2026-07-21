@@ -15,8 +15,6 @@
 !   Psi  = electric Gauss-constraint damping field,
 !   Phi  = magnetic Gauss-constraint damping field.
 !
-! No vector potential A_i, scalar potential Aphi, Zeta field, dilaton, or
-! scalar-field variables are registered here.
 !
 ! Parity convention under Cartesian reflections:
 !   - components of ordinary spatial vectors E^i and B^i have vector parity,
