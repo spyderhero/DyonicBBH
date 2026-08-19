@@ -191,9 +191,9 @@ subroutine qlm_em_interpolate (CCTK_ARGUMENTS, hn)
      call CCTK_VarIndex (ind_ex  , "ProcaBase::Ex")
      call CCTK_VarIndex (ind_ey  , "ProcaBase::Ey")
      call CCTK_VarIndex (ind_ez  , "ProcaBase::Ez")
-     call CCTK_VarIndex (ind_bx  , "ProcaBase::Bx")
-     call CCTK_VarIndex (ind_by  , "ProcaBase::By")
-     call CCTK_VarIndex (ind_bz  , "ProcaBase::Bz")
+     call CCTK_VarIndex (ind_bx, "EinsteinMaxwellEvolve::Bx")
+     call CCTK_VarIndex (ind_by, "EinsteinMaxwellEvolve::By")
+     call CCTK_VarIndex (ind_bz, "EinsteinMaxwellEvolve::Bz")
   else
      ind_ex = -1
      ind_ey = -1
