@@ -10,7 +10,7 @@
 using namespace std;
 
 extern "C"
-void EinsteinMaxwell_TwoPunctures_Metadata (CCTK_ARGUMENTS)
+void EinsteinMaxwellTwoPunctures_Metadata (CCTK_ARGUMENTS)
 {
   DECLARE_CCTK_ARGUMENTS;
   DECLARE_CCTK_PARAMETERS;

@@ -1,4 +1,4 @@
-# Parameter definitions for thorn EinsteinMaxwell_TwoPunctures
+# Parameter definitions for thorn EinsteinMaxwellTwoPunctures
 
 SHARES: ADMBase
 
@@ -6,7 +6,7 @@ USES KEYWORD metric_type
 
 EXTENDS KEYWORD initial_data
 {
-  "EinsteinMaxwell_twopunctures" :: "two puncture black holes with electric and magnetic charges in Einstein-Maxwell theory"
+  "EinsteinMaxwelltwopunctures" :: "two puncture black holes with electric and magnetic charges in Einstein-Maxwell theory"
 }
 
 EXTENDS KEYWORD initial_lapse
