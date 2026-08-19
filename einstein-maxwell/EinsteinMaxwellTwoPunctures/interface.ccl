@@ -1,6 +1,6 @@
-# Interface definition for thorn EinsteinMaxwell_TwoPunctures
+# Interface definition for thorn EinsteinMaxwellTwoPunctures
 
-IMPLEMENTS: EinsteinMaxwell_TwoPunctures
+IMPLEMENTS: EinsteinMaxwellTwoPunctures
 
 INHERITS: ADMBase StaticConformal grid ProcaBase
 
