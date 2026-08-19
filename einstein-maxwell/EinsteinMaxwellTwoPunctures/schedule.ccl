@@ -26,25 +26,47 @@ if (CCTK_Equals(initial_data, "EinsteinMaxwelltwopunctures"))
       } "Einstein-Maxwell TwoPunctures initial data group"
   }
 
-  SCHEDULE EinsteinMaxwellTwoPunctures IN EinsteinMaxwellTwoPunctures_Group
-  {
-    LANG: C
-    STORAGE: puncture_u
-    READS: Grid::coordinates(Everywhere)
-    WRITES: EinsteinMaxwellTwoPunctures::mp(Everywhere), EinsteinMaxwellTwoPunctures::mm(Everywhere),
-            EinsteinMaxwellTwoPunctures::mp_adm(Everywhere), EinsteinMaxwellTwoPunctures::mm_adm(Everywhere),
-            EinsteinMaxwellTwoPunctures::E(Everywhere), EinsteinMaxwellTwoPunctures::J1(Everywhere),
-            EinsteinMaxwellTwoPunctures::J2(Everywhere), EinsteinMaxwellTwoPunctures::J3(Everywhere),
-            EinsteinMaxwellTwoPunctures::puncture_u(Everywhere)
-    WRITES: StaticConformal::conformal_state(Everywhere),
-            StaticConformal::confac_2derivs(Everywhere),
-            StaticConformal::confac_1derivs(Everywhere),
-            StaticConformal::confac(Everywhere)
-    WRITES: ADMBase::alp(Everywhere), ADMBase::metric(Everywhere), ADMBase::curv(Everywhere)
-    WRITES: ProcaBase::Ei(Everywhere), EinsteinMaxwellEvolve::Bi(Everywhere), EinsteinMaxwellEvolve::EM_Psi(Everywhere), EinsteinMaxwellEvolve::EM_Phi(Everywhere)
-    SYNC: ADMBase::metric ADMBase::curv ADMBase::lapse
-    SYNC: ProcaBase::Ei, EinsteinMaxwellEvolve::Bi, EinsteinMaxwellEvolve::EM_Psi, EinsteinMaxwellEvolve::EM_Phi
-  } "Create electric/magnetic charged puncture black hole initial data"
+SCHEDULE EinsteinMaxwellTwoPunctures IN EinsteinMaxwellTwoPunctures_Group
+{
+  LANG: C
+  STORAGE: puncture_u
+
+  READS: Grid::coordinates(Everywhere)
+
+  WRITES: EinsteinMaxwellTwoPunctures::mp(Everywhere),
+          EinsteinMaxwellTwoPunctures::mm(Everywhere),
+          EinsteinMaxwellTwoPunctures::mp_adm(Everywhere),
+          EinsteinMaxwellTwoPunctures::mm_adm(Everywhere),
+          EinsteinMaxwellTwoPunctures::E(Everywhere),
+          EinsteinMaxwellTwoPunctures::J1(Everywhere),
+          EinsteinMaxwellTwoPunctures::J2(Everywhere),
+          EinsteinMaxwellTwoPunctures::J3(Everywhere),
+          EinsteinMaxwellTwoPunctures::puncture_u(Everywhere)
+
+  WRITES: StaticConformal::conformal_state(Everywhere),
+          StaticConformal::confac_2derivs(Everywhere),
+          StaticConformal::confac_1derivs(Everywhere),
+          StaticConformal::confac(Everywhere)
+
+  WRITES: ADMBase::alp(Everywhere),
+          ADMBase::metric(Everywhere),
+          ADMBase::curv(Everywhere)
+
+  WRITES: ProcaBase::Ei(Everywhere),
+          EinsteinMaxwellEvolve::Bi(Everywhere),
+          EinsteinMaxwellEvolve::EM_Psi(Everywhere),
+          EinsteinMaxwellEvolve::EM_Phi(Everywhere)
+
+  SYNC: ADMBase::metric
+  SYNC: ADMBase::curv
+  SYNC: ADMBase::lapse
+
+  SYNC: ProcaBase::Ei
+  SYNC: EinsteinMaxwellEvolve::Bi
+  SYNC: EinsteinMaxwellEvolve::EM_Psi_group
+  SYNC: EinsteinMaxwellEvolve::EM_Phi_group
+
+} "Create electric/magnetic charged puncture black hole initial data"
 
   SCHEDULE EinsteinMaxwellTwoPunctures_Metadata IN EinsteinMaxwellTwoPunctures_Group AFTER EinsteinMaxwellTwoPunctures
   {
