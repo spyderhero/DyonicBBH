@@ -7,14 +7,7 @@
 #   - EinsteinMaxwell_RegisterVars_EM_direct_corrected.c
 #   - EinsteinMaxwell_Boundaries_EM_direct_corrected.F90
 #   - EinsteinMaxwell_InitSymBound_EM_direct_corrected.F90
-#
-# The evolved Maxwell variables themselves are assumed to be provided by
-# ProcaBase as:
-#   ProcaBase::Ei  = Ex Ey Ez
-#   ProcaBase::Bi  = Bx By Bz
-#   ProcaBase::Psi = Psi
-#   ProcaBase::Phi = Phi
-# This thorn provides the corresponding RHS grid functions and diagnostics.
+
 
 implements: EinsteinMaxwellEvolve
 inherits: ADMBase Tmunubase ProcaBase Boundary
@@ -81,14 +74,14 @@ CCTK_REAL Bi type=gf timelevels=3 tags='tensortypealias="U" tensorweight=0'
   Bx By Bz
 } "magnetic field B^i"
 
-CCTK_REAL Psi_group type=gf timelevels=3 tags='tensortypealias="Scalar" tensorweight=0'
+CCTK_REAL EM_Psi_group type=gf timelevels=3 tags='tensortypealias="Scalar" tensorweight=0'
 {
-  Psi
+  EM_Psi
 } "electric Gauss-constraint damping field"
 
-CCTK_REAL Phi_group type=gf timelevels=3 tags='tensortypealias="Scalar" tensorweight=0'
+CCTK_REAL EM_Phi_group type=gf timelevels=3 tags='tensortypealias="Scalar" tensorweight=0'
 {
-  Phi
+  EM_Phi
 } "magnetic Gauss-constraint damping field"
 
 # Right-hand sides for the Maxwell sector
@@ -104,15 +97,15 @@ CCTK_REAL rhs_Bi type=gf tags='tensortypealias="U" tensorweight=0 prolongation="
   rhs_Bx rhs_By rhs_Bz
 } "right hand sides for B^i evolution equations"
 
-CCTK_REAL rhs_Psi type=gf tags='tensortypealias="Scalar" tensorweight=0 prolongation="none" Checkpoint="no"'
+CCTK_REAL rhs_EM_Psi type=gf tags='tensortypealias="Scalar" tensorweight=0 prolongation="none" Checkpoint="no"'
 {
-  rhs_Psi
-} "right hand side for the electric Gauss-constraint damping field Psi"
+  rhs_EM_Psi
+} "right hand side for the electric Gauss-constraint damping field EM_Psi"
 
-CCTK_REAL rhs_Phi type=gf tags='tensortypealias="Scalar" tensorweight=0 prolongation="none" Checkpoint="no"'
+CCTK_REAL rhs_EM_Phi type=gf tags='tensortypealias="Scalar" tensorweight=0 prolongation="none" Checkpoint="no"'
 {
-  rhs_Phi
-} "right hand side for the magnetic Gauss-constraint damping field Phi"
+  rhs_EM_Phi
+} "right hand side for the magnetic Gauss-constraint damping field EM_Phi"
 
 
 # BSSN-like auxiliary geometry variables

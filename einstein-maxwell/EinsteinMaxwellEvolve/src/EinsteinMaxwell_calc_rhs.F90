@@ -17,25 +17,25 @@ subroutine EinsteinMaxwell_calc_rhs( CCTK_ARGUMENTS )
   DECLARE_CCTK_PARAMETERS
 
   ! This RHS implements the Einstein-Maxwell cleaning system of arXiv:1205.1063,
-  ! Eq. (2.8), using the direct variables E^i, B^i, Psi, Phi.
+  ! Eq. (2.8), using the direct variables E^i, B^i, EM_Psi, EM_Phi.
   ! E^i and B^i are treated as contravariant spatial vectors.
 
   CCTK_REAL                alph, beta(3)
   CCTK_REAL                hh(3,3), hu(3,3), trk, dethh, ch
-  CCTK_REAL                lE(3), lB(3), lPsi, lPhi
+  CCTK_REAL                lE(3), lB(3), lEM_Psi, lEM_Phi
 
   CCTK_REAL                d1_alph(3), d1_beta(3,3)
   CCTK_REAL                d1_hh(3,3,3), d1_ch(3)
-  CCTK_REAL                d1_lE(3,3), d1_lB(3,3), d1_lPsi(3), d1_lPhi(3)
+  CCTK_REAL                d1_lE(3,3), d1_lB(3,3), d1_lEM_Psi(3), d1_lEM_Phi(3)
 
-  CCTK_REAL                ad1_lE(3), ad1_lB(3), ad1_lPsi, ad1_lPhi
+  CCTK_REAL                ad1_lE(3), ad1_lB(3), ad1_lEM_Psi, ad1_lEM_Phi
   CCTK_REAL                d1_f(3)
 
   CCTK_REAL                cf1(3,3,3), cf2(3,3,3)
   CCTK_REAL                divE, divB
   CCTK_REAL                curlE, curlB
 
-  CCTK_REAL                rhs_lE(3), rhs_lB(3), rhs_lPsi, rhs_lPhi
+  CCTK_REAL                rhs_lE(3), rhs_lB(3), rhs_lEM_Psi, rhs_lEM_Phi
 
   CCTK_REAL                dx12, dy12, dz12
   CCTK_REAL                odx60, ody60, odz60
@@ -129,12 +129,12 @@ subroutine EinsteinMaxwell_calc_rhs( CCTK_ARGUMENTS )
 
   !$OMP PARALLEL DO COLLAPSE(3) &
   !$OMP PRIVATE(alph, beta, hh, hu, trk, dethh, ch, &
-  !$OMP lE, lB, lPsi, lPhi, &
+  !$OMP lE, lB, lEM_Psi, lEM_Phi, &
   !$OMP d1_alph, d1_beta, d1_hh, d1_ch, &
-  !$OMP d1_lE, d1_lB, d1_lPsi, d1_lPhi, &
-  !$OMP ad1_lE, ad1_lB, ad1_lPsi, ad1_lPhi, d1_f, &
+  !$OMP d1_lE, d1_lB, d1_lEM_Psi, d1_lEM_Phi, &
+  !$OMP ad1_lE, ad1_lB, ad1_lEM_Psi, ad1_lEM_Phi, d1_f, &
   !$OMP cf1, cf2, divE, divB, curlE, curlB, &
-  !$OMP rhs_lE, rhs_lB, rhs_lPsi, rhs_lPhi, &
+  !$OMP rhs_lE, rhs_lB, rhs_lEM_Psi, rhs_lEM_Phi, &
   !$OMP jac, hes, i, j, k, di, dj, dk, a, b, c, m)
   do k = 1+cctk_nghostzones(3), cctk_lsh(3)-cctk_nghostzones(3)
   do j = 1+cctk_nghostzones(2), cctk_lsh(2)-cctk_nghostzones(2)
@@ -163,8 +163,8 @@ subroutine EinsteinMaxwell_calc_rhs( CCTK_ARGUMENTS )
     lB(1)     = Bx(i,j,k)
     lB(2)     = By(i,j,k)
     lB(3)     = Bz(i,j,k)
-    lPsi      = Psi(i,j,k)
-    lPhi      = Phi(i,j,k)
+    lEM_Psi   = EM_Psi(i,j,k)
+    lEM_Phi   = EM_Phi(i,j,k)
 
     if (use_jacobian) then
        jac(1,1) = lJ11(i,j,k)
@@ -236,13 +236,13 @@ subroutine EinsteinMaxwell_calc_rhs( CCTK_ARGUMENTS )
       d1_alph(2) = D1Y4(alp)
       d1_alph(3) = D1Z4(alp)
 
-      d1_lPsi(1) = D1X4(Psi)
-      d1_lPsi(2) = D1Y4(Psi)
-      d1_lPsi(3) = D1Z4(Psi)
+      d1_lEM_Psi(1) = D1X4(EM_Psi)
+      d1_lEM_Psi(2) = D1Y4(EM_Psi)
+      d1_lEM_Psi(3) = D1Z4(EM_Psi)
 
-      d1_lPhi(1) = D1X4(Phi)
-      d1_lPhi(2) = D1Y4(Phi)
-      d1_lPhi(3) = D1Z4(Phi)
+      d1_lEM_Phi(1) = D1X4(EM_Phi)
+      d1_lEM_Phi(2) = D1Y4(EM_Phi)
+      d1_lEM_Phi(3) = D1Z4(EM_Phi)
 
       d1_hh(1,1,1) = D1X4(hxx)
       d1_hh(1,1,2) = D1Y4(hxx)
@@ -331,15 +331,15 @@ subroutine EinsteinMaxwell_calc_rhs( CCTK_ARGUMENTS )
         d1_f(3) = dk * ( -3.0d0*Bz(i,j,k-dk) - 10.0d0*Bz(i,j,k) + 18.0d0*Bz(i,j,k+dk) - 6.0d0*Bz(i,j,k+2*dk) + Bz(i,j,k+3*dk)) / dz12
         ad1_lB(3) = beta(1)*d1_f(1) + beta(2)*d1_f(2) + beta(3)*d1_f(3)
 
-        d1_f(1) = di * ( -3.0d0*Psi(i-di,j,k) - 10.0d0*Psi(i,j,k) + 18.0d0*Psi(i+di,j,k) - 6.0d0*Psi(i+2*di,j,k) + Psi(i+3*di,j,k)) / dx12
-        d1_f(2) = dj * ( -3.0d0*Psi(i,j-dj,k) - 10.0d0*Psi(i,j,k) + 18.0d0*Psi(i,j+dj,k) - 6.0d0*Psi(i,j+2*dj,k) + Psi(i,j+3*dj,k)) / dy12
-        d1_f(3) = dk * ( -3.0d0*Psi(i,j,k-dk) - 10.0d0*Psi(i,j,k) + 18.0d0*Psi(i,j,k+dk) - 6.0d0*Psi(i,j,k+2*dk) + Psi(i,j,k+3*dk)) / dz12
-        ad1_lPsi = beta(1)*d1_f(1) + beta(2)*d1_f(2) + beta(3)*d1_f(3)
+        d1_f(1) = di * ( -3.0d0*EM_Psi(i-di,j,k) - 10.0d0*EM_Psi(i,j,k) + 18.0d0*EM_Psi(i+di,j,k) - 6.0d0*EM_Psi(i+2*di,j,k) + EM_Psi(i+3*di,j,k)) / dx12
+        d1_f(2) = dj * ( -3.0d0*EM_Psi(i,j-dj,k) - 10.0d0*EM_Psi(i,j,k) + 18.0d0*EM_Psi(i,j+dj,k) - 6.0d0*EM_Psi(i,j+2*dj,k) + EM_Psi(i,j+3*dj,k)) / dy12
+        d1_f(3) = dk * ( -3.0d0*EM_Psi(i,j,k-dk) - 10.0d0*EM_Psi(i,j,k) + 18.0d0*EM_Psi(i,j,k+dk) - 6.0d0*EM_Psi(i,j,k+2*dk) + EM_Psi(i,j,k+3*dk)) / dz12
+        ad1_lEM_Psi = beta(1)*d1_f(1) + beta(2)*d1_f(2) + beta(3)*d1_f(3)
 
-        d1_f(1) = di * ( -3.0d0*Phi(i-di,j,k) - 10.0d0*Phi(i,j,k) + 18.0d0*Phi(i+di,j,k) - 6.0d0*Phi(i+2*di,j,k) + Phi(i+3*di,j,k)) / dx12
-        d1_f(2) = dj * ( -3.0d0*Phi(i,j-dj,k) - 10.0d0*Phi(i,j,k) + 18.0d0*Phi(i,j+dj,k) - 6.0d0*Phi(i,j+2*dj,k) + Phi(i,j+3*dj,k)) / dy12
-        d1_f(3) = dk * ( -3.0d0*Phi(i,j,k-dk) - 10.0d0*Phi(i,j,k) + 18.0d0*Phi(i,j,k+dk) - 6.0d0*Phi(i,j,k+2*dk) + Phi(i,j,k+3*dk)) / dz12
-        ad1_lPhi = beta(1)*d1_f(1) + beta(2)*d1_f(2) + beta(3)*d1_f(3)
+        d1_f(1) = di * ( -3.0d0*EM_Phi(i-di,j,k) - 10.0d0*EM_Phi(i,j,k) + 18.0d0*EM_Phi(i+di,j,k) - 6.0d0*EM_Phi(i+2*di,j,k) + EM_Phi(i+3*di,j,k)) / dx12
+        d1_f(2) = dj * ( -3.0d0*EM_Phi(i,j-dj,k) - 10.0d0*EM_Phi(i,j,k) + 18.0d0*EM_Phi(i,j+dj,k) - 6.0d0*EM_Phi(i,j+2*dj,k) + EM_Phi(i,j+3*dj,k)) / dy12
+        d1_f(3) = dk * ( -3.0d0*EM_Phi(i,j,k-dk) - 10.0d0*EM_Phi(i,j,k) + 18.0d0*EM_Phi(i,j,k+dk) - 6.0d0*EM_Phi(i,j,k+2*dk) + EM_Phi(i,j,k+3*dk)) / dz12
+        ad1_lEM_Phi = beta(1)*d1_f(1) + beta(2)*d1_f(2) + beta(3)*d1_f(3)
 
       else
         ad1_lE(1) = beta(1)*d1_lE(1,1) + beta(2)*d1_lE(1,2) + beta(3)*d1_lE(1,3)
@@ -348,8 +348,8 @@ subroutine EinsteinMaxwell_calc_rhs( CCTK_ARGUMENTS )
         ad1_lB(1) = beta(1)*d1_lB(1,1) + beta(2)*d1_lB(1,2) + beta(3)*d1_lB(1,3)
         ad1_lB(2) = beta(1)*d1_lB(2,1) + beta(2)*d1_lB(2,2) + beta(3)*d1_lB(2,3)
         ad1_lB(3) = beta(1)*d1_lB(3,1) + beta(2)*d1_lB(3,2) + beta(3)*d1_lB(3,3)
-        ad1_lPsi = beta(1)*d1_lPsi(1) + beta(2)*d1_lPsi(2) + beta(3)*d1_lPsi(3)
-        ad1_lPhi = beta(1)*d1_lPhi(1) + beta(2)*d1_lPhi(2) + beta(3)*d1_lPhi(3)
+        ad1_lEM_Psi = beta(1)*d1_lEM_Psi(1) + beta(2)*d1_lEM_Psi(2) + beta(3)*d1_lEM_Psi(3)
+        ad1_lEM_Phi = beta(1)*d1_lEM_Phi(1) + beta(2)*d1_lEM_Phi(2) + beta(3)*d1_lEM_Phi(3)
       end if
 
     else if (derivs_order == 6) then
@@ -361,13 +361,13 @@ subroutine EinsteinMaxwell_calc_rhs( CCTK_ARGUMENTS )
       d1_alph(2) = D1Y6(alp)
       d1_alph(3) = D1Z6(alp)
 
-      d1_lPsi(1) = D1X6(Psi)
-      d1_lPsi(2) = D1Y6(Psi)
-      d1_lPsi(3) = D1Z6(Psi)
+      d1_lEM_Psi(1) = D1X6(EM_Psi)
+      d1_lEM_Psi(2) = D1Y6(EM_Psi)
+      d1_lEM_Psi(3) = D1Z6(EM_Psi)
 
-      d1_lPhi(1) = D1X6(Phi)
-      d1_lPhi(2) = D1Y6(Phi)
-      d1_lPhi(3) = D1Z6(Phi)
+      d1_lEM_Phi(1) = D1X6(EM_Phi)
+      d1_lEM_Phi(2) = D1Y6(EM_Phi)
+      d1_lEM_Phi(3) = D1Z6(EM_Phi)
 
       d1_hh(1,1,1) = D1X6(hxx)
       d1_hh(1,1,2) = D1Y6(hxx)
@@ -456,15 +456,15 @@ subroutine EinsteinMaxwell_calc_rhs( CCTK_ARGUMENTS )
         d1_f(3) = dk * ( 2.0d0*Bz(i,j,k-2*dk) - 24.0d0*Bz(i,j,k-dk) - 35.0d0*Bz(i,j,k) + 80.0d0*Bz(i,j,k+dk) - 30.0d0*Bz(i,j,k+2*dk) + 8.0d0*Bz(i,j,k+3*dk) - Bz(i,j,k+4*dk) ) * odz60
         ad1_lB(3) = beta(1)*d1_f(1) + beta(2)*d1_f(2) + beta(3)*d1_f(3)
 
-        d1_f(1) = di * ( 2.0d0*Psi(i-2*di,j,k) - 24.0d0*Psi(i-di,j,k) - 35.0d0*Psi(i,j,k) + 80.0d0*Psi(i+di,j,k) - 30.0d0*Psi(i+2*di,j,k) + 8.0d0*Psi(i+3*di,j,k) - Psi(i+4*di,j,k) ) * odx60
-        d1_f(2) = dj * ( 2.0d0*Psi(i,j-2*dj,k) - 24.0d0*Psi(i,j-dj,k) - 35.0d0*Psi(i,j,k) + 80.0d0*Psi(i,j+dj,k) - 30.0d0*Psi(i,j+2*dj,k) + 8.0d0*Psi(i,j+3*dj,k) - Psi(i,j+4*dj,k) ) * ody60
-        d1_f(3) = dk * ( 2.0d0*Psi(i,j,k-2*dk) - 24.0d0*Psi(i,j,k-dk) - 35.0d0*Psi(i,j,k) + 80.0d0*Psi(i,j,k+dk) - 30.0d0*Psi(i,j,k+2*dk) + 8.0d0*Psi(i,j,k+3*dk) - Psi(i,j,k+4*dk) ) * odz60
-        ad1_lPsi = beta(1)*d1_f(1) + beta(2)*d1_f(2) + beta(3)*d1_f(3)
+        d1_f(1) = di * ( 2.0d0*EM_Psi(i-2*di,j,k) - 24.0d0*EM_Psi(i-di,j,k) - 35.0d0*EM_Psi(i,j,k) + 80.0d0*EM_Psi(i+di,j,k) - 30.0d0*EM_Psi(i+2*di,j,k) + 8.0d0*EM_Psi(i+3*di,j,k) - EM_Psi(i+4*di,j,k) ) * odx60
+        d1_f(2) = dj * ( 2.0d0*EM_Psi(i,j-2*dj,k) - 24.0d0*EM_Psi(i,j-dj,k) - 35.0d0*EM_Psi(i,j,k) + 80.0d0*EM_Psi(i,j+dj,k) - 30.0d0*EM_Psi(i,j+2*dj,k) + 8.0d0*EM_Psi(i,j+3*dj,k) - EM_Psi(i,j+4*dj,k) ) * ody60
+        d1_f(3) = dk * ( 2.0d0*EM_Psi(i,j,k-2*dk) - 24.0d0*EM_Psi(i,j,k-dk) - 35.0d0*EM_Psi(i,j,k) + 80.0d0*EM_Psi(i,j,k+dk) - 30.0d0*EM_Psi(i,j,k+2*dk) + 8.0d0*EM_Psi(i,j,k+3*dk) - EM_Psi(i,j,k+4*dk) ) * odz60
+        ad1_lEM_Psi = beta(1)*d1_f(1) + beta(2)*d1_f(2) + beta(3)*d1_f(3)
 
-        d1_f(1) = di * ( 2.0d0*Phi(i-2*di,j,k) - 24.0d0*Phi(i-di,j,k) - 35.0d0*Phi(i,j,k) + 80.0d0*Phi(i+di,j,k) - 30.0d0*Phi(i+2*di,j,k) + 8.0d0*Phi(i+3*di,j,k) - Phi(i+4*di,j,k) ) * odx60
-        d1_f(2) = dj * ( 2.0d0*Phi(i,j-2*dj,k) - 24.0d0*Phi(i,j-dj,k) - 35.0d0*Phi(i,j,k) + 80.0d0*Phi(i,j+dj,k) - 30.0d0*Phi(i,j+2*dj,k) + 8.0d0*Phi(i,j+3*dj,k) - Phi(i,j+4*dj,k) ) * ody60
-        d1_f(3) = dk * ( 2.0d0*Phi(i,j,k-2*dk) - 24.0d0*Phi(i,j,k-dk) - 35.0d0*Phi(i,j,k) + 80.0d0*Phi(i,j,k+dk) - 30.0d0*Phi(i,j,k+2*dk) + 8.0d0*Phi(i,j,k+3*dk) - Phi(i,j,k+4*dk) ) * odz60
-        ad1_lPhi = beta(1)*d1_f(1) + beta(2)*d1_f(2) + beta(3)*d1_f(3)
+        d1_f(1) = di * ( 2.0d0*EM_Phi(i-2*di,j,k) - 24.0d0*EM_Phi(i-di,j,k) - 35.0d0*EM_Phi(i,j,k) + 80.0d0*EM_Phi(i+di,j,k) - 30.0d0*EM_Phi(i+2*di,j,k) + 8.0d0*EM_Phi(i+3*di,j,k) - EM_Phi(i+4*di,j,k) ) * odx60
+        d1_f(2) = dj * ( 2.0d0*EM_Phi(i,j-2*dj,k) - 24.0d0*EM_Phi(i,j-dj,k) - 35.0d0*EM_Phi(i,j,k) + 80.0d0*EM_Phi(i,j+dj,k) - 30.0d0*EM_Phi(i,j+2*dj,k) + 8.0d0*EM_Phi(i,j+3*dj,k) - EM_Phi(i,j+4*dj,k) ) * ody60
+        d1_f(3) = dk * ( 2.0d0*EM_Phi(i,j,k-2*dk) - 24.0d0*EM_Phi(i,j,k-dk) - 35.0d0*EM_Phi(i,j,k) + 80.0d0*EM_Phi(i,j,k+dk) - 30.0d0*EM_Phi(i,j,k+2*dk) + 8.0d0*EM_Phi(i,j,k+3*dk) - EM_Phi(i,j,k+4*dk) ) * odz60
+        ad1_lEM_Phi = beta(1)*d1_f(1) + beta(2)*d1_f(2) + beta(3)*d1_f(3)
 
       else
         ad1_lE(1) = beta(1)*d1_lE(1,1) + beta(2)*d1_lE(1,2) + beta(3)*d1_lE(1,3)
@@ -473,8 +473,8 @@ subroutine EinsteinMaxwell_calc_rhs( CCTK_ARGUMENTS )
         ad1_lB(1) = beta(1)*d1_lB(1,1) + beta(2)*d1_lB(1,2) + beta(3)*d1_lB(1,3)
         ad1_lB(2) = beta(1)*d1_lB(2,1) + beta(2)*d1_lB(2,2) + beta(3)*d1_lB(2,3)
         ad1_lB(3) = beta(1)*d1_lB(3,1) + beta(2)*d1_lB(3,2) + beta(3)*d1_lB(3,3)
-        ad1_lPsi = beta(1)*d1_lPsi(1) + beta(2)*d1_lPsi(2) + beta(3)*d1_lPsi(3)
-        ad1_lPhi = beta(1)*d1_lPhi(1) + beta(2)*d1_lPhi(2) + beta(3)*d1_lPhi(3)
+        ad1_lEM_Psi = beta(1)*d1_lEM_Psi(1) + beta(2)*d1_lEM_Psi(2) + beta(3)*d1_lEM_Psi(3)
+        ad1_lEM_Phi = beta(1)*d1_lEM_Phi(1) + beta(2)*d1_lEM_Phi(2) + beta(3)*d1_lEM_Phi(3)
       end if
 
     else
@@ -484,8 +484,8 @@ subroutine EinsteinMaxwell_calc_rhs( CCTK_ARGUMENTS )
     if (use_jacobian) then
       call EinsteinMaxwell_d1_Scalar_apply_jacobian(d1_ch, jac)
       call EinsteinMaxwell_d1_Scalar_apply_jacobian(d1_alph, jac)
-      call EinsteinMaxwell_d1_Scalar_apply_jacobian(d1_lPsi, jac)
-      call EinsteinMaxwell_d1_Scalar_apply_jacobian(d1_lPhi, jac)
+      call EinsteinMaxwell_d1_Scalar_apply_jacobian(d1_lEM_Psi, jac)
+      call EinsteinMaxwell_d1_Scalar_apply_jacobian(d1_lEM_Phi, jac)
       call EinsteinMaxwell_d1_Vector_apply_jacobian(d1_beta, jac)
       call EinsteinMaxwell_d1_Vector_apply_jacobian(d1_lE, jac)
       call EinsteinMaxwell_d1_Vector_apply_jacobian(d1_lB, jac)
@@ -542,7 +542,7 @@ subroutine EinsteinMaxwell_calc_rhs( CCTK_ARGUMENTS )
 
     do a = 1, 3
       do b = 1, 3
-        rhs_lE(a) = rhs_lE(a) - alph * ch**conf_fac_exponent * hu(a,b) * d1_lPsi(b)
+        rhs_lE(a) = rhs_lE(a) - alph * ch**conf_fac_exponent * hu(a,b) * d1_lEM_Psi(b)
       end do
       curlB = 0.0d0
       do b = 1, 3
@@ -568,7 +568,7 @@ subroutine EinsteinMaxwell_calc_rhs( CCTK_ARGUMENTS )
 
     do a = 1, 3
       do b = 1, 3
-        rhs_lB(a) = rhs_lB(a) - alph * ch**conf_fac_exponent * hu(a,b) * d1_lPhi(b)
+        rhs_lB(a) = rhs_lB(a) - alph * ch**conf_fac_exponent * hu(a,b) * d1_lEM_Phi(b)
       end do
       curlE = 0.0d0
       do b = 1, 3
@@ -584,8 +584,8 @@ subroutine EinsteinMaxwell_calc_rhs( CCTK_ARGUMENTS )
       rhs_lB(a) = rhs_lB(a) - curlE
     end do
 
-    rhs_lPsi = ad1_lPsi - alph * divE - alph * kappa * lPsi
-    rhs_lPhi = ad1_lPhi - alph * divB - alph * kappa * lPhi
+    rhs_lEM_Psi = ad1_lEM_Psi - alph * divE - alph * kappa * lEM_Psi
+    rhs_lEM_Phi = ad1_lEM_Phi - alph * divB - alph * kappa * lEM_Phi
 
     rhs_Ex(i,j,k) = rhs_lE(1)
     rhs_Ey(i,j,k) = rhs_lE(2)
@@ -593,8 +593,8 @@ subroutine EinsteinMaxwell_calc_rhs( CCTK_ARGUMENTS )
     rhs_Bx(i,j,k) = rhs_lB(1)
     rhs_By(i,j,k) = rhs_lB(2)
     rhs_Bz(i,j,k) = rhs_lB(3)
-    rhs_Psi(i,j,k) = rhs_lPsi
-    rhs_Phi(i,j,k) = rhs_lPhi
+    rhs_EM_Psi(i,j,k) = rhs_lEM_Psi
+    rhs_EM_Phi(i,j,k) = rhs_lEM_Phi
 
   end do
   end do
@@ -622,8 +622,8 @@ subroutine EinsteinMaxwell_calc_rhs_bdry( CCTK_ARGUMENTS )
   ierr = NewRad_Apply(cctkGH, By, rhs_By, B0(2), one, n_B(2))
   ierr = NewRad_Apply(cctkGH, Bz, rhs_Bz, B0(3), one, n_B(3))
 
-  ierr = NewRad_Apply(cctkGH, Psi, rhs_Psi, zero, one, n_Psi)
-  ierr = NewRad_Apply(cctkGH, Phi, rhs_Phi, zero, one, n_Phi)
+  ierr = NewRad_Apply(cctkGH, EM_Psi, rhs_EM_Psi, zero, one, n_EM_Psi)
+  ierr = NewRad_Apply(cctkGH, EM_Phi, rhs_EM_Phi, zero, one, n_EM_Phi)
 
 end subroutine EinsteinMaxwell_calc_rhs_bdry
 

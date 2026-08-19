@@ -5,8 +5,8 @@
 #
 #   E^i  = ProcaBase::Ei
 #   B^i  = ProcaBase::Bi
-#   Psi  = ProcaBase::Psi
-#   Phi  = ProcaBase::Phi
+#   EM_Psi  = ProcaBase::EM_Psi
+#   EM_Phi  = ProcaBase::EM_Phi
 #
 # No vector-potential or scalar-field sector is used in this EM-only system.
 
@@ -34,12 +34,12 @@ CCTK_INT n_B[3] "Radial falloff powers for the magnetic-field components used by
 KEYWORD evolution_method "Evolution method for the Einstein-Maxwell variables"
 {
   "none"               :: "Einstein-Maxwell variables are not evolved by this thorn"
-  "EinsteinMaxwellEvolve" :: "Use this thorn to evolve E^i, B^i, Psi and Phi"
+  "EinsteinMaxwellEvolve" :: "Use this thorn to evolve E^i, B^i, EM_Psi and EM_Phi"
 } "none"
 
 CCTK_INT EinsteinMaxwell_MaxNumEvolvedVars "Maximum number of evolved variables used by EinsteinMaxwellEvolve" ACCUMULATOR-BASE=MethodOfLines::MoL_Num_Evolved_Vars
 {
-  8:8 :: "E^i, B^i, Psi, Phi"
+  8:8 :: "E^i, B^i, EM_Psi, EM_Phi"
 } 8
 
 CCTK_INT EinsteinMaxwellEvolve_MaxNumConstrainedVars "Maximum number of constrained variables used by EinsteinMaxwellEvolve" ACCUMULATOR-BASE=MethodOfLines::MoL_Num_Constrained_Vars
@@ -64,17 +64,17 @@ BOOLEAN use_advection_stencils "Use lop-sided stencils for beta^i partial_i adve
 {
 } "yes"
 
-CCTK_REAL kappa "Constraint damping parameter for Psi and Phi in the Maxwell equations"
+CCTK_REAL kappa "Constraint damping parameter for EM_Psi and EM_Phi in the Maxwell equations"
 {
   0:* :: "non-negative"
 } 1.0d0
 
-CCTK_INT n_Psi "Radial falloff power used by NewRad for Psi"
+CCTK_INT n_EM_Psi "Radial falloff power used by NewRad for EM_Psi"
 {
   0:* :: "non-negative integer"
 } 3
 
-CCTK_INT n_Phi "Radial falloff power used by NewRad for Phi"
+CCTK_INT n_EM_Phi "Radial falloff power used by NewRad for EM_Phi"
 {
   0:* :: "non-negative integer"
 } 3

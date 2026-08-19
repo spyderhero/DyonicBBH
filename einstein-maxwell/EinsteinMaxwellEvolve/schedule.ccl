@@ -15,15 +15,15 @@
 # The evolved Maxwell variables are assumed to be provided by ProcaBase as
 #   ProcaBase::Ei  = Ex Ey Ez
 #   ProcaBase::Bi  = Bx By Bz
-#   ProcaBase::Psi = Psi
-#   ProcaBase::Phi = Phi
+#   ProcaBase::EM_Psi = EM_Psi
+#   ProcaBase::EM_Phi = EM_Phi
 # and their RHS groups are provided by this thorn.
 
 if (CCTK_EQUALS (evolution_method, "EinsteinMaxwellEvolve")) {
 
   # RHS grid functions for the EM-direct Maxwell sector
-  STORAGE: Bi Psi_group Phi_group
-  STORAGE: rhs_Ei rhs_Bi rhs_Psi rhs_Phi
+  STORAGE: Bi EM_Psi_group EM_Phi_group
+  STORAGE: rhs_Ei rhs_Bi rhs_EM_Psi rhs_EM_Phi
 
   # BSSN-like auxiliary geometry variables used by the Maxwell RHS
   STORAGE: hmetric conf_fac_chi trk
@@ -73,8 +73,8 @@ if (CCTK_EQUALS (evolution_method, "EinsteinMaxwellEvolve")) {
     OPTIONS: LEVEL
     SYNC: ProcaBase::Ei
     SYNC: EinsteinMaxwellEvolve::Bi
-    SYNC: EinsteinMaxwellEvolve::Psi
-    SYNC: EinsteinMaxwellEvolve::Phi 
+    SYNC: EinsteinMaxwellEvolve::EM_Psi
+    SYNC: EinsteinMaxwellEvolve::EM_Phi 
     SYNC: EinsteinMaxwellEvolve::EM_jr_F_gfs
     SYNC: EinsteinMaxwellEvolve::EM_Sir_F_gfs
   } "Boundary enforcement and synchronization for EM-direct Maxwell variables"

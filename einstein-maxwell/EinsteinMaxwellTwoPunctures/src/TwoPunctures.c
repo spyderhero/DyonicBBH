@@ -653,7 +653,7 @@ EinsteinMaxwellTwoPunctures (CCTK_ARGUMENTS)
           alp[ind] *= old_alp;
           
         /* Einstein-Maxwell variables.
-           The evolution thorn advances E^i, B^i, Psi and Phi directly,
+           The evolution thorn advances E^i, B^i, EM_Psi and EM_Phi directly,
            without using a vector potential.  For the charged puncture
            initial data used here includes Dirac-monopole-type magnetic
            charges directly through B^i.  The constraint damping
@@ -667,8 +667,8 @@ EinsteinMaxwellTwoPunctures (CCTK_ARGUMENTS)
         By[ind]    = Bi[1] / pow(psi1, 6);
         Bz[ind]    = Bi[2] / pow(psi1, 6);
 
-        Psi[ind]   = 0.0;
-        Phi[ind]   = 0.0;
+        EM_Psi[ind]   = 0.0;
+        EM_Phi[ind]   = 0.0;
 
         if (swap_xz) {
           /* Swap the x and z components of all tensors */
