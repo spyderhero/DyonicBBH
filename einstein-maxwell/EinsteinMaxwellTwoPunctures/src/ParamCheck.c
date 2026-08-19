@@ -14,7 +14,7 @@
 
 /* -------------------------------------------------------------------*/
 void
-EinsteinMaxwell_TwoPunctures_ParamCheck(CCTK_ARGUMENTS)
+EinsteinMaxwellTwoPunctures_ParamCheck(CCTK_ARGUMENTS)
 {
   DECLARE_CCTK_ARGUMENTS;
   DECLARE_CCTK_PARAMETERS;

@@ -1,6 +1,6 @@
-# Schedule definitions for thorn EinsteinMaxwell_TwoPunctures
+# Schedule definitions for thorn EinsteinMaxwellTwoPunctures
 
-if (CCTK_Equals(initial_data, "EinsteinMaxwell_twopunctures"))
+if (CCTK_Equals(initial_data, "EinsteinMaxwelltwopunctures"))
 {
   STORAGE: energy, angular_momentum, puncture_adm_mass, bare_mass
 
@@ -8,34 +8,34 @@ if (CCTK_Equals(initial_data, "EinsteinMaxwell_twopunctures"))
     STORAGE: puncture_u
   }
 
-  SCHEDULE EinsteinMaxwell_TwoPunctures_ParamCheck AT PARAMCHECK
+  SCHEDULE EinsteinMaxwellTwoPunctures_ParamCheck AT PARAMCHECK
   {
     LANG: C
   } "Check Einstein-Maxwell TwoPunctures parameters and thorn requirements"
 
   if (schedule_in_ADMBase_InitialData)
   {
-      SCHEDULE GROUP EinsteinMaxwell_TwoPunctures_Group IN ADMBase_InitialData
+      SCHEDULE GROUP EinsteinMaxwellTwoPunctures_Group IN ADMBase_InitialData
       {
       } "Einstein-Maxwell TwoPunctures initial data group"
   }
   else
   {
-      SCHEDULE GROUP EinsteinMaxwell_TwoPunctures_Group AT Initial AFTER ADMBase_InitialData BEFORE ADMBase_PostInitial AFTER HydroBase_Initial BEFORE SetTmunu BEFORE HydroBase_Prim2ConInitial
+      SCHEDULE GROUP EinsteinMaxwellTwoPunctures_Group AT Initial AFTER ADMBase_InitialData BEFORE ADMBase_PostInitial AFTER HydroBase_Initial BEFORE SetTmunu BEFORE HydroBase_Prim2ConInitial
       {
       } "Einstein-Maxwell TwoPunctures initial data group"
   }
 
-  SCHEDULE EinsteinMaxwell_TwoPunctures IN EinsteinMaxwell_TwoPunctures_Group
+  SCHEDULE EinsteinMaxwellTwoPunctures IN EinsteinMaxwellTwoPunctures_Group
   {
     LANG: C
     STORAGE: puncture_u
     READS: Grid::coordinates(Everywhere)
-    WRITES: EinsteinMaxwell_TwoPunctures::mp(Everywhere), EinsteinMaxwell_TwoPunctures::mm(Everywhere),
-            EinsteinMaxwell_TwoPunctures::mp_adm(Everywhere), EinsteinMaxwell_TwoPunctures::mm_adm(Everywhere),
-            EinsteinMaxwell_TwoPunctures::E(Everywhere), EinsteinMaxwell_TwoPunctures::J1(Everywhere),
-            EinsteinMaxwell_TwoPunctures::J2(Everywhere), EinsteinMaxwell_TwoPunctures::J3(Everywhere),
-            EinsteinMaxwell_TwoPunctures::puncture_u(Everywhere)
+    WRITES: EinsteinMaxwellTwoPunctures::mp(Everywhere), EinsteinMaxwellTwoPunctures::mm(Everywhere),
+            EinsteinMaxwellTwoPunctures::mp_adm(Everywhere), EinsteinMaxwellTwoPunctures::mm_adm(Everywhere),
+            EinsteinMaxwellTwoPunctures::E(Everywhere), EinsteinMaxwellTwoPunctures::J1(Everywhere),
+            EinsteinMaxwellTwoPunctures::J2(Everywhere), EinsteinMaxwellTwoPunctures::J3(Everywhere),
+            EinsteinMaxwellTwoPunctures::puncture_u(Everywhere)
     WRITES: StaticConformal::conformal_state(Everywhere),
             StaticConformal::confac_2derivs(Everywhere),
             StaticConformal::confac_1derivs(Everywhere),
@@ -47,7 +47,7 @@ if (CCTK_Equals(initial_data, "EinsteinMaxwell_twopunctures"))
     SYNC: ProcaBase::Ei ProcaBase::Bi ProcaBase::Psi ProcaBase::Phi
   } "Create electric/magnetic charged puncture black hole initial data"
 
-  SCHEDULE EinsteinMaxwell_TwoPunctures_Metadata IN EinsteinMaxwell_TwoPunctures_Group AFTER EinsteinMaxwell_TwoPunctures
+  SCHEDULE EinsteinMaxwellTwoPunctures_Metadata IN EinsteinMaxwellTwoPunctures_Group AFTER EinsteinMaxwellTwoPunctures
   {
     LANG: C
     OPTIONS: global

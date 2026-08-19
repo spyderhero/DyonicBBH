@@ -193,9 +193,9 @@ void set_initial_guess(CCTK_POINTER_TO_CONST cctkGH,
 }
 
 /* -------------------------------------------------------------------*/
-void EinsteinMaxwell_TwoPunctures(CCTK_ARGUMENTS);
+void EinsteinMaxwellTwoPunctures(CCTK_ARGUMENTS);
 void
-EinsteinMaxwell_TwoPunctures (CCTK_ARGUMENTS)
+EinsteinMaxwellTwoPunctures (CCTK_ARGUMENTS)
 {
   DECLARE_CCTK_ARGUMENTS;
   DECLARE_CCTK_PARAMETERS;
@@ -310,10 +310,10 @@ EinsteinMaxwell_TwoPunctures (CCTK_ARGUMENTS)
         
         /* Set the par_m_plus and par_m_minus parameters */
         sprintf (valbuf,"%.17g", (double) *mp);
-        CCTK_ParameterSet ("par_m_plus", "EinsteinMaxwell_TwoPunctures", valbuf);
+        CCTK_ParameterSet ("par_m_plus", "EinsteinMaxwellTwoPunctures", valbuf);
         
         sprintf (valbuf,"%.17g", (double) *mm);
-        CCTK_ParameterSet ("par_m_minus", "EinsteinMaxwell_TwoPunctures", valbuf);
+        CCTK_ParameterSet ("par_m_minus", "EinsteinMaxwellTwoPunctures", valbuf);
         
       } while ( (mp_adm_err > adm_tol) ||
                 (mm_adm_err > adm_tol) );
