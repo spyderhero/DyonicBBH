@@ -224,8 +224,8 @@ subroutine qlm_em_interpolate (CCTK_ARGUMENTS, hn)
        ind_ttx, ind_tty, ind_ttz, &
        ind_txx, ind_txy, ind_txz, ind_tyy, ind_tyz, ind_tzz, &
        ind_ex, ind_ey, ind_ez, &
-       ind_bx, ind_by, ind_bz
-  
+       ind_bx, ind_by, ind_bz /)
+
   call CCTK_NumVars (nvars)
   if (nvars < 0) call CCTK_WARN (0, "internal error")
   if (any(inputs /= -1 .and. (inputs < 0 .or. inputs >= nvars))) then
