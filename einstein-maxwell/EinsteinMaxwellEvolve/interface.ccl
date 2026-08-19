@@ -97,12 +97,12 @@ CCTK_REAL rhs_Bi type=gf tags='tensortypealias="U" tensorweight=0 prolongation="
   rhs_Bx rhs_By rhs_Bz
 } "right hand sides for B^i evolution equations"
 
-CCTK_REAL rhs_EM_Psi type=gf tags='tensortypealias="Scalar" tensorweight=0 prolongation="none" Checkpoint="no"'
+CCTK_REAL rhs_EM_Psi_group type=gf tags='tensortypealias="Scalar" tensorweight=0 prolongation="none" Checkpoint="no"'
 {
   rhs_EM_Psi
 } "right hand side for the electric Gauss-constraint damping field EM_Psi"
 
-CCTK_REAL rhs_EM_Phi type=gf tags='tensortypealias="Scalar" tensorweight=0 prolongation="none" Checkpoint="no"'
+CCTK_REAL rhs_EM_Phi_group type=gf tags='tensortypealias="Scalar" tensorweight=0 prolongation="none" Checkpoint="no"'
 {
   rhs_EM_Phi
 } "right hand side for the magnetic Gauss-constraint damping field EM_Phi"
