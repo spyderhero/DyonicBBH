@@ -10,8 +10,8 @@
 !
 !   E^i  = (Ex, Ey, Ez),
 !   B^i  = (Bx, By, Bz),
-!   Psi  = electric Gauss-constraint damping field,
-!   Phi  = magnetic Gauss-constraint damping field.
+!   EM_Psi  = electric Gauss-constraint damping field,
+!   EM_Phi  = magnetic Gauss-constraint damping field.
 !
 ! The actual outgoing radiative boundary update is applied in
 ! EinsteinMaxwell_calc_rhs_bdry through NewRad_Apply.  Here we register the
@@ -35,7 +35,7 @@ subroutine EinsteinMaxwell_Boundaries( CCTK_ARGUMENTS )
   !
   ! These group/variable names must agree with interface.ccl.  They are chosen
   ! to match the corrected direct E/B RHS file, where the variables are
-  ! Ex,Ey,Ez,Bx,By,Bz,Psi,Phi and the RHS boundary routine applies NewRad to
+  ! Ex,Ey,Ez,Bx,By,Bz,EM_Psi,EM_Phi and the RHS boundary routine applies NewRad to
   ! exactly these fields.
   !--------------------------------------------------------------------------
 
@@ -50,14 +50,14 @@ subroutine EinsteinMaxwell_Boundaries( CCTK_ARGUMENTS )
        call CCTK_WARN(0, "Failed to register BC for EinsteinMaxwellEvolve::Bi!")
 
   ierr = Boundary_SelectVarForBC(cctkGH, CCTK_ALL_FACES, one, -one,         &
-       "EinsteinMaxwellEvolve::Psi", "none")
+       "EinsteinMaxwellEvolve::EM_Psi", "none")
   if (ierr < 0)                                                             &
-       call CCTK_WARN(0, "Failed to register BC for EinsteinMaxwellEvolve::Psi!")
+       call CCTK_WARN(0, "Failed to register BC for EinsteinMaxwellEvolve::EM_Psi!")
 
   ierr = Boundary_SelectVarForBC(cctkGH, CCTK_ALL_FACES, one, -one,         &
-       "EinsteinMaxwellEvolve::Phi", "none")
+       "EinsteinMaxwellEvolve::EM_Phi", "none")
   if (ierr < 0)                                                             &
-       call CCTK_WARN(0, "Failed to register BC for EinsteinMaxwellEvolve::Phi!")
+       call CCTK_WARN(0, "Failed to register BC for EinsteinMaxwellEvolve::EM_Phi!")
 
   !--------------------------------------------------------------------------
   ! Electromagnetic diagnostic variables written by the corrected Tmunu file.
