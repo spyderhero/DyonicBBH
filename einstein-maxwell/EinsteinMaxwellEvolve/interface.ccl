@@ -73,6 +73,23 @@ USES FUNCTION MoLRegisterConstrainedGroup
 
 public:
 
+# Maxwell fields not provided by ProcaBase
+# ----------------------------------------
+
+CCTK_REAL Bi type=gf timelevels=3 tags='tensortypealias="U" tensorweight=0'
+{
+  Bx By Bz
+} "magnetic field B^i"
+
+CCTK_REAL Psi_group type=gf timelevels=3 tags='tensortypealias="Scalar" tensorweight=0'
+{
+  Psi
+} "electric Gauss-constraint damping field"
+
+CCTK_REAL Phi_group type=gf timelevels=3 tags='tensortypealias="Scalar" tensorweight=0'
+{
+  Phi
+} "magnetic Gauss-constraint damping field"
 
 # Right-hand sides for the Maxwell sector
 #----------------------------------------

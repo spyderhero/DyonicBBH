@@ -41,10 +41,9 @@ if (CCTK_Equals(initial_data, "EinsteinMaxwelltwopunctures"))
             StaticConformal::confac_1derivs(Everywhere),
             StaticConformal::confac(Everywhere)
     WRITES: ADMBase::alp(Everywhere), ADMBase::metric(Everywhere), ADMBase::curv(Everywhere)
-    WRITES: ProcaBase::Ei(Everywhere), ProcaBase::Bi(Everywhere),
-            ProcaBase::Psi(Everywhere), ProcaBase::Phi(Everywhere)
+    WRITES: ProcaBase::Ei(Everywhere), EinsteinMaxwellEvolve::Bi(Everywhere), EinsteinMaxwellEvolve::Psi(Everywhere), EinsteinMaxwellEvolve::Phi(Everywhere)
     SYNC: ADMBase::metric ADMBase::curv ADMBase::lapse
-    SYNC: ProcaBase::Ei ProcaBase::Bi ProcaBase::Psi ProcaBase::Phi
+    SYNC: ProcaBase::Ei, EinsteinMaxwellEvolve::Bi, EinsteinMaxwellEvolve::Psi, EinsteinMaxwellEvolve::Phi
   } "Create electric/magnetic charged puncture black hole initial data"
 
   SCHEDULE EinsteinMaxwellTwoPunctures_Metadata IN EinsteinMaxwellTwoPunctures_Group AFTER EinsteinMaxwellTwoPunctures

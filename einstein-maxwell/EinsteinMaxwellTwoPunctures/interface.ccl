@@ -2,7 +2,7 @@
 
 IMPLEMENTS: EinsteinMaxwellTwoPunctures
 
-INHERITS: ADMBase StaticConformal grid ProcaBase
+INHERITS: ADMBase StaticConformal grid ProcaBase EinsteinMaxwellEvolve
 
 # Spectral correction u of the conformal factor.
 REAL puncture_u TYPE=gf tags='prolongation="none"'

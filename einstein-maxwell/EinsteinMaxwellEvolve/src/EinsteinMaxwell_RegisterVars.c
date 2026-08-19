@@ -16,14 +16,11 @@ void EinsteinMaxwell_RegisterVars(CCTK_ARGUMENTS)
    * MoL registration for the Einstein-Maxwell system evolved with
    * E^i, B^i, Psi and Phi directly, without using a vector potential.
    *
-   * This is consistent with EinsteinMaxwell_calc_rhs_EM_direct_corrected.F90:
-   *   ProcaBase::Ei              <-> EinsteinMaxwellEvolve::rhs_Ei
-   *   ProcaBase::Bi              <-> EinsteinMaxwellEvolve::rhs_Bi
-   *   ProcaBase::Psi             <-> EinsteinMaxwellEvolve::rhs_Psi
-   *   ProcaBase::Phi             <-> EinsteinMaxwellEvolve::rhs_Phi
-   *
-   * The old EMD/vector-potential variables Ai, Aphi, Zeta, phi1, phi2,
-   * Kphi1 and Kphi2 are intentionally not registered here.
+   * Variable ownership:
+   *   ProcaBase::Ei                <-> EinsteinMaxwellEvolve::rhs_Ei
+   *   EinsteinMaxwellEvolve::Bi    <-> EinsteinMaxwellEvolve::rhs_Bi
+   *   EinsteinMaxwellEvolve::Psi   <-> EinsteinMaxwellEvolve::rhs_Psi
+   *   EinsteinMaxwellEvolve::Phi   <-> EinsteinMaxwellEvolve::rhs_Phi
    */
 
   /* Save-and-restore ADMBase variables that are evolved by spacetime thorns. */
@@ -51,25 +48,26 @@ void EinsteinMaxwell_RegisterVars(CCTK_ARGUMENTS)
   ierr += MoLRegisterEvolvedGroup(group, rhs);
 
   /* Magnetic field B^i and its RHS. */
-  group = CCTK_GroupIndex("ProcaBase::Bi");
+  group = CCTK_GroupIndex("EinsteinMaxwellEvolve::Bi");
   rhs   = CCTK_GroupIndex("EinsteinMaxwellEvolve::rhs_Bi");
-  if (group < 0) CCTK_ERROR("Could not find ProcaBase::Bi");
+  if (group < 0) CCTK_ERROR("Could not find EinsteinMaxwellEvolve::Bi");
   if (rhs   < 0) CCTK_ERROR("Could not find EinsteinMaxwellEvolve::rhs_Bi");
   ierr += MoLRegisterEvolvedGroup(group, rhs);
 
   /* Electric Gauss-constraint damping field Psi and its RHS. */
-  var = CCTK_VarIndex("ProcaBase::Psi");
+  var = CCTK_VarIndex("EinsteinMaxwellEvolve::Psi");
   rhs = CCTK_VarIndex("EinsteinMaxwellEvolve::rhs_Psi");
-  if (var < 0) CCTK_ERROR("Could not find ProcaBase::Psi");
+  if (var < 0) CCTK_ERROR("Could not find EinsteinMaxwellEvolve::Psi");
   if (rhs < 0) CCTK_ERROR("Could not find EinsteinMaxwellEvolve::rhs_Psi");
   ierr += MoLRegisterEvolved(var, rhs);
 
   /* Magnetic Gauss-constraint damping field Phi and its RHS. */
-  var = CCTK_VarIndex("ProcaBase::Phi");
+  var = CCTK_VarIndex("EinsteinMaxwellEvolve::Phi");
   rhs = CCTK_VarIndex("EinsteinMaxwellEvolve::rhs_Phi");
-  if (var < 0) CCTK_ERROR("Could not find ProcaBase::Phi");
+  if (var < 0) CCTK_ERROR("Could not find EinsteinMaxwellEvolve::Phi");
   if (rhs < 0) CCTK_ERROR("Could not find EinsteinMaxwellEvolve::rhs_Phi");
   ierr += MoLRegisterEvolved(var, rhs);
 
-  if (ierr) CCTK_ERROR("Problems registering Einstein-Maxwell variables with MoL");
+  if (ierr)
+    CCTK_ERROR("Problems registering Einstein-Maxwell variables with MoL");
 }

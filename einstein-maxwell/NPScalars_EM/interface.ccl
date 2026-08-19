@@ -2,7 +2,7 @@
 
 implements: NPScalars_EM
 
-inherits: ADMBase ProcaBase
+inherits: ADMBase ProcaBase EinsteinMaxwellEvolve
 
 ## From thorn cactusbase/Boundary:
 CCTK_INT FUNCTION                        \

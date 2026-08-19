@@ -22,6 +22,7 @@
 if (CCTK_EQUALS (evolution_method, "EinsteinMaxwellEvolve")) {
 
   # RHS grid functions for the EM-direct Maxwell sector
+  STORAGE: Bi Psi_group Phi_group
   STORAGE: rhs_Ei rhs_Bi rhs_Psi rhs_Phi
 
   # BSSN-like auxiliary geometry variables used by the Maxwell RHS
@@ -71,9 +72,9 @@ if (CCTK_EQUALS (evolution_method, "EinsteinMaxwellEvolve")) {
     LANG: Fortran
     OPTIONS: LEVEL
     SYNC: ProcaBase::Ei
-    SYNC: ProcaBase::Bi
-    SYNC: ProcaBase::Psi
-    SYNC: ProcaBase::Phi
+    SYNC: EinsteinMaxwellEvolve::Bi
+    SYNC: EinsteinMaxwellEvolve::Psi
+    SYNC: EinsteinMaxwellEvolve::Phi 
     SYNC: EinsteinMaxwellEvolve::EM_jr_F_gfs
     SYNC: EinsteinMaxwellEvolve::EM_Sir_F_gfs
   } "Boundary enforcement and synchronization for EM-direct Maxwell variables"

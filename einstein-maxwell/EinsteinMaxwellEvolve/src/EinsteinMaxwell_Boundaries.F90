@@ -45,19 +45,19 @@ subroutine EinsteinMaxwell_Boundaries( CCTK_ARGUMENTS )
        call CCTK_WARN(0, "Failed to register BC for ProcaBase::Ei!")
 
   ierr = Boundary_SelectGroupForBC(cctkGH, CCTK_ALL_FACES, one, -one,       &
-       "ProcaBase::Bi", "none")
+       "EinsteinMaxwellEvolve::Bi", "none")
   if (ierr < 0)                                                             &
-       call CCTK_WARN(0, "Failed to register BC for ProcaBase::Bi!")
+       call CCTK_WARN(0, "Failed to register BC for EinsteinMaxwellEvolve::Bi!")
 
   ierr = Boundary_SelectVarForBC(cctkGH, CCTK_ALL_FACES, one, -one,         &
-       "ProcaBase::Psi", "none")
+       "EinsteinMaxwellEvolve::Psi", "none")
   if (ierr < 0)                                                             &
-       call CCTK_WARN(0, "Failed to register BC for ProcaBase::Psi!")
+       call CCTK_WARN(0, "Failed to register BC for EinsteinMaxwellEvolve::Psi!")
 
   ierr = Boundary_SelectVarForBC(cctkGH, CCTK_ALL_FACES, one, -one,         &
-       "ProcaBase::Phi", "none")
+       "EinsteinMaxwellEvolve::Phi", "none")
   if (ierr < 0)                                                             &
-       call CCTK_WARN(0, "Failed to register BC for ProcaBase::Phi!")
+       call CCTK_WARN(0, "Failed to register BC for EinsteinMaxwellEvolve::Phi!")
 
   !--------------------------------------------------------------------------
   ! Electromagnetic diagnostic variables written by the corrected Tmunu file.
