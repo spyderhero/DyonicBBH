@@ -12,9 +12,7 @@
 
 shares: ProcaBase
 USES CCTK_REAL E0
-USES CCTK_REAL B0
 USES CCTK_INT  n_E
-USES CCTK_INT  n_B
 
 shares: MethodOfLines
 USES CCTK_INT MoL_Num_Evolved_Vars
@@ -22,6 +20,16 @@ USES CCTK_INT MoL_Num_Constrained_Vars
 USES CCTK_INT MoL_Num_SaveAndRestore_Vars
 
 restricted:
+
+CCTK_REAL B0[3] "Asymptotic values of the magnetic-field components used by NewRad"
+{
+  *:* :: "Any real value"
+} 0.0
+
+CCTK_INT n_B[3] "Radial falloff powers for the magnetic-field components used by NewRad"
+{
+  0:* :: "Non-negative integer"
+} 2
 
 KEYWORD evolution_method "Evolution method for the Einstein-Maxwell variables"
 {
