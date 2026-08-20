@@ -577,6 +577,7 @@ subroutine qlm_em_interpolate (CCTK_ARGUMENTS, hn)
         qlm_em_bx = 0
         qlm_em_by = 0
         qlm_em_bz = 0
+     end if      
 
      
      
