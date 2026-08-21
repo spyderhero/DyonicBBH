@@ -48,8 +48,8 @@ subroutine EinsteinMaxwell_InitSymBound( CCTK_ARGUMENTS )
   call SetCartSymVN( ierr, cctkGH, (/ 1, -1,  1/), "EinsteinMaxwellEvolve::rhs_By"  )
   call SetCartSymVN( ierr, cctkGH, (/ 1,  1, -1/), "EinsteinMaxwellEvolve::rhs_Bz"  )
   
-  call SetCartSymVN( ierr, cctkGH, (/ 1,  1,  1/), "EinsteinMaxwellEvolve::rhs_Psi" )
-  call SetCartSymVN( ierr, cctkGH, (/ 1,  1,  1/), "EinsteinMaxwellEvolve::rhs_Phi" )
+  call SetCartSymVN( ierr, cctkGH, (/ 1,  1,  1/), "EinsteinMaxwellEvolve::rhs_EM_Psi" )
+  call SetCartSymVN( ierr, cctkGH, (/ 1,  1,  1/), "EinsteinMaxwellEvolve::rhs_EM_Phi" )
 
   !--------------------------------------------------------------------------
   ! Optional EM diagnostics written by the corrected Tmunu routine:
