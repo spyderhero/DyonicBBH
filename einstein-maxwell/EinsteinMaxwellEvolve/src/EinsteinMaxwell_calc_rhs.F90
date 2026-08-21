@@ -117,7 +117,6 @@ subroutine EinsteinMaxwell_calc_rhs( CCTK_ARGUMENTS )
   ody60 = 1.0d0 / (60.0d0 * CCTK_DELTA_SPACE(2))
   odz60 = 1.0d0 / (60.0d0 * CCTK_DELTA_SPACE(3))
 
-  call EinsteinMaxwell_adm2bssn(CCTK_PASS_FTOF)
 
   levi_civita = 0.0d0
   levi_civita(1,2,3) =  1.0d0
