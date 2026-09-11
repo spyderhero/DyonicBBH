@@ -547,10 +547,11 @@ subroutine EinsteinMaxwell_calc_rhs( CCTK_ARGUMENTS )
       do b = 1, 3
         do c = 1, 3
           do m = 1, 3
-            curlB = curlB + levi_civita(a,b,c) * ch**(-conf_fac_exponent) *          &
+            curlB = curlB + levi_civita(a,b,c) *                                    &
+                  ch**(0.5d0*conf_fac_exponent) / sqrt(dethh) *                         &
                   ( hh(c,m) * lB(m) * d1_alph(b)                                    &
                   + alph * ( lB(m) * d1_hh(c,m,b) + hh(c,m) * d1_lB(m,b)             &
-                  - ch**(-conf_fac_exponent) * hh(c,m) * lB(m) * d1_ch(b) ) )
+                  - conf_fac_exponent * hh(c,m) * lB(m) * d1_ch(b) / ch ) )
           end do
         end do
       end do
@@ -573,10 +574,11 @@ subroutine EinsteinMaxwell_calc_rhs( CCTK_ARGUMENTS )
       do b = 1, 3
         do c = 1, 3
           do m = 1, 3
-            curlE = curlE + levi_civita(a,b,c) * ch**(-conf_fac_exponent) *          &
+            curlE = curlE + levi_civita(a,b,c) *                                    &
+                  ch**(0.5d0*conf_fac_exponent) / sqrt(dethh) *                         &
                   ( hh(c,m) * lE(m) * d1_alph(b)                                    &
                   + alph * ( lE(m) * d1_hh(c,m,b) + hh(c,m) * d1_lE(m,b)             &
-                  - ch**(-conf_fac_exponent) * hh(c,m) * lE(m) * d1_ch(b) ) )
+                  - conf_fac_exponent * hh(c,m) * lE(m) * d1_ch(b) / ch ) )
           end do
         end do
       end do
