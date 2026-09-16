@@ -17,9 +17,12 @@
 !
 !
 ! Parity convention under Cartesian reflections:
-!   - components of ordinary spatial vectors E^i and B^i have vector parity,
-!     e.g. Vx is odd under x-reflection and even under y,z-reflections.
-!   - scalar damping fields Psi and Phi are even under all reflections.
+!   - E^i is a polar vector: Ex is odd under x-reflection and even under
+!     y,z-reflections, with cyclic permutations for Ey and Ez.
+!   - B^i is an axial vector: Bx is even under x-reflection and odd under
+!     y,z-reflections, with cyclic permutations for By and Bz.
+!   - Psi is a scalar and is even under all reflections.
+!   - Phi is a pseudoscalar and is odd under all reflections.
 !   - radial scalar diagnostics jrF_gf are even.
 !   - SirF_gf components transform as ordinary spatial covector/vector
 !     components in Cartesian coordinates.
@@ -44,12 +47,12 @@ subroutine EinsteinMaxwell_InitSymBound( CCTK_ARGUMENTS )
   call SetCartSymVN( ierr, cctkGH, (/ 1,-1, 1/), "EinsteinMaxwellEvolve::rhs_Ey"  )
   call SetCartSymVN( ierr, cctkGH, (/ 1, 1,-1/), "EinsteinMaxwellEvolve::rhs_Ez"  )
 
-  call SetCartSymVN( ierr, cctkGH, (/-1,  1,  1/), "EinsteinMaxwellEvolve::rhs_Bx"  )
-  call SetCartSymVN( ierr, cctkGH, (/ 1, -1,  1/), "EinsteinMaxwellEvolve::rhs_By"  )
-  call SetCartSymVN( ierr, cctkGH, (/ 1,  1, -1/), "EinsteinMaxwellEvolve::rhs_Bz"  )
+  call SetCartSymVN( ierr, cctkGH, (/ 1, -1, -1/), "EinsteinMaxwellEvolve::rhs_Bx"  )
+  call SetCartSymVN( ierr, cctkGH, (/-1,  1, -1/), "EinsteinMaxwellEvolve::rhs_By"  )
+  call SetCartSymVN( ierr, cctkGH, (/-1, -1,  1/), "EinsteinMaxwellEvolve::rhs_Bz"  )
   
   call SetCartSymVN( ierr, cctkGH, (/ 1,  1,  1/), "EinsteinMaxwellEvolve::rhs_EM_Psi" )
-  call SetCartSymVN( ierr, cctkGH, (/ 1,  1,  1/), "EinsteinMaxwellEvolve::rhs_EM_Phi" )
+  call SetCartSymVN( ierr, cctkGH, (/-1, -1, -1/), "EinsteinMaxwellEvolve::rhs_EM_Phi" )
 
   !--------------------------------------------------------------------------
   ! Optional EM diagnostics written by the corrected Tmunu routine:
