@@ -69,7 +69,7 @@ public:
 # Maxwell fields not provided by ProcaBase
 # ----------------------------------------
 
-CCTK_REAL Bi type=gf timelevels=3 tags='tensortypealias="U" tensorweight=0'
+CCTK_REAL Bi type=gf timelevels=3 tags='tensortypealias="U" tensorweight=0 tensorparity=-1'
 {
   Bx By Bz
 } "magnetic field B^i"
@@ -79,7 +79,7 @@ CCTK_REAL EM_Psi_group type=gf timelevels=3 tags='tensortypealias="Scalar" tenso
   EM_Psi
 } "electric Gauss-constraint damping field"
 
-CCTK_REAL EM_Phi_group type=gf timelevels=3 tags='tensortypealias="Scalar" tensorweight=0'
+CCTK_REAL EM_Phi_group type=gf timelevels=3 tags='tensortypealias="Scalar" tensorweight=0 tensorparity=-1'
 {
   EM_Phi
 } "magnetic Gauss-constraint damping field"
@@ -92,7 +92,7 @@ CCTK_REAL rhs_Ei type=gf tags='tensortypealias="U" tensorweight=0 prolongation="
   rhs_Ex rhs_Ey rhs_Ez
 } "right hand sides for E^i evolution equations"
 
-CCTK_REAL rhs_Bi type=gf tags='tensortypealias="U" tensorweight=0 prolongation="none" Checkpoint="no"'
+CCTK_REAL rhs_Bi type=gf tags='tensortypealias="U" tensorweight=0 tensorparity=-1 prolongation="none" Checkpoint="no"'
 {
   rhs_Bx rhs_By rhs_Bz
 } "right hand sides for B^i evolution equations"
@@ -102,7 +102,7 @@ CCTK_REAL rhs_EM_Psi_group type=gf tags='tensortypealias="Scalar" tensorweight=0
   rhs_EM_Psi
 } "right hand side for the electric Gauss-constraint damping field EM_Psi"
 
-CCTK_REAL rhs_EM_Phi_group type=gf tags='tensortypealias="Scalar" tensorweight=0 prolongation="none" Checkpoint="no"'
+CCTK_REAL rhs_EM_Phi_group type=gf tags='tensortypealias="Scalar" tensorweight=0 tensorparity=-1 prolongation="none" Checkpoint="no"'
 {
   rhs_EM_Phi
 } "right hand side for the magnetic Gauss-constraint damping field EM_Phi"
