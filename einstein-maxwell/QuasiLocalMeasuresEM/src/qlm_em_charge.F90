@@ -27,8 +27,17 @@ subroutine qlm_em_compute_charge (CCTK_ARGUMENTS, hn)
   charge_electric_local = 0.0d0
   charge_magnetic_local = 0.0d0
 
-  do j = 1, qlm_em_nphi(hn)-1
-    do i = 1, qlm_em_ntheta(hn)-1
+  integer :: ith_first, ith_last
+  integer :: iph_first, iph_last
+
+  ith_first = 1 + qlm_em_nghoststheta(hn)
+  ith_last  = qlm_em_ntheta(hn) - qlm_em_nghoststheta(hn)
+
+  iph_first = 1 + qlm_em_nghostsphi(hn)
+  iph_last  = qlm_em_nphi(hn) - qlm_em_nghostsphi(hn)
+
+  do j = iph_first, iph_last
+    do i = ith_first, ith_last-1
 
       ! Tangent vectors in 3-space
       dX_dtheta(1) = qlm_em_x(i+1,j,hn) - qlm_em_x(i,j,hn)
