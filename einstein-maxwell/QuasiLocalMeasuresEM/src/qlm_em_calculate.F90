@@ -146,6 +146,49 @@ subroutine qlm_em_calculate (CCTK_ARGUMENTS)
  
   call qlm_em_broadcast (cctkGH)
 
+  ! All surface results are now available on rank 0.
+  if (my_proc == 0 .and. calc_charge /= 0) then
+     do hn = 1, num_surfaces
+
+        if (qlm_em_have_valid_data(hn) /= 0 .and. &
+            qlm_em_calc_error(hn) == 0) then
+
+           if (CCTK_EQUALS(charge_output_label(hn), "")) then
+              write (msg, &
+                   '("QLM surface ",i0," [SphericalSurface ",i0, &
+                     "]: Electric charge Qe = ",es24.16)') &
+                   hn-1, surface_index(hn), &
+                   qlm_em_electric_charge(hn)
+           else
+              write (msg, &
+                   '(a," [QLM surface ",i0,", SphericalSurface ",i0, &
+                     "]: Electric charge Qe = ",es24.16)') &
+                   trim(charge_output_label(hn)), &
+                   hn-1, surface_index(hn), &
+                   qlm_em_electric_charge(hn)
+           end if
+           call CCTK_INFO(msg)
+
+           if (CCTK_EQUALS(charge_output_label(hn), "")) then
+              write (msg, &
+                   '("QLM surface ",i0," [SphericalSurface ",i0, &
+                     "]: Magnetic charge Qm = ",es24.16)') &
+                   hn-1, surface_index(hn), &
+                   qlm_em_magnetic_charge(hn)
+           else
+              write (msg, &
+                   '(a," [QLM surface ",i0,", SphericalSurface ",i0, &
+                     "]: Magnetic charge Qm = ",es24.16)') &
+                   trim(charge_output_label(hn)), &
+                   hn-1, surface_index(hn), &
+                   qlm_em_magnetic_charge(hn)
+           end if
+           call CCTK_INFO(msg)
+
+        end if
+     end do
+  end if
+
   if (veryverbose/=0) then
      call CCTK_INFO ("Done.")
   end if
