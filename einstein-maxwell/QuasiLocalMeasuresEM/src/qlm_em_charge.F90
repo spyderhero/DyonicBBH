@@ -15,6 +15,8 @@ subroutine qlm_em_compute_charge (CCTK_ARGUMENTS, hn)
   DECLARE_CCTK_PARAMETERS
   integer :: hn
   integer :: i, j
+  integer :: ith_first, ith_last
+  integer :: iph_first, iph_last
   CCTK_REAL :: alpha, gg(3,3)
   CCTK_REAL :: E_f(3), B_f(3)
   CCTK_REAL :: dX_dtheta(3), dX_dphi(3), dS(3)
@@ -27,8 +29,6 @@ subroutine qlm_em_compute_charge (CCTK_ARGUMENTS, hn)
   charge_electric_local = 0.0d0
   charge_magnetic_local = 0.0d0
 
-  integer :: ith_first, ith_last
-  integer :: iph_first, iph_last
 
   ith_first = 1 + qlm_em_nghoststheta(hn)
   ith_last  = qlm_em_ntheta(hn) - qlm_em_nghoststheta(hn)
