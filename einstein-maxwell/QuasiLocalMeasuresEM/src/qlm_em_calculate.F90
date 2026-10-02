@@ -20,6 +20,7 @@ subroutine qlm_em_calculate (CCTK_ARGUMENTS)
   character :: msg*1000
   character :: slabel*2, ilabel*8
   character(len=200) :: odir
+  character(len=200) :: charge_label
   integer   :: nchars
  
   logical   :: did_allocate
@@ -153,6 +154,8 @@ subroutine qlm_em_calculate (CCTK_ARGUMENTS)
         if (qlm_em_have_valid_data(hn) /= 0 .and. &
             qlm_em_calc_error(hn) == 0) then
 
+           call CCTK_FortranString(nchars, charge_output_label(hn), charge_label)
+
            if (CCTK_EQUALS(charge_output_label(hn), "")) then
               write (msg, &
                    '("QLM surface ",i0," [SphericalSurface ",i0, &
@@ -163,7 +166,7 @@ subroutine qlm_em_calculate (CCTK_ARGUMENTS)
               write (msg, &
                    '(a," [QLM surface ",i0,", SphericalSurface ",i0, &
                      "]: Electric charge Qe = ",es24.16)') &
-                   trim(charge_output_label(hn)), &
+                   trim(charge_label), &
                    hn-1, surface_index(hn), &
                    qlm_em_electric_charge(hn)
            end if
@@ -179,7 +182,7 @@ subroutine qlm_em_calculate (CCTK_ARGUMENTS)
               write (msg, &
                    '(a," [QLM surface ",i0,", SphericalSurface ",i0, &
                      "]: Magnetic charge Qm = ",es24.16)') &
-                   trim(charge_output_label(hn)), &
+                   trim(charge_label), &
                    hn-1, surface_index(hn), &
                    qlm_em_magnetic_charge(hn)
            end if
