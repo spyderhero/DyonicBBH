@@ -31,6 +31,12 @@ STRING surface_name[100] "Spherical surface that contains the surface shape"
   ".*" :: "surface name"
 } ""
 
+STRING charge_output_label[100] "Optional label used when reporting electric and magnetic charge"
+{
+  ""   :: "use the default QLM surface label"
+  ".*" :: "custom output label"
+} ""
+
 STRING coordsystem "The coordinate system to use" STEERABLE=always
 {
   "" :: "must be a registered coordinate system"
