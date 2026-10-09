@@ -1,0 +1,6 @@
+#define D1X4(q) ((-q(i+2,j,k) + 8.0d0*q(i+1,j,k) - 8.0d0*q(i-1,j,k) + q(i-2,j,k)) / dx12)
+#define D1Y4(q) ((-q(i,j+2,k) + 8.0d0*q(i,j+1,k) - 8.0d0*q(i,j-1,k) + q(i,j-2,k)) / dy12)
+#define D1Z4(q) ((-q(i,j,k+2) + 8.0d0*q(i,j,k+1) - 8.0d0*q(i,j,k-1) + q(i,j,k-2)) / dz12)
+#define D1X6(q) ((q(i+3,j,k) - 9.0d0*q(i+2,j,k) + 45.0d0*q(i+1,j,k) - q(i-3,j,k) + 9.0d0*q(i-2,j,k) - 45.0d0*q(i-1,j,k)) * odx60)
+#define D1Y6(q) ((q(i,j+3,k) - 9.0d0*q(i,j+2,k) + 45.0d0*q(i,j+1,k) - q(i,j-3,k) + 9.0d0*q(i,j-2,k) - 45.0d0*q(i,j-1,k)) * ody60)
+#define D1Z6(q) ((q(i,j,k+3) - 9.0d0*q(i,j,k+2) + 45.0d0*q(i,j,k+1) - q(i,j,k-3) + 9.0d0*q(i,j,k-2) - 45.0d0*q(i,j,k-1)) * odz60)

@@ -93,4 +93,32 @@ if (CCTK_EQUALS (evolution_method, "EinsteinMaxwellEvolve")) {
     WRITES: EinsteinMaxwellEvolve::EM_Sir_F_gfs(everywhere)
   } "Compute the electromagnetic stress-energy tensor"
 
+  if (compute_em_constraints) {
+    STORAGE: EM_CE_group EM_CB_group
+
+    if (compute_em_constraint_monitors) {
+      STORAGE: EM_monitor_E EM_monitor_B EM_monitor_mask
+    }
+
+    # Conditional synchronization is performed INSIDE this level-mode routine
+    # to avoid exchanges on every non-diagnostic analysis iteration.
+    schedule EinsteinMaxwell_constraints_sync at CCTK_ANALYSIS \
+      as EinsteinMaxwell_ConstraintsSync
+    {
+      LANG: Fortran
+      OPTIONS: LEVEL
+    } "Synchronize final-state Maxwell diagnostic inputs when due"
+
+    schedule EinsteinMaxwell_calc_constraints at CCTK_ANALYSIS \
+      after EinsteinMaxwell_ConstraintsSync
+    {
+      LANG: Fortran
+    } "Compute Maxwell constraints at the analysis time"
+  }
 }
+
+schedule EinsteinMaxwell_constraints_check at CCTK_PARAMCHECK
+{
+  LANG: Fortran
+  OPTIONS: GLOBAL
+} "Validate optional Maxwell monitoring parameters"

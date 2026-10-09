@@ -1,13 +1,14 @@
 # Main make.code.defn file for thorn EinsteinMaxwellEvolve
 
 # Source files in this directory
-SRCS = EinsteinMaxwell_RegisterVars.c     \
-       EinsteinMaxwell_calc_rhs.F90       \
-       EinsteinMaxwell_Boundaries.F90     \
-       EinsteinMaxwell_calc_Tmunu.F90     \
-       EinsteinMaxwell_InitSymBound.F90   \
-       EinsteinMaxwell_adm2bssn.F90    \
-       EinsteinMaxwell_zero_rhs.F90       \
+SRCS = EinsteinMaxwell_RegisterVars.c       \
+       EinsteinMaxwell_calc_rhs.F90         \
+       EinsteinMaxwell_calc_constraints.F90 \
+       EinsteinMaxwell_Boundaries.F90       \
+       EinsteinMaxwell_calc_Tmunu.F90       \
+       EinsteinMaxwell_InitSymBound.F90     \
+       EinsteinMaxwell_adm2bssn.F90         \
+       EinsteinMaxwell_zero_rhs.F90         \
        EinsteinMaxwell_utils.F90          
 
 # Subdirectories containing source files

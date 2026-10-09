@@ -93,3 +93,36 @@ CCTK_REAL eps_r "Minimal radius used when computing radial diagnostic quantities
 {
   0:* :: "non-negative"
 } 1.0d-06
+
+BOOLEAN compute_em_constraints "Compute Maxwell constraints"
+{
+} "no"
+
+CCTK_INT em_constraints_every "Diagnostic interval"
+{
+  1:* :: "Positive number of iterations"
+} 256
+
+BOOLEAN compute_em_constraint_monitors "Allocate six optional masked diagnostic grid functions"
+{
+} "no"
+
+CCTK_REAL em_monitor_near_rmin "Near shell inner coordinate radius; must enclose both horizons"
+{
+  0:* :: "Non-negative coordinate radius"
+} 10.0
+
+CCTK_REAL em_monitor_near_rmax "Near shell outer coordinate radius"
+{
+  0:* :: "Non-negative coordinate radius"
+} 100.0
+
+CCTK_REAL em_monitor_far_rmin "Far shell inner coordinate radius"
+{
+  0:* :: "Non-negative coordinate radius"
+} 500.0
+
+CCTK_REAL em_monitor_far_rmax "Far shell outer coordinate radius; keep identical across compared grids"
+{
+  0:* :: "Non-negative coordinate radius"
+} 2000.0

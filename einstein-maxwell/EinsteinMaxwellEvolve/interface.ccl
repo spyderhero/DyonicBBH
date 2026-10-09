@@ -107,6 +107,36 @@ CCTK_REAL rhs_EM_Phi_group type=gf tags='tensortypealias="Scalar" tensorweight=0
   rhs_EM_Phi
 } "right hand side for the magnetic Gauss-constraint damping field EM_Phi"
 
+CCTK_REAL EM_CE_group type=gf timelevels=1 \
+  tags='tensortypealias="Scalar" tensorweight=0 \
+  prolongation="none" Checkpoint="no"'
+{
+  EM_CE
+} "Electric Gauss constraint D_i E^i"
+
+CCTK_REAL EM_CB_group type=gf timelevels=1 \
+  tags='tensortypealias="Scalar" tensorweight=0 \
+  tensorparity=-1 prolongation="none" Checkpoint="no"'
+{
+  EM_CB
+} "Magnetic Gauss constraint D_i B^i"
+
+# Optional fixed-shell monitors. Zero outside the shell; normalize their norm2
+# by sqrt(average(mask)) in post-processing. These are NOT horizon masks.
+CCTK_REAL EM_monitor_E type=gf timelevels=1 tags='tensortypealias="Scalar" tensorweight=0 prolongation="none" Checkpoint="no"'
+{
+  EM_CE_near EM_CE_far
+} "Masked electric Gauss residuals"
+
+CCTK_REAL EM_monitor_B type=gf timelevels=1 tags='tensortypealias="Scalar" tensorweight=0 tensorparity=-1 prolongation="none" Checkpoint="no"'
+{
+  EM_CB_near EM_CB_far
+} "Masked magnetic Gauss residuals"
+
+CCTK_REAL EM_monitor_mask type=gf timelevels=1 tags='tensortypealias="Scalar" tensorweight=0 prolongation="none" Checkpoint="no"'
+{
+  EM_mask_near EM_mask_far
+} "Fixed-shell indicator functions for norm normalization"
 
 # BSSN-like auxiliary geometry variables
 #---------------------------------------

@@ -3,12 +3,7 @@
 #include "cctk_Parameters.h"
 #include "cctk_Functions.h"
 
-#define D1X4(q) ((-q(i+2,j,k) + 8.0d0*q(i+1,j,k) - 8.0d0*q(i-1,j,k) + q(i-2,j,k)) / dx12)
-#define D1Y4(q) ((-q(i,j+2,k) + 8.0d0*q(i,j+1,k) - 8.0d0*q(i,j-1,k) + q(i,j-2,k)) / dy12)
-#define D1Z4(q) ((-q(i,j,k+2) + 8.0d0*q(i,j,k+1) - 8.0d0*q(i,j,k-1) + q(i,j,k-2)) / dz12)
-#define D1X6(q) ((q(i+3,j,k) - 9.0d0*q(i+2,j,k) + 45.0d0*q(i+1,j,k) - q(i-3,j,k) + 9.0d0*q(i-2,j,k) - 45.0d0*q(i-1,j,k)) * odx60)
-#define D1Y6(q) ((q(i,j+3,k) - 9.0d0*q(i,j+2,k) + 45.0d0*q(i,j+1,k) - q(i,j-3,k) + 9.0d0*q(i,j-2,k) - 45.0d0*q(i,j-1,k)) * ody60)
-#define D1Z6(q) ((q(i,j,k+3) - 9.0d0*q(i,j,k+2) + 45.0d0*q(i,j,k+1) - q(i,j,k-3) + 9.0d0*q(i,j,k-2) - 45.0d0*q(i,j,k-1)) * odz60)
+#include "EinsteinMaxwell_FD.h"
 
 subroutine EinsteinMaxwell_calc_rhs( CCTK_ARGUMENTS )
 
@@ -491,45 +486,7 @@ subroutine EinsteinMaxwell_calc_rhs( CCTK_ARGUMENTS )
       call EinsteinMaxwell_d1_2nd_Tensor_apply_jacobian(d1_hh, jac, 1)
     end if
 
-    ! Conformal Christoffel symbols of h_ij = tilde gamma_ij.
-    cf1 = 0.0d0
-    do a = 1, 3
-      do b = 1, 3
-        do c = b, 3
-          cf1(a,b,c) = 0.5d0 * (d1_hh(a,b,c) + d1_hh(a,c,b) - d1_hh(b,c,a))
-        end do
-      end do
-    end do
-    cf1(:,2,1) = cf1(:,1,2)
-    cf1(:,3,1) = cf1(:,1,3)
-    cf1(:,3,2) = cf1(:,2,3)
-
-    cf2 = 0.0d0
-    do a = 1, 3
-      do b = 1, 3
-        do c = b, 3
-          do m = 1, 3
-            cf2(a,b,c) = cf2(a,b,c) + hu(a,m) * cf1(m,b,c)
-          end do
-        end do
-      end do
-    end do
-    cf2(:,2,1) = cf2(:,1,2)
-    cf2(:,3,1) = cf2(:,1,3)
-    cf2(:,3,2) = cf2(:,2,3)
-
-    ! Physical divergence D_i V^i for gamma_ij = chi^{-p} h_ij.
-    ! D_i V^i = partial_i V^i + tildeGamma^i_{m i} V^m - (3p/2) V^i partial_i chi / chi.
-    divE = 0.0d0
-    divB = 0.0d0
-    do a = 1, 3
-      divE = divE + d1_lE(a,a) - 1.5d0*conf_fac_exponent*lE(a)*d1_ch(a)/ch
-      divB = divB + d1_lB(a,a) - 1.5d0*conf_fac_exponent*lB(a)*d1_ch(a)/ch
-      do m = 1, 3
-        divE = divE + cf2(a,m,a) * lE(m)
-        divB = divB + cf2(a,m,a) * lB(m)
-      end do
-    end do
+#include "EinsteinMaxwell_Gauss.inc"
 
     rhs_lE = ad1_lE
     do a = 1, 3

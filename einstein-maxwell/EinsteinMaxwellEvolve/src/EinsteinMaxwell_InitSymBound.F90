@@ -54,6 +54,22 @@ subroutine EinsteinMaxwell_InitSymBound( CCTK_ARGUMENTS )
   call SetCartSymVN( ierr, cctkGH, (/ 1,  1,  1/), "EinsteinMaxwellEvolve::rhs_EM_Psi" )
   call SetCartSymVN( ierr, cctkGH, (/-1, -1, -1/), "EinsteinMaxwellEvolve::rhs_EM_Phi" )
 
+  if (compute_em_constraints /= 0) then
+    call SetCartSymVN(ierr, cctkGH, (/1,1,1/), &
+     "EinsteinMaxwellEvolve::EM_CE")
+    call SetCartSymVN(ierr, cctkGH, (/-1,-1,-1/), &
+     "EinsteinMaxwellEvolve::EM_CB")
+  end if
+
+  if (compute_em_constraint_monitors /= 0) then
+    call SetCartSymVN(ierr,cctkGH,(/1,1,1/),"EinsteinMaxwellEvolve::EM_CE_near")
+    call SetCartSymVN(ierr,cctkGH,(/1,1,1/),"EinsteinMaxwellEvolve::EM_CE_far")
+    call SetCartSymVN(ierr,cctkGH,(/-1,-1,-1/),"EinsteinMaxwellEvolve::EM_CB_near")
+    call SetCartSymVN(ierr,cctkGH,(/-1,-1,-1/),"EinsteinMaxwellEvolve::EM_CB_far")
+    call SetCartSymVN(ierr,cctkGH,(/1,1,1/),"EinsteinMaxwellEvolve::EM_mask_near")
+    call SetCartSymVN(ierr,cctkGH,(/1,1,1/),"EinsteinMaxwellEvolve::EM_mask_far")
+  end if
+
   !--------------------------------------------------------------------------
   ! Optional EM diagnostics written by the corrected Tmunu routine:
   !   EinsteinMaxwell_calc_Tmunu_EM_direct_corrected.F90
